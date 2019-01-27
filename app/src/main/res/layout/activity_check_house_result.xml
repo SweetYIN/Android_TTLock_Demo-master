@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".sn.uiActivity.CheckHouseResultActivity">
     <include layout="@layout/title_layout"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/check_house_result_recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:padding="5dp"
         android:scrollbars="none">
