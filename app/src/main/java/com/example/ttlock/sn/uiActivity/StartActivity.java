@@ -160,9 +160,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
             }else{
                 //TODO REQUEST HTTP
                 Log.e(TAG,"query ="+query);
-                HouseSearchRequestBean resourcesRequestBean  = new HouseSearchRequestBean();
-                resourcesRequestBean.setSerialNumber(query);
-                requestData(resourcesRequestBean);
+                openActivity(query);
             }
             return true;
         }
@@ -173,46 +171,10 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         }
     };
 
-    /**
-     * 请求要查找的房源
-     */
-    private void requestData(HouseSearchRequestBean houseSearchRequestBean){
-        ApiNet apiNet = new ApiNet();
-        apiNet.ApiHouseSearch(houseSearchRequestBean)
-                .subscribe(new Observer<HouseSearchResponsesBean>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-//                            d.dispose();
-                    }
 
-                    @Override
-                    public void onNext(HouseSearchResponsesBean value) {
-             List<HouseSearchResponsesBean.DataBean> houseInfos = new ArrayList<>();
-                        houseInfos.addAll(value.getData()) ;
-                        Log.e(TAG,"value.getData() = "+value.getData());
-//                        myRecyclerViewAdapter.notifyDataSetChanged();
-//                        if(value.getTotal() % 10 == 0){
-//                            ALLSUM = value.getTotal() / 10;
-//                        }else{
-//                            ALLSUM = (value.getTotal() / 10)+1;
-//                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e(TAG,"e " +e);
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-    }
-
-    private void openActivity( HouseSearchResponsesBean value){
+    private void openActivity( String query){
         Intent intent = new Intent(this,CheckHouseResultActivity.class);
-        intent.putExtra("value",value);
+        intent.putExtra("query","H00000170");
         startActivity(intent);
     }
 }
