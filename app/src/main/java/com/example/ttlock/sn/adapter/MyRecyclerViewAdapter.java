@@ -77,6 +77,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             myViewHolder.numberTV.setText(houseInfo.getSerialNumber());
             myViewHolder.addressTV.setText(houseInfo.getAddress()+houseInfo.getHouseNo());
             myViewHolder.typeTV.setText(houseInfo.getHouseType());
+            myViewHolder.imageView.setTag(position);
 
     }
 
