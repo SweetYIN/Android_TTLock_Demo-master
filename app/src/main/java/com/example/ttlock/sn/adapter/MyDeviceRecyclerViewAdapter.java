@@ -44,14 +44,19 @@ public class MyDeviceRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_recycleview_device, parent, false);
-
-        view.setOnLongClickListener(new View.OnLongClickListener() {
+        view.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onLongClick(View v) {
-                mClickCallback.OnItemLongClick(v);
-                return true;
+            public void onClick(View v) {
+                mClickCallback.OnItemClick(v);
             }
         });
+//        view.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View v) {
+//                mClickCallback.OnItemLongClick(v);
+//                return true;
+//            }
+//        });
 
         return new MyViewHolder(view);
     }
