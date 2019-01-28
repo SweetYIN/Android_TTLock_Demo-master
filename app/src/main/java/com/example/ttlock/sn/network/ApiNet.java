@@ -7,11 +7,13 @@ import com.example.ttlock.sn.bean.Request.HouseSearchRequestBean;
 import com.example.ttlock.sn.bean.Request.LoginRequestBean;
 import com.example.ttlock.sn.bean.Responds.HouseSearchResponsesBean;
 import com.example.ttlock.sn.bean.Responds.LoginResponsesBean;
+import com.ttlock.bl.sdk.entity.LockData;
 
 
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.Observer;
 import io.reactivex.functions.Function;
 
 /**
@@ -26,6 +28,7 @@ public class ApiNet extends BaseNet{
     }
 
 
+    /**登录**/
     public Observable<LoginResponsesBean> ApiLogin(String Authorization,
                                                    String name,String pas){
         return observe(mNetInterface.Login(HttpUrlConfig.Login,
@@ -39,6 +42,8 @@ public class ApiNet extends BaseNet{
                 });
     }
 
+
+    /**房源**/
     public Observable<HouseSearchResponsesBean> ApiHouseSearch(HouseSearchRequestBean houseSearchRequestBean){
         return  observe(mNetInterface.HouseSearch(houseSearchRequestBean))
                .map(new Function<HouseSearchResponsesBean, HouseSearchResponsesBean>() {
@@ -51,8 +56,40 @@ public class ApiNet extends BaseNet{
     }
 
 
+    /**查房**/
+    public Observable<String> ApiChangeStateCheck(String roomId){
+        return observe(mNetInterface.ChangeStateCheck(roomId))
+                .map(new Function<String, String>() {
+                    @Override
+                    public String apply(String s) throws Exception {
+                        return s;
+                    }
+                });
+    }
 
 
+    /**重置密码**/
+    public Observable<String> ApiChangeStateReset(String roomId){
+        return observe(mNetInterface.ChangeStateReset(roomId))
+                .map(new Function<String, String>() {
+                    @Override
+                    public String apply(String s) throws Exception {
+                        return s;
+                    }
+                });
+    }
+
+
+    /**绑定锁**/
+    public Observable<String> ApiBindForApp(String id, LockData lockData){
+        return observe(mNetInterface.BindForApp(id,lockData))
+                .map(new Function<String, String>() {
+                    @Override
+                    public String apply(String s) throws Exception {
+                        return s;
+                    }
+                });
+    }
 
 
 }
