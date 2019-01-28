@@ -7,6 +7,7 @@ import com.example.ttlock.sn.bean.Request.LoginRequestBean;
 import com.example.ttlock.sn.bean.Responds.HouseSearchResponsesBean;
 import com.example.ttlock.sn.bean.Responds.HouseSelectResponsesBean;
 import com.example.ttlock.sn.bean.Responds.LoginResponsesBean;
+import com.ttlock.bl.sdk.entity.LockData;
 
 import java.util.List;
 
@@ -25,6 +26,7 @@ import retrofit2.http.Url;
 
 public interface NetInterface {
 
+	/**登录**/
 	@FormUrlEncoded
 	@POST
 	Observable<LoginResponsesBean> Login(@Url String url,
@@ -33,21 +35,33 @@ public interface NetInterface {
 										 @Field("password") String password,
 										 @Field("grant_type") String grant_type,
 										 @Field("scope") String scope) ;
-
-
-
+	/**房源**/
 	@Headers("Content-Type:application/json")
 	@POST(HttpUrlConfig.HouseSearchResources)
 	Observable<HouseSearchResponsesBean> HouseSearch(@Body HouseSearchRequestBean houseSearchRequestBean);
 
+	/**查房**/
+	@Headers("Content-Type:application/json")
+	@FormUrlEncoded
+	@POST(HttpUrlConfig.ChangeStateCheck)
+	Observable<String> ChangeStateCheck(@Field("roomId") String roomId);
+
+	/**重置密码**/
+	@Headers("Content-Type:application/json")
+	@FormUrlEncoded
+	@POST(HttpUrlConfig.ChangeStateReset)
+	Observable<String> ChangeStateReset(@Field("roomId") String roomId);
+
+	/**绑定锁**/
+	@Headers("Content-Type:application/json")
+	@POST(HttpUrlConfig.BindForApp)
+	Observable<String> BindForApp(@Field("id")String id, @Body LockData lockData);
 
 
-	/**
-	 * HouseSelectResources
-	 * @return
-	 */
-	@GET(HttpUrlConfig.HouseSelectResources)
-	Observable<List<HouseSelectResponsesBean>> HouseSelect();
+
+
+
+
 
 
 }
