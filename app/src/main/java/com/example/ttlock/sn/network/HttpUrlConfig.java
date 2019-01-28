@@ -14,13 +14,20 @@ public class HttpUrlConfig {
 
 //    public static String ServerUrl = "http://59.110.159.182:8040/";
 
+    /**登录**/
     public static final String Login = "http://59.110.159.182:8040/oauth/token?";
 
-
-    /**1.0.01获取房源地址**/
+    /**获取房源地址**/
      public static final String HouseSearchResources = "house/search";
 
-    /**1.0.01获取房源地址**/
-    public static final String HouseSelectResources = "house/select";
+    /**查房**/
+    public static final String ChangeStateCheck = "room/state/check";
+
+    /**重置密码**/
+    public static final String ChangeStateReset = "room/state/reset";
+
+    /**绑定锁**/
+    public static final String BindForApp = "room/forapp/bind{id}";
+
 
 }
