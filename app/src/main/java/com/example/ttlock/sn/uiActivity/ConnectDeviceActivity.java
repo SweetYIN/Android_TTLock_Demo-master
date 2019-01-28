@@ -32,6 +32,7 @@ import com.example.ttlock.sn.adapter.MyDeviceRecyclerViewAdapter;
 import com.example.ttlock.sn.adapter.MyRecyclerViewAdapter;
 import com.example.ttlock.sn.callback.ClickCallback;
 import com.example.ttlock.sn.callback.ItemClickCallback;
+import com.example.ttlock.sn.network.ApiNet;
 import com.example.ttlock.sp.MyPreference;
 import com.google.gson.reflect.TypeToken;
 import com.ttlock.bl.sdk.api.TTLockAPI;
@@ -48,6 +49,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
 public class ConnectDeviceActivity extends BaseActivity implements View.OnClickListener {
 
@@ -224,7 +228,7 @@ public class ConnectDeviceActivity extends BaseActivity implements View.OnClickL
            Log.e(TAG,"onLockInitialize"+extendedBluetoothDevice.getAddress()+"\n = error"+error);
            //TODOrequestData
             if ("1".equals(Type)){
-                uploadData();
+                uploadData(lockData);
 //                Log.e(TAG,"lockData ="+lockData);
 //                final String lockDataJson = lockData.toJson();
 
@@ -265,7 +269,7 @@ public class ConnectDeviceActivity extends BaseActivity implements View.OnClickL
 //                }.execute();
             }else if("2".equals(Type)){
 //                ttLockAPI.resetKeyboardPassword(extendedBluetoothDevice,uid,keys.get(0).getLockVersion(),);
-
+//                    ttLockAPI.resetKeyboardPassword();
             }
 
 
@@ -527,8 +531,34 @@ public class ConnectDeviceActivity extends BaseActivity implements View.OnClickL
        }
    };
 
-    private void uploadData() {
+    /**
+     * 绑定锁
+     */
 
+    private void uploadData(LockData lockData) {
+        ApiNet apiNet = new ApiNet();
+        apiNet.ApiBindForApp("",lockData)
+                .subscribe(new Observer<String>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(String value) {
+                        finish();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
 
     }
 
