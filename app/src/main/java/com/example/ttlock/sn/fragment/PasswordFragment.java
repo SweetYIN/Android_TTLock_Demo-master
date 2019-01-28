@@ -2,6 +2,7 @@ package com.example.ttlock.sn.fragment;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -21,6 +22,7 @@ import com.example.ttlock.sn.bean.Request.HouseSearchRequestBean;
 import com.example.ttlock.sn.bean.Responds.HouseSearchResponsesBean;
 import com.example.ttlock.sn.callback.ClickCallback;
 import com.example.ttlock.sn.network.ApiNet;
+import com.example.ttlock.sn.uiActivity.ConnectDeviceActivity;
 import com.example.ttlock.sn.view.DefineOtherStylesBAGRefreshWithLoadView;
 
 import java.util.ArrayList;
@@ -121,6 +123,9 @@ public class PasswordFragment extends Fragment implements BGARefreshLayout.BGARe
         @Override
         public void ItemOnClick(View v) {
 
+            Intent intent = new Intent(mContext, ConnectDeviceActivity.class);
+            intent.putExtra("type","2");
+            startActivity(intent);
         }
 
         @Override
@@ -133,6 +138,7 @@ public class PasswordFragment extends Fragment implements BGARefreshLayout.BGARe
 
         }
     };
+
 
 
 
@@ -199,7 +205,7 @@ public class PasswordFragment extends Fragment implements BGARefreshLayout.BGARe
         pagingBean.setNumber(1);
         pagingBean.setSize(10);
         resourcesRequestBean.setPaging(pagingBean);
-        resourcesRequestBean.setRoomState("CLEANING");
+//        resourcesRequestBean.setRoomState("CLEANING");
         return resourcesRequestBean;
     }
 

@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.ttlock.R;
 import com.example.ttlock.sn.adapter.MyRecyclerViewAdapter;
@@ -47,7 +48,7 @@ public class HouseFragment extends Fragment implements BGARefreshLayout.BGARefre
     private DefineOtherStylesBAGRefreshWithLoadView mDefineBAGRefreshWithLoadView;
 
    private List<HouseSearchResponsesBean.DataBean> houseInfos = new ArrayList<>() ;
-
+    private  ApiNet apiNet ;
 
     private int ALLSUM ;
     private int PAGE =  1;
@@ -106,6 +107,9 @@ public class HouseFragment extends Fragment implements BGARefreshLayout.BGARefre
 
         @Override
         public void ItemOnClick(View v) {
+
+        uploadData(houseInfos.get((int)v.getTag()).getHouseNo());
+
 
         }
 
@@ -216,7 +220,7 @@ public class HouseFragment extends Fragment implements BGARefreshLayout.BGARefre
      */
     private void requestData(){
      HouseSearchRequestBean houseSearchRequestBean = getRequestDate();
-        ApiNet apiNet = new ApiNet();
+        apiNet = new ApiNet();
         apiNet.ApiHouseSearch(houseSearchRequestBean)
                 .subscribe(new Observer<HouseSearchResponsesBean>() {
                     @Override
@@ -246,5 +250,39 @@ public class HouseFragment extends Fragment implements BGARefreshLayout.BGARefre
 
                     }
                 });
+    }
+    private void uploadData(String roomId){
+        apiNet = new ApiNet();
+        apiNet.ApiChangeStateCheck(roomId)
+                .subscribe(new Observer<String>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(String value) {
+                        if ("success".equals(value)){
+                            requestData();
+                        }else{
+                        toast("查房失败");
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+
+    private void toast(String text){
+        Toast.makeText(mContext,text,Toast.LENGTH_LONG).show();
     }
 }
