@@ -17,13 +17,10 @@ import android.widget.Toast;
 
 import com.example.ttlock.R;
 import com.example.ttlock.sn.adapter.MyRecyclerViewAdapter;
-import com.example.ttlock.sn.bean.HouseInfo;
 import com.example.ttlock.sn.bean.Request.HouseSearchRequestBean;
 import com.example.ttlock.sn.bean.Responds.HouseSearchResponsesBean;
-import com.example.ttlock.sn.bean.Responds.HouseSelectResponsesBean;
 import com.example.ttlock.sn.callback.ClickCallback;
 import com.example.ttlock.sn.network.ApiNet;
-import com.example.ttlock.sn.uiActivity.HouseActivity;
 import com.example.ttlock.sn.view.DefineOtherStylesBAGRefreshWithLoadView;
 
 import java.util.ArrayList;
@@ -153,7 +150,7 @@ public class HouseFragment extends Fragment implements BGARefreshLayout.BGARefre
         pagingBean.setNumber(PAGE);
         pagingBean.setSize(10);
         resourcesRequestBean.setPaging(pagingBean);
-        resourcesRequestBean.setRoomState("LEASING");
+//        resourcesRequestBean.setRoomState("LEASING");
         return resourcesRequestBean;
     }
     @Override
@@ -162,8 +159,6 @@ public class HouseFragment extends Fragment implements BGARefreshLayout.BGARefre
             mDefineBAGRefreshWithLoadView.updateLoadingMoreText("下拉刷新");
             mDefineBAGRefreshWithLoadView.showLoadingMoreImg();
             handler.sendEmptyMessageDelayed(0 , 2000);
-
-
 
     }
 
@@ -191,7 +186,6 @@ public class HouseFragment extends Fragment implements BGARefreshLayout.BGARefre
             super.handleMessage(msg);
             switch (msg.what){
                 case 0:
-
                     if (PAGE != ALLSUM){
                         houseInfos.clear();
                     }
@@ -230,7 +224,6 @@ public class HouseFragment extends Fragment implements BGARefreshLayout.BGARefre
 
                     @Override
                     public void onNext(HouseSearchResponsesBean value) {
-//
                         houseInfos.addAll(value.getData()) ;
                         myRecyclerViewAdapter.notifyDataSetChanged();
                         if(value.getTotal() % 10 == 0){
@@ -242,7 +235,8 @@ public class HouseFragment extends Fragment implements BGARefreshLayout.BGARefre
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e(TAG,"e " +e);
+
+                        Log.e(TAG,"e " +e.getMessage());
                     }
 
                     @Override

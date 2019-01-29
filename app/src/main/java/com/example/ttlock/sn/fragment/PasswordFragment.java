@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 
 import com.example.ttlock.R;
 import com.example.ttlock.sn.adapter.MyRecyclerViewAdapter;
-import com.example.ttlock.sn.bean.HouseInfo;
 import com.example.ttlock.sn.bean.Request.HouseSearchRequestBean;
 import com.example.ttlock.sn.bean.Responds.HouseSearchResponsesBean;
 import com.example.ttlock.sn.callback.ClickCallback;
@@ -88,7 +87,6 @@ public class PasswordFragment extends Fragment implements BGARefreshLayout.BGARe
                 +"isVisible" +isVisible());
 //        super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && isVisible()) {//视图可见并且控件准备好了，每次都会调用
-
             if ( houseInfos.size() == 0) {//如果数据为空了，则需要重新联网请求
                 requestData();
             }
