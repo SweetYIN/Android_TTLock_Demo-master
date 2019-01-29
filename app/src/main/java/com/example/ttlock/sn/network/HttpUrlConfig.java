@@ -17,8 +17,13 @@ public class HttpUrlConfig {
     /**登录**/
     public static final String Login = "http://59.110.159.182:8040/oauth/token?";
 
+    public static final String LoginSelect = "http://59.110.159.182:9030/account/select";
+
     /**获取房源地址**/
      public static final String HouseSearchResources = "house/search";
+
+     /**获取房间**/
+     public static final String RoomSearch = "room/search";
 
     /**查房**/
     public static final String ChangeStateCheck = "room/state/check";

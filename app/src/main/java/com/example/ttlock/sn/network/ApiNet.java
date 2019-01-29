@@ -5,8 +5,10 @@ import android.util.Log;
 
 import com.example.ttlock.sn.bean.Request.HouseSearchRequestBean;
 import com.example.ttlock.sn.bean.Request.LoginRequestBean;
+import com.example.ttlock.sn.bean.Request.RoomSearchRequest;
 import com.example.ttlock.sn.bean.Responds.HouseSearchResponsesBean;
 import com.example.ttlock.sn.bean.Responds.LoginResponsesBean;
+import com.example.ttlock.sn.bean.Responds.RommSearchResponses;
 import com.ttlock.bl.sdk.entity.LockData;
 
 
@@ -42,6 +44,15 @@ public class ApiNet extends BaseNet{
                 });
     }
 
+    public Observable<String> ApiLoginSelect(){
+        return observe(mNetInterface.LoginSelect(HttpUrlConfig.LoginSelect))
+                .map(new Function<String, String>() {
+                    @Override
+                    public String apply(String s) throws Exception {
+                        return s;
+                    }
+                });
+    }
 
     /**房源**/
     public Observable<HouseSearchResponsesBean> ApiHouseSearch(HouseSearchRequestBean houseSearchRequestBean){
@@ -55,6 +66,17 @@ public class ApiNet extends BaseNet{
 
     }
 
+    /**房间**/
+    public Observable<List<RommSearchResponses>> ApiRoomSearch(RoomSearchRequest roomSearchRequest){
+        return observe(mNetInterface.RoomSearch(roomSearchRequest))
+                .map(new Function<List<RommSearchResponses>, List<RommSearchResponses>>() {
+                    @Override
+                    public List<RommSearchResponses> apply(List<RommSearchResponses> rommSearchResponses) throws Exception {
+                        return rommSearchResponses;
+                    }
+                });
+
+    }
 
     /**查房**/
     public Observable<String> ApiChangeStateCheck(String roomId){
