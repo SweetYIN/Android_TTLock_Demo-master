@@ -101,22 +101,18 @@ public class HouseFragment extends Fragment implements BGARefreshLayout.BGARefre
     }
 
     private ClickCallback mClickCallback = new ClickCallback() {
+        @Override
+        public void ItemOnClick(View v, int position) {
+            uploadData(houseInfos.get((int)v.getTag()).getHouseNo());
+        }
 
         @Override
-        public void ItemOnClick(View v) {
-
-        uploadData(houseInfos.get((int)v.getTag()).getHouseNo());
-
+        public void OnItemClick(View view, int position) {
 
         }
 
         @Override
-        public void OnItemClick(View view) {
-
-        }
-
-        @Override
-        public void OnItemLongClick(View view) {
+        public void OnItemLongClick(View view, int position) {
 
         }
     };

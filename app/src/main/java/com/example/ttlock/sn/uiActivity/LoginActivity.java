@@ -14,7 +14,6 @@ import android.widget.Toast;
 import com.example.ttlock.R;
 import com.example.ttlock.activity.BaseActivity;
 import com.example.ttlock.sn.bean.Request.LoginRequestBean;
-import com.example.ttlock.sn.bean.Responds.HouseSelectResponsesBean;
 import com.example.ttlock.sn.bean.Responds.LoginResponsesBean;
 import com.example.ttlock.sn.network.ApiNet;
 import com.example.ttlock.sn.network.HttpUrlConfig;
@@ -62,7 +61,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         String basic ;
         if (!TextUtils.isEmpty(nameET.getText()) && !TextUtils.isEmpty(passWordET.getText())){
 //            String authorization = nameET.getText().toString() +":" +passWordET.getText().toString();
-            String authorization = "web-station"+":"+"Bd9MXgQx3EhTF2u52RGn";
+            String authorization = "android-c"+":"+"wyTaK5gqpMVhEfWB8djf";
             basic = "Basic " + Base64.encodeToString(authorization.getBytes(),Base64.NO_WRAP);
             loginRequestBean.setUsername(nameET.getText().toString());
             loginRequestBean.setPassword(passWordET.getText().toString());
@@ -97,6 +96,40 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                    }
                });
     }
+
+    private void uploadToken(String token) {
+        ApiNet apiNet = new ApiNet();
+        if (TextUtils.isEmpty(token)){
+            cancelProgressDialog();
+            toast("登录失败");
+        }else{
+            apiNet.ApiLoginSelect()
+                    .subscribe(new Observer<String>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(String value) {
+                        cancelProgressDialog();
+                            openActivity();
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        }
+
+    }
+
 
     private void  openActivity(){
         Intent intent = new Intent(this,StartActivity.class);

@@ -13,13 +13,11 @@ import android.widget.TextView;
 import com.example.ttlock.R;
 import com.example.ttlock.sn.bean.Responds.HouseSearchResponsesBean;
 import com.example.ttlock.sn.callback.ClickCallback;
-import com.example.ttlock.sn.callback.ItemClickCallback;
 import com.ttlock.bl.sdk.scanner.ExtendedBluetoothDevice;
 
 import java.util.List;
 
 public class MyDeviceRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
 
 
     private Context mContext;
@@ -44,30 +42,22 @@ public class MyDeviceRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_recycleview_device, parent, false);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mClickCallback.OnItemClick(v);
-            }
-        });
-//        view.setOnLongClickListener(new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View v) {
-//                mClickCallback.OnItemLongClick(v);
-//                return true;
-//            }
-//        });
 
         return new MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         ExtendedBluetoothDevice  extendedBluetoothDevice= mLeDevices.get(position);
         MyViewHolder myViewHolder = (MyViewHolder) holder;
         myViewHolder.nameTV.setText(extendedBluetoothDevice.getName());
         myViewHolder.addressTV.setText(extendedBluetoothDevice.getAddress());
-        holder.itemView.setTag(position);
+        myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mClickCallback.OnItemClick(v,position);
+            }
+        });
 
     }
 
@@ -83,9 +73,9 @@ public class MyDeviceRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            nameTV = itemView.findViewById(R.id.device_name_rv);
-            addressTV = itemView.findViewById(R.id.device_adress_rv);
-            btnResetPS = itemView.findViewById(R.id.device_resetPS_rv);
+            nameTV = (TextView) itemView.findViewById(R.id.device_name_rv);
+            addressTV = (TextView) itemView.findViewById(R.id.device_adress_rv);
+            btnResetPS = (Button) itemView.findViewById(R.id.device_resetPS_rv);
             btnResetPS.setOnClickListener(this);
             if ("1".equals(mType)){
                 btnResetPS.setVisibility(View.GONE);
@@ -99,7 +89,7 @@ public class MyDeviceRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         public void onClick(View v) {
             switch (v.getId()){
                 case R.id.device_resetPS_rv:
-                    mClickCallback.ItemOnClick(v);
+                    mClickCallback.ItemOnClick(v,0);
                     break;
             }
         }

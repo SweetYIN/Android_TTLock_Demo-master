@@ -117,22 +117,20 @@ public class PasswordFragment extends Fragment implements BGARefreshLayout.BGARe
 
 
     private ClickCallback mClickCallback = new ClickCallback() {
-
         @Override
-        public void ItemOnClick(View v) {
-
+        public void ItemOnClick(View v, int position) {
             Intent intent = new Intent(mContext, ConnectDeviceActivity.class);
             intent.putExtra("type","2");
             startActivity(intent);
         }
 
         @Override
-        public void OnItemClick(View view) {
+        public void OnItemClick(View view, int position) {
 
         }
 
         @Override
-        public void OnItemLongClick(View view) {
+        public void OnItemLongClick(View view, int position) {
 
         }
     };

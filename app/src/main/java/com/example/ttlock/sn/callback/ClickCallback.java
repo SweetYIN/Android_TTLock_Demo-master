@@ -7,9 +7,9 @@ import android.view.View;
  */
 
 public interface ClickCallback {
-    public void ItemOnClick(View v);
-    public void OnItemClick(View view);
-    public void OnItemLongClick(View view);
+    public void ItemOnClick(View v,int position);
+    public void OnItemClick(View view,int position);
+    public void OnItemLongClick(View view,int position);
 
 
 }

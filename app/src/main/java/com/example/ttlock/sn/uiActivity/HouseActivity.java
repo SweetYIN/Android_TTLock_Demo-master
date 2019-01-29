@@ -1,26 +1,31 @@
 package com.example.ttlock.sn.uiActivity;
 
-import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ttlock.R;
 import com.example.ttlock.activity.BaseActivity;
 import com.example.ttlock.sn.adapter.MyRecyclerViewAdapter;
+import com.example.ttlock.sn.adapter.MyRoomSearchViewAdapter;
 import com.example.ttlock.sn.bean.Request.HouseSearchRequestBean;
+import com.example.ttlock.sn.bean.Request.RoomSearchRequest;
 import com.example.ttlock.sn.bean.Responds.HouseSearchResponsesBean;
+import com.example.ttlock.sn.bean.Responds.RommSearchResponses;
 import com.example.ttlock.sn.callback.ClickCallback;
 import com.example.ttlock.sn.network.ApiNet;
 import com.example.ttlock.sn.view.DefineOtherStylesBAGRefreshWithLoadView;
+import com.ttlock.bl.sdk.entity.LockData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +36,11 @@ import io.reactivex.disposables.Disposable;
 
 public class HouseActivity extends BaseActivity implements BGARefreshLayout.BGARefreshLayoutDelegate
 ,View.OnClickListener{
-    private static  final String TAG = "HouseActivity";
+    private  String TAG = "HouseActivity";
+
+    // 返回的结果码
+    private static final int REQUESTCODE = 1;
+
     private Button btnBack;
 
     private TextView titleTV;
@@ -41,21 +50,23 @@ public class HouseActivity extends BaseActivity implements BGARefreshLayout.BGAR
 
     private DefineOtherStylesBAGRefreshWithLoadView mDefineBAGRefreshWithLoadView;
 
-    private  MyRecyclerViewAdapter myRecyclerViewAdapter;
+    private  MyRoomSearchViewAdapter myRecyclerViewAdapter;
 
     private int ALLSUM ;
 
     private int PAGE =  1;
 
-    private List<HouseSearchResponsesBean.DataBean> houseInfos = new ArrayList<HouseSearchResponsesBean.DataBean>();
+    private List<RommSearchResponses> houseInfos = new ArrayList<>();
+
+    private int houseId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_house);
+        houseId = getIntent().getIntExtra("houseId",0);
         initView();
-        requestData();
-
+        requestData(houseId);
     }
 
     private void initView() {
@@ -77,7 +88,7 @@ public class HouseActivity extends BaseActivity implements BGARefreshLayout.BGAR
         //设置布局
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-         myRecyclerViewAdapter = new MyRecyclerViewAdapter(5,this,houseInfos);
+         myRecyclerViewAdapter = new MyRoomSearchViewAdapter(5,this,houseInfos);
         myRecyclerViewAdapter.setClickCallback(mClickCallback);
         recyclerView.setAdapter(myRecyclerViewAdapter);
 
@@ -120,12 +131,12 @@ public class HouseActivity extends BaseActivity implements BGARefreshLayout.BGAR
                         houseInfos.clear();
                     }
                     PAGE++;
-                    requestData();
+                    requestData(houseId);
                     mBgaRefreshLayout.endRefreshing();
                     break;
                 case 1:
                     PAGE++;
-                    requestData();
+                    requestData(houseId);
                     mBgaRefreshLayout.endLoadingMore();
                     break;
                 case 2:
@@ -148,56 +159,58 @@ public class HouseActivity extends BaseActivity implements BGARefreshLayout.BGAR
         return resourcesRequestBean;
     }
     /**
-     * 请求房源
+     * 请求房间列表
      */
-    private void requestData(){
-        HouseSearchRequestBean houseSearchRequestBean = getRequestDate();
-        ApiNet apiNet = new ApiNet();
-        apiNet.ApiHouseSearch(houseSearchRequestBean)
-                .subscribe(new Observer<HouseSearchResponsesBean>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-//                            d.dispose();
-                    }
+    private void requestData(int houseId){
 
-                    @Override
-                    public void onNext(HouseSearchResponsesBean value) {
-//
-                        houseInfos.addAll(value.getData()) ;
-                        myRecyclerViewAdapter.notifyDataSetChanged();
-                        if(value.getTotal() % 10 == 0){
-                            ALLSUM = value.getTotal() / 10;
-                        }else{
-                            ALLSUM = (value.getTotal() / 10)+1;
-                        }
-                    }
+            RoomSearchRequest roomSearchRequest = new RoomSearchRequest();
+            roomSearchRequest.setHouseId("houseId");
+            ApiNet apiNet = new ApiNet();
+            apiNet.ApiRoomSearch(roomSearchRequest)
+                   .subscribe(new Observer<List<RommSearchResponses>>() {
+                       @Override
+                       public void onSubscribe(Disposable d) {
+                       }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e(TAG,"e " +e);
-                    }
+                       @Override
+                       public void onNext(List<RommSearchResponses> value) {
+                           houseInfos.addAll(value) ;
+                           myRecyclerViewAdapter.notifyDataSetChanged();
+                           if(value.size() % 10 == 0){
+                               ALLSUM = value.size() / 10;
+                           }else{
+                               ALLSUM = (value.size() / 10)+1;
+                           }
+                       }
 
-                    @Override
-                    public void onComplete() {
+                       @Override
+                       public void onError(Throwable e) {
 
-                    }
-                });
+                       }
+
+                       @Override
+                       public void onComplete() {
+
+                       }
+                   });
+
+
+
     }
 
     private ClickCallback mClickCallback = new ClickCallback() {
         @Override
-        public void ItemOnClick(View v) {
+        public void ItemOnClick(View v, int position) {
 
+        }
+
+        @Override
+        public void OnItemClick(View view, int position) {
             openActivity();
         }
 
         @Override
-        public void OnItemClick(View view) {
-
-        }
-
-        @Override
-        public void OnItemLongClick(View view) {
+        public void OnItemLongClick(View view, int position) {
 
         }
     };
@@ -215,7 +228,48 @@ public class HouseActivity extends BaseActivity implements BGARefreshLayout.BGAR
 //        Intent  intent = new Intent(this, MainActivity.class);
         Intent  intent = new Intent(this, ConnectDeviceActivity.class);
         intent.putExtra("type","1");
-        startActivity(intent);
+        startActivityForResult(intent,REQUESTCODE);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == Activity.RESULT_OK) {
+            if(requestCode == REQUESTCODE) {
+                LockData lockData = (LockData)data.getSerializableExtra("lockData");
+                bindLock(lockData);
+            }
+        }
+    }
+
+    /**
+     * 绑定锁
+     */
+
+    private void bindLock(LockData lockData) {
+        ApiNet apiNet = new ApiNet();
+        apiNet.ApiBindForApp("",lockData)
+                .subscribe(new Observer<String>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(String value) {
+                        finish();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
+    }
 }

@@ -3,6 +3,7 @@ package com.example.ttlock.sn.adapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +15,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.ttlock.R;
-import com.example.ttlock.sn.bean.HouseInfo;
 import com.example.ttlock.sn.bean.Responds.HouseSearchResponsesBean;
+import com.example.ttlock.sn.bean.Responds.RommSearchResponses;
 import com.example.ttlock.sn.callback.ClickCallback;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,15 +30,18 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         {
 
     private Context mContext;
-    private List<HouseSearchResponsesBean.DataBean> mhouseList;
+    private List<HouseSearchResponsesBean.DataBean> mhouseList = new ArrayList<>();
+
+    private List<RommSearchResponses> mRoomList = new ArrayList<>();
     /**
-     * type 1表示查房，2表示重置密码，3表示待上架，4表还未绑定房源,5代表要绑定的房源
+     * type 1表示查房，2表示重置密码，3表示待上架，4表还未绑定房源,5代表要绑定的房间
      */
     private int type;
 
     private ClickCallback mClickCallback;
+    private   MyViewHolder myViewHolder;
 
-    public MyRecyclerViewAdapter(int type,Context context,  List<HouseSearchResponsesBean.DataBean> houseList) {
+    public MyRecyclerViewAdapter(int type,Context context,List<HouseSearchResponsesBean.DataBean> houseList ) {
         this.type = type;
         this.mContext = context;
         this.mhouseList = houseList;
@@ -51,40 +56,40 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.houseinfo_list_item, parent, false);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mClickCallback.OnItemClick(v);
-            }
-        });
-        view.setOnLongClickListener(new View.OnLongClickListener() {
+//        view.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mClickCallback.OnItemClick(v);
+//            }
+//        });
 
-            @Override
-            public boolean onLongClick(View v) {
-                mClickCallback.OnItemLongClick(v);
-                return true;
-            }
-        });
             return new MyViewHolder(view);
 
 
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        HouseSearchResponsesBean.DataBean houseInfo = mhouseList.get(position);
-            MyViewHolder myViewHolder = (MyViewHolder) holder;
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+
+            HouseSearchResponsesBean.DataBean houseInfo = mhouseList.get(position);
+           MyViewHolder myViewHolder = (MyViewHolder) holder;
             myViewHolder.numberTV.setText(houseInfo.getSerialNumber());
             myViewHolder.addressTV.setText(houseInfo.getAddress()+houseInfo.getHouseNo());
             myViewHolder.typeTV.setText(houseInfo.getHouseType());
-            myViewHolder.imageView.setTag(position);
+            myViewHolder.imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.e("adapter = ",position+"");
+                    mClickCallback.OnItemClick(v,position);
+                }
+            });
 
     }
 
 
     @Override
     public int getItemCount() {
-        return mhouseList.size() ;
+            return mhouseList.size() ;
     }
 
 
@@ -143,7 +148,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         @Override
         public void onClick(View v) {
-            mClickCallback.ItemOnClick(v);
+            mClickCallback.ItemOnClick(v,0);
         }
     }
 

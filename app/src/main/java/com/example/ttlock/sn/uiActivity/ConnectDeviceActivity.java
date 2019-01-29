@@ -1,6 +1,7 @@
 package com.example.ttlock.sn.uiActivity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -29,10 +30,7 @@ import com.example.ttlock.model.Key;
 import com.example.ttlock.model.KeyObj;
 import com.example.ttlock.net.ResponseService;
 import com.example.ttlock.sn.adapter.MyDeviceRecyclerViewAdapter;
-import com.example.ttlock.sn.adapter.MyRecyclerViewAdapter;
 import com.example.ttlock.sn.callback.ClickCallback;
-import com.example.ttlock.sn.callback.ItemClickCallback;
-import com.example.ttlock.sn.network.ApiNet;
 import com.example.ttlock.sp.MyPreference;
 import com.google.gson.reflect.TypeToken;
 import com.ttlock.bl.sdk.api.TTLockAPI;
@@ -81,7 +79,7 @@ public class ConnectDeviceActivity extends BaseActivity implements View.OnClickL
         initAdapter();
         initToken();
         initBle();
-         uid = MyPreference.getOpenid(this, MyPreference.OPEN_ID);
+        uid = MyPreference.getOpenid(this, MyPreference.OPEN_ID);
 
     }
 
@@ -110,9 +108,9 @@ public class ConnectDeviceActivity extends BaseActivity implements View.OnClickL
     }
 
     private void initView() {
-        scanIB = findViewById(R.id.ib_scanDevice);
+        scanIB = (ImageButton) findViewById(R.id.ib_scanDevice);
         scanIB.setOnClickListener(this);
-        recyclerView = findViewById(R.id.device_rl);
+        recyclerView = (RecyclerView) findViewById(R.id.device_rl);
     }
 
     private void initEnableBle(){
@@ -175,23 +173,24 @@ public class ConnectDeviceActivity extends BaseActivity implements View.OnClickL
 
     private ClickCallback itemClickCallback = new ClickCallback() {
         @Override
-        public void ItemOnClick(View v) {
+        public void ItemOnClick(View v, int position) {
 
         }
 
         @Override
-        public void OnItemClick(View view) {
+        public void OnItemClick(View view, int position) {
             ttLockAPI.stopBTDeviceScan();
-            Log.e(TAG,"view.getTag() = "+view.getTag());
+            Log.e(TAG,"position = "+position);
             showProgressDialog();
-            ttLockAPI.connect(devices.get((int)view.getTag()));
+            ttLockAPI.connect(devices.get(position));
         }
 
         @Override
-        public void OnItemLongClick(View view) {
+        public void OnItemLongClick(View view, int position) {
 
         }
     };
+
 
 
     private TTLockCallback ttLockCallback = new TTLockCallback() {
@@ -228,7 +227,10 @@ public class ConnectDeviceActivity extends BaseActivity implements View.OnClickL
            Log.e(TAG,"onLockInitialize"+extendedBluetoothDevice.getAddress()+"\n = error"+error);
            //TODOrequestData
             if ("1".equals(Type)){
-                uploadData(lockData);
+
+                Intent intent = new Intent();
+                intent.putExtra("lockData",lockData);
+                setResult(Activity.RESULT_OK,intent);
 //                Log.e(TAG,"lockData ="+lockData);
 //                final String lockDataJson = lockData.toJson();
 
@@ -269,7 +271,6 @@ public class ConnectDeviceActivity extends BaseActivity implements View.OnClickL
 //                }.execute();
             }else if("2".equals(Type)){
 //                ttLockAPI.resetKeyboardPassword(extendedBluetoothDevice,uid,keys.get(0).getLockVersion(),);
-//                    ttLockAPI.resetKeyboardPassword();
             }
 
 
@@ -531,36 +532,7 @@ public class ConnectDeviceActivity extends BaseActivity implements View.OnClickL
        }
    };
 
-    /**
-     * 绑定锁
-     */
 
-    private void uploadData(LockData lockData) {
-        ApiNet apiNet = new ApiNet();
-        apiNet.ApiBindForApp("",lockData)
-                .subscribe(new Observer<String>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(String value) {
-                        finish();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-
-    }
 
     /**
      * synchronizes the data of key

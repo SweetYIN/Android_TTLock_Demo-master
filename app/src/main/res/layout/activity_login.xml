@@ -27,7 +27,7 @@
         android:layout_marginRight="35dp"
         android:drawableLeft="@mipmap/login_user"
         android:hint="用户名"
-        android:text="admin"/>
+        android:text="yan"/>
 
     <Button
         android:id="@+id/btn_login"

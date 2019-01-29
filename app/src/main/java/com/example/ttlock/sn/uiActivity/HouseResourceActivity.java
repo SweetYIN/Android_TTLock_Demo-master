@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.example.ttlock.R;
 import com.example.ttlock.sn.adapter.MyRecyclerViewAdapter;
-import com.example.ttlock.sn.bean.HouseInfo;
 import com.example.ttlock.sn.bean.Request.HouseSearchRequestBean;
 import com.example.ttlock.sn.bean.Responds.HouseSearchResponsesBean;
 import com.example.ttlock.sn.callback.ClickCallback;
@@ -89,17 +88,19 @@ public class HouseResourceActivity extends AppCompatActivity implements View.OnC
 
     private ClickCallback mClickCallback = new ClickCallback() {
         @Override
-        public void ItemOnClick(View v) {
+        public void ItemOnClick(View v, int position) {
 
         }
 
         @Override
-        public void OnItemClick(View view) {
-            openActivity();
+        public void OnItemClick(View view, int position) {
+            int houseId = houseInfos.get(position).getId();
+            Log.e(TAG,"houseId"+houseId);
+            openActivity(houseId);
         }
 
         @Override
-        public void OnItemLongClick(View view) {
+        public void OnItemLongClick(View view, int position) {
 
         }
     };
@@ -166,8 +167,9 @@ public class HouseResourceActivity extends AppCompatActivity implements View.OnC
         }
     };
 
-    private void openActivity(){
+    private void openActivity(int houseId){
         Intent intent = new Intent(this,HouseActivity.class);
+        intent.putExtra("houseId",houseId);
         startActivity(intent);
     }
     @Override
