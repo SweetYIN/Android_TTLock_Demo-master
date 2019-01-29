@@ -1,12 +1,13 @@
 package com.example.ttlock.sn.bean.Responds;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
  * Created by jl on 2019/1/29.
  */
 
-public class RommSearchResponses {
+public class RoomSearchResponses {
 
     /**
      * id : 0
@@ -382,7 +383,7 @@ public class RommSearchResponses {
             private String ownerCertificateNumber;
             private String ownerCertificateType;
             private int ownerId;
-            private int ownerIncomeRatio;
+            private BigDecimal ownerIncomeRatio;
             private String ownerMobile;
             private String ownerName;
             private String serialNo;
@@ -446,11 +447,11 @@ public class RommSearchResponses {
                 this.ownerId = ownerId;
             }
 
-            public int getOwnerIncomeRatio() {
+            public BigDecimal getOwnerIncomeRatio() {
                 return ownerIncomeRatio;
             }
 
-            public void setOwnerIncomeRatio(int ownerIncomeRatio) {
+            public void setOwnerIncomeRatio(BigDecimal ownerIncomeRatio) {
                 this.ownerIncomeRatio = ownerIncomeRatio;
             }
 

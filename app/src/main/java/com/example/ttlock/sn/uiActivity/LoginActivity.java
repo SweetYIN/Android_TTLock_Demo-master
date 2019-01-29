@@ -81,6 +81,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                    public void onNext(LoginResponsesBean value) {
                         Log.e(TAG,"access_token "+value.getAccess_token());
                        HttpUrlConfig.Token = value.getAccess_token();
+//                       uploadToken(HttpUrlConfig.Token);
                        cancelProgressDialog();
                        openActivity();
                    }

@@ -3,10 +3,11 @@ package com.example.ttlock.sn.network;
 
 
 import com.example.ttlock.sn.bean.Request.HouseSearchRequestBean;
+import com.example.ttlock.sn.bean.Request.LockFormRequest;
 import com.example.ttlock.sn.bean.Request.RoomSearchRequest;
 import com.example.ttlock.sn.bean.Responds.HouseSearchResponsesBean;
 import com.example.ttlock.sn.bean.Responds.LoginResponsesBean;
-import com.example.ttlock.sn.bean.Responds.RommSearchResponses;
+import com.example.ttlock.sn.bean.Responds.RoomSearchResponses;
 import com.ttlock.bl.sdk.entity.LockData;
 
 import java.util.List;
@@ -44,7 +45,7 @@ public interface NetInterface {
 	/**房间**/
 	@Headers("Content-Type:application/json")
 	@POST(HttpUrlConfig.RoomSearch)
-	Observable<List<RommSearchResponses>> RoomSearch(@Body RoomSearchRequest roomSearchRequest);
+	Observable<List<RoomSearchResponses>> RoomSearch(@Body RoomSearchRequest roomSearchRequest);
 
 	/**查房**/
 	@Headers("Content-Type:application/json")
@@ -61,7 +62,7 @@ public interface NetInterface {
 	/**绑定锁**/
 	@Headers("Content-Type:application/json")
 	@POST(HttpUrlConfig.BindForApp)
-	Observable<String> BindForApp(@Field("id")String id, @Body LockData lockData);
+	Observable<String> BindForApp(@Field("id")int id, @Body LockFormRequest lockData);
 
 
 

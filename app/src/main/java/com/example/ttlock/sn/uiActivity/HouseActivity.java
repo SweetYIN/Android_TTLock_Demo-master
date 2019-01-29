@@ -7,21 +7,17 @@ import android.os.Message;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.ttlock.R;
 import com.example.ttlock.activity.BaseActivity;
-import com.example.ttlock.sn.adapter.MyRecyclerViewAdapter;
 import com.example.ttlock.sn.adapter.MyRoomSearchViewAdapter;
 import com.example.ttlock.sn.bean.Request.HouseSearchRequestBean;
 import com.example.ttlock.sn.bean.Request.RoomSearchRequest;
-import com.example.ttlock.sn.bean.Responds.HouseSearchResponsesBean;
-import com.example.ttlock.sn.bean.Responds.RommSearchResponses;
+import com.example.ttlock.sn.bean.Responds.RoomSearchResponses;
 import com.example.ttlock.sn.callback.ClickCallback;
 import com.example.ttlock.sn.network.ApiNet;
 import com.example.ttlock.sn.view.DefineOtherStylesBAGRefreshWithLoadView;
@@ -50,13 +46,13 @@ public class HouseActivity extends BaseActivity implements BGARefreshLayout.BGAR
 
     private DefineOtherStylesBAGRefreshWithLoadView mDefineBAGRefreshWithLoadView;
 
-    private  MyRoomSearchViewAdapter myRecyclerViewAdapter;
+    private  MyRoomSearchViewAdapter myRoomSearchViewAdapter;
 
     private int ALLSUM ;
 
     private int PAGE =  1;
 
-    private List<RommSearchResponses> houseInfos = new ArrayList<>();
+    private List<RoomSearchResponses> houseInfos = new ArrayList<>();
 
     private int houseId;
 
@@ -66,6 +62,7 @@ public class HouseActivity extends BaseActivity implements BGARefreshLayout.BGAR
         setContentView(R.layout.activity_house);
         houseId = getIntent().getIntExtra("houseId",0);
         initView();
+        Log.e(TAG,"houseId"+houseId);
         requestData(houseId);
     }
 
@@ -88,9 +85,10 @@ public class HouseActivity extends BaseActivity implements BGARefreshLayout.BGAR
         //设置布局
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-         myRecyclerViewAdapter = new MyRoomSearchViewAdapter(5,this,houseInfos);
-        myRecyclerViewAdapter.setClickCallback(mClickCallback);
-        recyclerView.setAdapter(myRecyclerViewAdapter);
+        Log.e(TAG,"houseInfos = "+houseInfos.size());
+        myRoomSearchViewAdapter = new MyRoomSearchViewAdapter(5,this,houseInfos);
+        myRoomSearchViewAdapter.setClickCallback(mClickCallback);
+        recyclerView.setAdapter(myRoomSearchViewAdapter);
 
     }
 
@@ -164,18 +162,18 @@ public class HouseActivity extends BaseActivity implements BGARefreshLayout.BGAR
     private void requestData(int houseId){
 
             RoomSearchRequest roomSearchRequest = new RoomSearchRequest();
-            roomSearchRequest.setHouseId("houseId");
+            roomSearchRequest.setHouseId(houseId);
             ApiNet apiNet = new ApiNet();
             apiNet.ApiRoomSearch(roomSearchRequest)
-                   .subscribe(new Observer<List<RommSearchResponses>>() {
+                   .subscribe(new Observer<List<RoomSearchResponses>>() {
                        @Override
                        public void onSubscribe(Disposable d) {
                        }
 
                        @Override
-                       public void onNext(List<RommSearchResponses> value) {
+                       public void onNext(List<RoomSearchResponses> value) {
                            houseInfos.addAll(value) ;
-                           myRecyclerViewAdapter.notifyDataSetChanged();
+                           myRoomSearchViewAdapter.notifyDataSetChanged();
                            if(value.size() % 10 == 0){
                                ALLSUM = value.size() / 10;
                            }else{
@@ -185,7 +183,8 @@ public class HouseActivity extends BaseActivity implements BGARefreshLayout.BGAR
 
                        @Override
                        public void onError(Throwable e) {
-
+                           toast("房间列表异常"+e.getMessage());
+                           Log.e(TAG,"houseInfos = "+e.getMessage());
                        }
 
                        @Override
@@ -201,12 +200,13 @@ public class HouseActivity extends BaseActivity implements BGARefreshLayout.BGAR
     private ClickCallback mClickCallback = new ClickCallback() {
         @Override
         public void ItemOnClick(View v, int position) {
-
+             int id = houseInfos.get(position).getId();
+            openActivity(id);
         }
 
         @Override
         public void OnItemClick(View view, int position) {
-            openActivity();
+
         }
 
         @Override
@@ -224,52 +224,15 @@ public class HouseActivity extends BaseActivity implements BGARefreshLayout.BGAR
         }
     }
 
-    private void openActivity(){
+    private void openActivity(int id){
 //        Intent  intent = new Intent(this, MainActivity.class);
         Intent  intent = new Intent(this, ConnectDeviceActivity.class);
         intent.putExtra("type","1");
+        intent.putExtra("ID",id);
         startActivityForResult(intent,REQUESTCODE);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == Activity.RESULT_OK) {
-            if(requestCode == REQUESTCODE) {
-                LockData lockData = (LockData)data.getSerializableExtra("lockData");
-                bindLock(lockData);
-            }
-        }
-    }
 
-    /**
-     * 绑定锁
-     */
 
-    private void bindLock(LockData lockData) {
-        ApiNet apiNet = new ApiNet();
-        apiNet.ApiBindForApp("",lockData)
-                .subscribe(new Observer<String>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
 
-                    }
-
-                    @Override
-                    public void onNext(String value) {
-                        finish();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-
-    }
 }

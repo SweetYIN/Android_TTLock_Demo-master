@@ -4,18 +4,17 @@ package com.example.ttlock.sn.network;
 import android.util.Log;
 
 import com.example.ttlock.sn.bean.Request.HouseSearchRequestBean;
-import com.example.ttlock.sn.bean.Request.LoginRequestBean;
+import com.example.ttlock.sn.bean.Request.LockFormRequest;
 import com.example.ttlock.sn.bean.Request.RoomSearchRequest;
 import com.example.ttlock.sn.bean.Responds.HouseSearchResponsesBean;
 import com.example.ttlock.sn.bean.Responds.LoginResponsesBean;
-import com.example.ttlock.sn.bean.Responds.RommSearchResponses;
+import com.example.ttlock.sn.bean.Responds.RoomSearchResponses;
 import com.ttlock.bl.sdk.entity.LockData;
 
 
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.Observer;
 import io.reactivex.functions.Function;
 
 /**
@@ -67,16 +66,19 @@ public class ApiNet extends BaseNet{
     }
 
     /**房间**/
-    public Observable<List<RommSearchResponses>> ApiRoomSearch(RoomSearchRequest roomSearchRequest){
+    public Observable<List<RoomSearchResponses>> ApiRoomSearch(RoomSearchRequest roomSearchRequest){
         return observe(mNetInterface.RoomSearch(roomSearchRequest))
-                .map(new Function<List<RommSearchResponses>, List<RommSearchResponses>>() {
+                .map(new Function<List<RoomSearchResponses>, List<RoomSearchResponses>>() {
                     @Override
-                    public List<RommSearchResponses> apply(List<RommSearchResponses> rommSearchResponses) throws Exception {
-                        return rommSearchResponses;
+                    public List<RoomSearchResponses> apply(List<RoomSearchResponses> roomSearchResponses) throws Exception {
+                        Log.e(TAG,"roomSearchResponses = "+roomSearchResponses.size());
+                        return roomSearchResponses;
                     }
                 });
 
     }
+
+
 
     /**查房**/
     public Observable<String> ApiChangeStateCheck(String roomId){
@@ -103,7 +105,7 @@ public class ApiNet extends BaseNet{
 
 
     /**绑定锁**/
-    public Observable<String> ApiBindForApp(String id, LockData lockData){
+    public Observable<String> ApiBindForApp(int id, LockFormRequest lockData){
         return observe(mNetInterface.BindForApp(id,lockData))
                 .map(new Function<String, String>() {
                     @Override

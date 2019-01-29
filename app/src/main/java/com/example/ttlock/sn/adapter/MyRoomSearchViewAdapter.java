@@ -1,6 +1,7 @@
 package com.example.ttlock.sn.adapter;
 
 import android.content.Context;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.ttlock.R;
-import com.example.ttlock.sn.bean.Responds.HouseSearchResponsesBean;
-import com.example.ttlock.sn.bean.Responds.RommSearchResponses;
+import com.example.ttlock.sn.bean.Responds.RoomSearchResponses;
 import com.example.ttlock.sn.callback.ClickCallback;
 
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class MyRoomSearchViewAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     private Context mContext;
 
-    private List<RommSearchResponses> mRoomList = new ArrayList<>();
+    private List<RoomSearchResponses> mRoomList = new ArrayList<>();
     /**
      * type 1表示查房，2表示重置密码，3表示待上架，4表还未绑定房源,5代表要绑定的房间
      */
@@ -35,7 +35,7 @@ public class MyRoomSearchViewAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     private ClickCallback mClickCallback;
 
-    public MyRoomSearchViewAdapter(int type, Context context,List<RommSearchResponses> roomList) {
+    public MyRoomSearchViewAdapter(int type, Context context,List<RoomSearchResponses> roomList) {
         this.type = type;
         this.mContext = context;
         this.mRoomList = roomList;
@@ -60,15 +60,21 @@ public class MyRoomSearchViewAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-            RommSearchResponses rommSearchResponses = mRoomList.get(position);
-            MyViewHolder myViewHolder = (MyViewHolder) holder;
-            myViewHolder.numberTV.setText(rommSearchResponses.getLock().getName());
-            myViewHolder.addressTV.setText(rommSearchResponses.getLock().getMac());
-            myViewHolder.typeTV.setText(rommSearchResponses.getLock().getState());
-        myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            RoomSearchResponses rommSearchResponses = mRoomList.get(position);
+            final MyViewHolder myViewHolder = (MyViewHolder) holder;
+            myViewHolder.numberTV.setText(rommSearchResponses.getHouse().getSerialNumber());
+            myViewHolder.addressTV.setText(rommSearchResponses.getHouse().getHouseNo());
+            myViewHolder.typeTV.setText(rommSearchResponses.getHouse().getHouseType());
+        myViewHolder.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mClickCallback.OnItemClick(v,position);
+            }
+        });
+        myViewHolder.btnBind.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mClickCallback.ItemOnClick(v,position);
             }
         });
     }
@@ -81,26 +87,24 @@ public class MyRoomSearchViewAdapter extends RecyclerView.Adapter<RecyclerView.V
 
 
 
-    private class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    private class MyViewHolder extends RecyclerView.ViewHolder {
 
         ImageView imageView;
         TextView numberTV, addressTV, typeTV;
         Button btnCheck, btnResetPW,btnBind;
         RelativeLayout functionLayout;
-
+        ConstraintLayout constraintLayout;
         public MyViewHolder(View itemView) {
             super(itemView);
+            constraintLayout = itemView.findViewById(R.id.ascc_house_layout);
             functionLayout = (RelativeLayout) itemView.findViewById(R.id.house_function_Layout);
             imageView = (ImageView) itemView.findViewById(R.id.house_imageView);
             numberTV = (TextView) itemView.findViewById(R.id.house_number);
             addressTV = (TextView) itemView.findViewById(R.id.house_address);
             typeTV = (TextView) itemView.findViewById(R.id.house_info);
             btnCheck = (Button) itemView.findViewById(R.id.btn_check_house);
-            btnCheck.setOnClickListener(this);
             btnResetPW = (Button) itemView.findViewById(R.id.btn_password_reset);
-            btnResetPW.setOnClickListener(this);
             btnBind = (Button)itemView.findViewById(R.id.btn_binding);
-            btnBind.setOnClickListener(this);
             functionSelect();
         }
         private void functionSelect() {
@@ -133,10 +137,6 @@ public class MyRoomSearchViewAdapter extends RecyclerView.Adapter<RecyclerView.V
             }
         }
 
-        @Override
-        public void onClick(View v) {
-            mClickCallback.ItemOnClick(v,0);
-        }
     }
 
 }

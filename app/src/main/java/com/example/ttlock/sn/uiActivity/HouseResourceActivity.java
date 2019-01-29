@@ -95,7 +95,7 @@ public class HouseResourceActivity extends AppCompatActivity implements View.OnC
         @Override
         public void OnItemClick(View view, int position) {
             int houseId = houseInfos.get(position).getId();
-            Log.e(TAG,"houseId"+houseId);
+
             openActivity(houseId);
         }
 
