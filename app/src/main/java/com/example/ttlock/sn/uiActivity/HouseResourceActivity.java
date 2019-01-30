@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.ttlock.R;
+import com.example.ttlock.activity.BaseActivity;
 import com.example.ttlock.sn.adapter.MyRecyclerViewAdapter;
 import com.example.ttlock.sn.bean.Request.HouseSearchRequestBean;
 import com.example.ttlock.sn.bean.Responds.HouseSearchResponsesBean;
@@ -28,7 +29,7 @@ import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
 
-public class HouseResourceActivity extends AppCompatActivity implements View.OnClickListener,
+public class HouseResourceActivity extends BaseActivity implements View.OnClickListener,
         BGARefreshLayout.BGARefreshLayoutDelegate{
     private static  final String TAG = "HouseResourceActivity";
 
@@ -180,9 +181,10 @@ public class HouseResourceActivity extends AppCompatActivity implements View.OnC
 
 
     /**
-     * 请求房源
+     * 请求未绑定房源
      */
     private void requestData(){
+        showProgressDialog();
         HouseSearchRequestBean houseSearchRequestBean = getRequestDate();
         ApiNet apiNet = new ApiNet();
         apiNet.ApiHouseSearch(houseSearchRequestBean)
@@ -194,18 +196,25 @@ public class HouseResourceActivity extends AppCompatActivity implements View.OnC
 
                     @Override
                     public void onNext(HouseSearchResponsesBean value) {
-//
-                        houseInfos.addAll(value.getData()) ;
-                        myRecyclerViewAdapter.notifyDataSetChanged();
-                        if(value.getTotal() % 10 == 0){
-                            ALLSUM = value.getTotal() / 10;
+                        cancelProgressDialog();
+                        if (value.getTotal() == 0){
+                            toast("没有未绑定的房源");
                         }else{
-                            ALLSUM = (value.getTotal() / 10)+1;
+                            houseInfos.addAll(value.getData()) ;
+                            myRecyclerViewAdapter.notifyDataSetChanged();
+                            if(value.getTotal() % 10 == 0){
+                                ALLSUM = value.getTotal() / 10;
+                            }else{
+                                ALLSUM = (value.getTotal() / 10)+1;
+                            }
                         }
+
                     }
 
                     @Override
                     public void onError(Throwable e) {
+                        cancelProgressDialog();
+                        toast("未绑定房源 "+e.getMessage());
                         Log.e(TAG,"e " +e);
                     }
 

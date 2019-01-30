@@ -9,6 +9,7 @@ import com.example.ttlock.sn.bean.Request.RoomSearchRequest;
 import com.example.ttlock.sn.bean.Responds.HouseSearchResponsesBean;
 import com.example.ttlock.sn.bean.Responds.LoginResponsesBean;
 import com.example.ttlock.sn.bean.Responds.RoomSearchResponses;
+import com.example.ttlock.sn.bean.Responds.UserInfoResponses;
 import com.ttlock.bl.sdk.entity.LockData;
 
 
@@ -115,5 +116,25 @@ public class ApiNet extends BaseNet{
                 });
     }
 
+    /**用户信息**/
+    public Observable<UserInfoResponses> ApiUserInfo(String id){
+        return observe(mNetInterface.UserInfo(HttpUrlConfig.UserInfo,id))
+                .map(new Function<UserInfoResponses, UserInfoResponses>() {
+                    @Override
+                    public UserInfoResponses apply(UserInfoResponses userInfoResponses) throws Exception {
+                        return userInfoResponses;
+                    }
+                });
+    }
 
+    /**修改密码**/
+    public Observable<String> ApiModifyPassword(String account,String password){
+        return observe(mNetInterface.ModifyPassword(HttpUrlConfig.modifyPassword,account,password))
+                .map(new Function<String, String>() {
+                    @Override
+                    public String apply(String s) throws Exception {
+                        return s;
+                    }
+                });
+    }
 }

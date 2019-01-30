@@ -81,7 +81,7 @@ public class CheckHouseResultActivity extends BaseActivity implements View.OnCli
      * 请求要查找的房源
      */
     private void requestData(String query){
-
+        showProgressDialog();
         HouseSearchRequestBean resourcesRequestBean  = new HouseSearchRequestBean();
         resourcesRequestBean.setSerialNumber(query);
         ApiNet apiNet = new ApiNet();
@@ -95,9 +95,14 @@ public class CheckHouseResultActivity extends BaseActivity implements View.OnCli
                     @Override
                     public void onNext(HouseSearchResponsesBean value) {
                         Log.e(TAG,"value.getData() = "+value.getData().size());
+                        cancelProgressDialog();
+                        if (value.getTotal() == 0) {
+                            toast("没有该房源");
+                        }else{
+                            houseInfos.addAll(value.getData()) ;
+                            myRecyclerViewAdapter.notifyDataSetChanged();
+                        }
 
-                        houseInfos.addAll(value.getData()) ;
-                        myRecyclerViewAdapter.notifyDataSetChanged();
 //                        if(value.getTotal() % 10 == 0){
 //                            ALLSUM = value.getTotal() / 10;
 //                        }else{
@@ -108,6 +113,7 @@ public class CheckHouseResultActivity extends BaseActivity implements View.OnCli
                     @Override
                     public void onError(Throwable e) {
                         cancelProgressDialog();
+                        toast("查找房源异常 "+e.getMessage());
                         Log.e(TAG,"e " +e);
                     }
 

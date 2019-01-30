@@ -7,6 +7,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.ttlock.R;
+import com.example.ttlock.sn.bean.Responds.UserInfoResponses;
+import com.example.ttlock.sn.network.ApiNet;
+
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
 public class UserActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -16,8 +21,12 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
+        requestUserInfo();
         initView();
+
     }
+
+
 
     private void initView() {
         titleTV = (TextView) findViewById(R.id.title_tv);
@@ -43,5 +52,31 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     protected void onDestroy() {
         super.onDestroy();
         finish();
+    }
+    /**请求用户信息**/
+    private void requestUserInfo() {
+        ApiNet apiNet = new ApiNet();
+        apiNet.ApiUserInfo("12")
+                .subscribe(new Observer<UserInfoResponses>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(UserInfoResponses value) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 }

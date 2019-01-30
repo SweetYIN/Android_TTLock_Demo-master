@@ -53,6 +53,9 @@ import java.util.List;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
+import static com.example.ttlock.MyApplication.mTTLockAPI;
+import static com.example.ttlock.activity.MainActivity.curKey;
+
 public class ConnectDeviceActivity extends BaseActivity implements View.OnClickListener {
 
     private String TAG = "ConnectDeviceActivity";
@@ -62,7 +65,7 @@ public class ConnectDeviceActivity extends BaseActivity implements View.OnClickL
     private List<ExtendedBluetoothDevice> devices = new ArrayList<>();
     private MyDeviceRecyclerViewAdapter myDeviceRecyclerViewAdapter;
     private TTLockAPI ttLockAPI;
-    private List<Key> keys;
+    private Key curKey;
 
     private int uid;
 
@@ -213,9 +216,10 @@ public class ConnectDeviceActivity extends BaseActivity implements View.OnClickL
                 ttLockAPI.lockInitialize(extendedBluetoothDevice);
             }else if("2".equals(Type)){
                 //TODO 重置密码
-                //TODO 从设备对象获取锁时间
-//               ttLockAPI.resetKeyboardPassword(extendedBluetoothDevice,uid,keys.get(0).getLockVersion(),);
-           }
+
+                ttLockAPI.resetKeyboardPassword(extendedBluetoothDevice, uid, curKey.getLockVersion(), curKey.getAdminPwd(), curKey.getLockKey(), curKey.getLockFlagPos(), curKey.getAesKeyStr());
+
+            }
 
 
 
@@ -238,53 +242,48 @@ public class ConnectDeviceActivity extends BaseActivity implements View.OnClickL
 
            cancelProgressDialog();
            if(error == Error.SUCCESS){
-               LockFormRequest lockFormRequest = new LockFormRequest();
-               lockFormRequest.setAlias("");
-               lockFormRequest.setBatteryCapacity(extendedBluetoothDevice.getBatteryCapacity());
-               lockFormRequest.setCode("");
-               lockFormRequest.setName(lockData.getLockName());
-               lockFormRequest.setMac(lockData.getLockMac());
+//               LockFormRequest lockFormRequest = new LockFormRequest();
+//               lockFormRequest.setBatteryCapacity(extendedBluetoothDevice.getBatteryCapacity());
+//               lockFormRequest.setCode(lockData.getNbNodeId());
+//               lockFormRequest.setName(lockData.getLockName());
+//               lockFormRequest.setMac(lockData.getLockMac());
+//
+//               Log.e(TAG,"id = "+id);
+//               bindLock(id,lockFormRequest);
+                Log.e(TAG,"lockData ="+lockData);
+                final String lockDataJson = lockData.toJson();
 
-               Log.e(TAG,"id = "+id);
-               bindLock(id,lockFormRequest);
-//                Log.e(TAG,"lockData ="+lockData);
-//                final String lockDataJson = lockData.toJson();
-
-//                toast(getString(R.string.words_lock_add_successed_and_init));
+                toast(getString(R.string.words_lock_add_successed_and_init));
 //                mTTLockAPI.unlockByAdministrator(null, 0, lockData.lockVersion, lockData.adminPwd, lockData.lockKey, lockData.lockFlagPos, System.currentTimeMillis(), lockData.aesKeyStr, lockData.timezoneRawOffset);
-//                new AsyncTask<Void, String, Boolean>() {
-//
-//                    @Override
-//                    protected Boolean  doInBackground(Void... params) {
-//                        Boolean flag = false;
-//                        String json = ResponseService.lockInit(lockDataJson, lockData.getLockName());
-//                        try {
-//                            JSONObject jsonObject = new JSONObject(json);
-//                            if(jsonObject.has("errcode")) {
-//                                String errmsg = jsonObject.getString("description");
-//                                toast(errmsg);
-//                            } else {
-//                                cancelProgressDialog();
-////                                Intent intent = new Intent(mContext,MainActivity.class);
-////                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-////                                startActivity(intent);
-////
-////                                flag = true;
-////                                toast(getString(R.string.words_lock_init_successed));
-//                            }
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                            toast(getString(R.string.words_lock_init_failed) + e.getMessage());
-//                        }
-//                        return flag;
-//                    }
-//
-//                    @Override
-//                    protected void onPostExecute(Boolean flag) {
-//                        Log.e(TAG,"flag = "+flag);
-//                        cancelProgressDialog();
-//                    }
-//                }.execute();
+                new AsyncTask<Void, String, Boolean>() {
+
+                    @Override
+                    protected Boolean  doInBackground(Void... params) {
+                        Boolean flag = false;
+                        String json = ResponseService.lockInit(lockDataJson, lockData.getLockName());
+                        try {
+                            JSONObject jsonObject = new JSONObject(json);
+                            if(jsonObject.has("errcode")) {
+                                String errmsg = jsonObject.getString("description");
+                                toast(errmsg);
+                            } else {
+                                cancelProgressDialog();
+                                finish();
+                                toast(getString(R.string.words_lock_init_successed));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            toast(getString(R.string.words_lock_init_failed) + e.getMessage());
+                        }
+                        return flag;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Boolean flag) {
+                        Log.e(TAG,"flag = "+flag);
+                        cancelProgressDialog();
+                    }
+                }.execute();
 
            }else{
                toast("onLockInitialize 失败");
@@ -332,6 +331,7 @@ public class ConnectDeviceActivity extends BaseActivity implements View.OnClickL
        @Override
        public void onResetKeyboardPassword(ExtendedBluetoothDevice extendedBluetoothDevice, String s, long l, Error error) {
            if (error == Error.SUCCESS){
+               //TODO 从设备对象获取锁时间
                //TODO 向后台传传重置密码和时间
                requestResetData();
 
@@ -615,7 +615,7 @@ public class ConnectDeviceActivity extends BaseActivity implements View.OnClickL
 
                     @Override
                     public void onNext(String value) {
-
+                        toast("绑锁成功");
                         finish();
                     }
 

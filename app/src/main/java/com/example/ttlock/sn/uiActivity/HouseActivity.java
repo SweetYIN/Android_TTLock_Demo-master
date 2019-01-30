@@ -160,7 +160,7 @@ public class HouseActivity extends BaseActivity implements BGARefreshLayout.BGAR
      * 请求房间列表
      */
     private void requestData(int houseId){
-
+            showProgressDialog();
             RoomSearchRequest roomSearchRequest = new RoomSearchRequest();
             roomSearchRequest.setHouseId(houseId);
             ApiNet apiNet = new ApiNet();
@@ -172,17 +172,24 @@ public class HouseActivity extends BaseActivity implements BGARefreshLayout.BGAR
 
                        @Override
                        public void onNext(List<RoomSearchResponses> value) {
-                           houseInfos.addAll(value) ;
-                           myRoomSearchViewAdapter.notifyDataSetChanged();
-                           if(value.size() % 10 == 0){
-                               ALLSUM = value.size() / 10;
+                           cancelProgressDialog();
+                           if (value.size() == 0){
+                               toast("该房源下没有课绑锁房间");
                            }else{
-                               ALLSUM = (value.size() / 10)+1;
+                               houseInfos.addAll(value) ;
+                               myRoomSearchViewAdapter.notifyDataSetChanged();
+                               if(value.size() % 10 == 0){
+                                   ALLSUM = value.size() / 10;
+                               }else{
+                                   ALLSUM = (value.size() / 10)+1;
+                               }
                            }
+
                        }
 
                        @Override
                        public void onError(Throwable e) {
+                           cancelProgressDialog();
                            toast("房间列表异常"+e.getMessage());
                            Log.e(TAG,"houseInfos = "+e.getMessage());
                        }

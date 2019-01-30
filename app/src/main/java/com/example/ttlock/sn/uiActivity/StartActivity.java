@@ -174,7 +174,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
     private void openActivity( String query){
         Intent intent = new Intent(this,CheckHouseResultActivity.class);
-        intent.putExtra("query","H00000170");
+        intent.putExtra("query",query);
         startActivity(intent);
     }
 }

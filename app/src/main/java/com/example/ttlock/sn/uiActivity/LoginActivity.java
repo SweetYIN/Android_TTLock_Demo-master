@@ -1,7 +1,9 @@
 package com.example.ttlock.sn.uiActivity;
 
+import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -17,25 +19,36 @@ import com.example.ttlock.sn.bean.Request.LoginRequestBean;
 import com.example.ttlock.sn.bean.Responds.LoginResponsesBean;
 import com.example.ttlock.sn.network.ApiNet;
 import com.example.ttlock.sn.network.HttpUrlConfig;
+import com.example.ttlock.sn.utils.EncodingUtil;
 
-import java.util.List;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 
-public class LoginActivity extends BaseActivity implements View.OnClickListener{
+
+public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
     private static final String TAG = "LoginActivity";
-    private EditText nameET,passWordET;
+    private EditText nameET, passWordET;
     private Button btnLogin;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        isNetwork();
         initView();
     }
 
+
+
+    private void isNetwork() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        if (networkInfo == null || !networkInfo.isAvailable()) {
+            Toast.makeText(this, "您没有联网，请联网之后再进行查询~", Toast.LENGTH_SHORT).show();
+        }
+    }
 
     private void initView() {
         nameET = (EditText) findViewById(R.id.login_name_et);
@@ -46,7 +59,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btn_login:
                 requestData();
 //                Intent intent = new Intent(this,StartActivity.class);
@@ -58,52 +71,57 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     private void requestData() {
         LoginRequestBean loginRequestBean = new LoginRequestBean();
         ApiNet apiNet = new ApiNet();
-        String basic ;
-        if (!TextUtils.isEmpty(nameET.getText()) && !TextUtils.isEmpty(passWordET.getText())){
+        String basic;
+        if (!TextUtils.isEmpty(nameET.getText()) && !TextUtils.isEmpty(passWordET.getText())) {
 //            String authorization = nameET.getText().toString() +":" +passWordET.getText().toString();
-            String authorization = "android-c"+":"+"wyTaK5gqpMVhEfWB8djf";
-            basic = "Basic " + Base64.encodeToString(authorization.getBytes(),Base64.NO_WRAP);
+            String authorization = "android-c" + ":" + "wyTaK5gqpMVhEfWB8djf";
+            basic = "Basic " + Base64.encodeToString(authorization.getBytes(), Base64.NO_WRAP);
             loginRequestBean.setUsername(nameET.getText().toString());
             loginRequestBean.setPassword(passWordET.getText().toString());
-        }else{
-            Toast.makeText(this,"名户名不能为空",Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "用户名或密码为空", Toast.LENGTH_LONG).show();
             return;
         }
         showProgressDialog();
-        apiNet.ApiLogin(basic,nameET.getText().toString(),passWordET.getText().toString())
-               .subscribe(new Observer<LoginResponsesBean>() {
-                   @Override
-                   public void onSubscribe(Disposable d) {
+        apiNet.ApiLogin(basic, nameET.getText().toString(), passWordET.getText().toString())
+                .subscribe(new Observer<LoginResponsesBean>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
-                   }
+                    }
 
-                   @Override
-                   public void onNext(LoginResponsesBean value) {
-                        Log.e(TAG,"access_token "+value.getAccess_token());
-                       HttpUrlConfig.Token = value.getAccess_token();
+                    @Override
+                    public void onNext(LoginResponsesBean value) {
+                        cancelProgressDialog();
+                        if (TextUtils.isEmpty(value.getAccess_token())) {
+                            toast("");
+                        } else {
+                            HttpUrlConfig.Token = value.getAccess_token();
 //                       uploadToken(HttpUrlConfig.Token);
-                       cancelProgressDialog();
-                       openActivity();
-                   }
+                            openActivity();
+                        }
 
-                   @Override
-                   public void onError(Throwable e) {
-                       cancelProgressDialog();
-                   }
+                    }
 
-                   @Override
-                   public void onComplete() {
+                    @Override
+                    public void onError(Throwable e) {
+                        cancelProgressDialog();
+                        toast("登录异常 " + e.getMessage());
+                    }
 
-                   }
-               });
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
     private void uploadToken(String token) {
         ApiNet apiNet = new ApiNet();
-        if (TextUtils.isEmpty(token)){
+        if (TextUtils.isEmpty(token)) {
             cancelProgressDialog();
             toast("登录失败");
-        }else{
+        } else {
             apiNet.ApiLoginSelect()
                     .subscribe(new Observer<String>() {
                         @Override
@@ -113,7 +131,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
 
                         @Override
                         public void onNext(String value) {
-                        cancelProgressDialog();
+                            cancelProgressDialog();
                             openActivity();
                         }
 
@@ -132,8 +150,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     }
 
 
-    private void  openActivity(){
-        Intent intent = new Intent(this,StartActivity.class);
+    private void openActivity() {
+        Intent intent = new Intent(this, StartActivity.class);
         startActivity(intent);
 
     }

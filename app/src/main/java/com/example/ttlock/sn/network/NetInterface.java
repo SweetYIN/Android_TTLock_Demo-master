@@ -8,6 +8,7 @@ import com.example.ttlock.sn.bean.Request.RoomSearchRequest;
 import com.example.ttlock.sn.bean.Responds.HouseSearchResponsesBean;
 import com.example.ttlock.sn.bean.Responds.LoginResponsesBean;
 import com.example.ttlock.sn.bean.Responds.RoomSearchResponses;
+import com.example.ttlock.sn.bean.Responds.UserInfoResponses;
 import com.ttlock.bl.sdk.entity.LockData;
 
 import java.util.List;
@@ -66,8 +67,17 @@ public interface NetInterface {
 
 
 
+	/**获取用户信息**/
+	@FormUrlEncoded
+	@POST
+	Observable<UserInfoResponses> UserInfo(@Url String url,String id) ;
 
 
+	/**修改密码**/
+	@FormUrlEncoded
+	@POST
+	Observable<String> ModifyPassword(@Url String url,@Field("account") String account,
+								@Field("password") String password) ;
 
 
 
