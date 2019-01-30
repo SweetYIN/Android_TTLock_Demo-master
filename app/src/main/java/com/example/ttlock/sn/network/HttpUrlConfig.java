@@ -40,4 +40,5 @@ public class HttpUrlConfig {
     /**修改密码**/
     public static final String modifyPassword = "http://59.110.159.182:9030/password?";
 
+
 }

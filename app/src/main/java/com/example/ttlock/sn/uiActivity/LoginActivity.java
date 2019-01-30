@@ -19,7 +19,6 @@ import com.example.ttlock.sn.bean.Request.LoginRequestBean;
 import com.example.ttlock.sn.bean.Responds.LoginResponsesBean;
 import com.example.ttlock.sn.network.ApiNet;
 import com.example.ttlock.sn.network.HttpUrlConfig;
-import com.example.ttlock.sn.utils.EncodingUtil;
 
 
 import io.reactivex.Observer;

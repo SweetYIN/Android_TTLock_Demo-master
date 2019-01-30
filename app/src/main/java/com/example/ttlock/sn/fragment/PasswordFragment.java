@@ -121,6 +121,7 @@ public class PasswordFragment extends Fragment implements BGARefreshLayout.BGARe
         public void ItemOnClick(View v, int position) {
             Intent intent = new Intent(mContext, ConnectDeviceActivity.class);
             intent.putExtra("type","2");
+            intent.putExtra("roomId",houseInfos.get(position).getId());
             startActivity(intent);
         }
 

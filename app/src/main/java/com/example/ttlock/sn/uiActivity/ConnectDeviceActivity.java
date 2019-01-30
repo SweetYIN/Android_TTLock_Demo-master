@@ -65,7 +65,7 @@ public class ConnectDeviceActivity extends BaseActivity implements View.OnClickL
     private List<ExtendedBluetoothDevice> devices = new ArrayList<>();
     private MyDeviceRecyclerViewAdapter myDeviceRecyclerViewAdapter;
     private TTLockAPI ttLockAPI;
-    private Key curKey;
+
 
     private int uid;
 
@@ -74,7 +74,8 @@ public class ConnectDeviceActivity extends BaseActivity implements View.OnClickL
      */
     private String Type ;
 
-    private int id;
+    private int bindid;
+    private int modifyId;
 
 
     @Override
@@ -82,7 +83,12 @@ public class ConnectDeviceActivity extends BaseActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connect_device);
         Type = getIntent().getStringExtra("type");
-        id = getIntent().getIntExtra("ID",0);
+        if ("1".equals(Type)){
+
+        bindid = getIntent().getIntExtra("ID",0);
+        }else if ("2".equals(Type)){
+            modifyId = getIntent().getIntExtra("roomId",0);
+        }
         initView();
         initAdapter();
         initToken();
@@ -93,8 +99,8 @@ public class ConnectDeviceActivity extends BaseActivity implements View.OnClickL
 
     private void initToken() {
         if ("access_token".equals(MyPreference.ACCESS_TOKEN)){
-            requestToken();
-//            syncData();
+//            requestToken();
+            syncData();
         }
     }
 
@@ -267,9 +273,10 @@ public class ConnectDeviceActivity extends BaseActivity implements View.OnClickL
                                 String errmsg = jsonObject.getString("description");
                                 toast(errmsg);
                             } else {
+                                Log.e(TAG,"初始化成功");
                                 cancelProgressDialog();
-                                finish();
                                 toast(getString(R.string.words_lock_init_successed));
+                                finish();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -632,5 +639,93 @@ public class ConnectDeviceActivity extends BaseActivity implements View.OnClickL
                     }
                 });
 
+    }
+
+    ///////////////////////////////////////////////////测试//////////////////////////////////////////////
+    private List<Key> keys  = new ArrayList<>();
+    /**
+     * synchronizes the data of key
+     */
+    private void syncData() {
+        showProgressDialog();
+        new AsyncTask<Void,String,String>() {
+
+            @Override
+            protected String doInBackground(Void... params) {
+                //you can synchronizes all key datas when lastUpdateDate is 0
+                String json = ResponseService.syncData(0);
+                LogUtil.d("json:" + json, DBG);
+                try {
+                    JSONObject jsonObject = new JSONObject(json);
+                    if(jsonObject.has("errcode")) {
+                        toast(jsonObject.getString("description"));
+//                        Intent intent = new Intent(MainActivity.this, AuthActivity.class);
+//                        startActivity(intent);
+                        requestToken();
+                        return json;
+                    }
+                    //use lastUpdateDate you can get the newly added key and data after the time
+                    long lastUpdateDate = jsonObject.getLong("lastUpdateDate");
+                    String keyList = jsonObject.getString("keyList");
+//                    JSONArray jsonArray = jsonObject.getJSONArray("keyList");
+                    keys.clear();
+                    ArrayList<KeyObj> list = GsonUtil.toObject(keyList, new TypeToken<ArrayList<KeyObj>>(){});
+                    keys.addAll(convert2DbModel(list));
+//
+
+                    //clear local keys and save new keys
+                    DbService.deleteAllKey();
+                    DbService.saveKeyList(keys);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                return json;
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                progressDialog.cancel();
+                Log.e("key","keys = "+keys.size());
+            }
+        }.execute();
+    }
+
+    private static ArrayList<Key> convert2DbModel(ArrayList<KeyObj> list){
+        ArrayList<Key> keyList = new ArrayList<>();
+        if(list != null && list.size() > 0){
+            for(KeyObj key : list){
+                Key DbKey = new Key();
+                DbKey.setUserType(key.userType);
+                DbKey.setKeyStatus(key.keyStatus);
+                DbKey.setLockId(key.lockId);
+                DbKey.setKeyId(key.keyId);
+                DbKey.setLockVersion(GsonUtil.toJson(key.lockVersion));
+                DbKey.setLockName(key.lockName);
+                DbKey.setLockAlias(key.lockAlias);
+                DbKey.setLockMac(key.lockMac);
+                DbKey.setElectricQuantity(key.electricQuantity);
+                DbKey.setLockFlagPos(key.lockFlagPos);
+                DbKey.setAdminPwd(key.adminPwd);
+                DbKey.setLockKey(key.lockKey);
+                DbKey.setNoKeyPwd(key.noKeyPwd);
+                DbKey.setDeletePwd(key.deletePwd);
+                DbKey.setPwdInfo(key.pwdInfo);
+                DbKey.setTimestamp(key.timestamp);
+                DbKey.setAesKeyStr(key.aesKeyStr);
+                DbKey.setStartDate(key.startDate);
+                DbKey.setEndDate(key.endDate);
+                DbKey.setSpecialValue(key.specialValue);
+                DbKey.setTimezoneRawOffset(key.timezoneRawOffset);
+                DbKey.setKeyRight(key.keyRight);
+                DbKey.setKeyboardPwdVersion(key.keyboardPwdVersion);
+                DbKey.setRemoteEnable(key.remoteEnable);
+                DbKey.setRemarks(key.remarks);
+
+                keyList.add(DbKey);
+            }
+        }
+        return keyList;
     }
 }
