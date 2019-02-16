@@ -6,6 +6,7 @@ import android.util.Log;
 import com.example.ttlock.sn.bean.Request.HouseSearchRequestBean;
 import com.example.ttlock.sn.bean.Request.LockFormRequest;
 import com.example.ttlock.sn.bean.Request.RoomSearchRequest;
+import com.example.ttlock.sn.bean.Responds.ChangeStateResetResponses;
 import com.example.ttlock.sn.bean.Responds.HouseSearchResponsesBean;
 import com.example.ttlock.sn.bean.Responds.LoginResponsesBean;
 import com.example.ttlock.sn.bean.Responds.RoomSearchResponses;
@@ -82,7 +83,7 @@ public class ApiNet extends BaseNet{
 
 
     /**查房**/
-    public Observable<String> ApiChangeStateCheck(String roomId){
+    public Observable<String> ApiChangeStateCheck(int roomId){
         return observe(mNetInterface.ChangeStateCheck(roomId))
                 .map(new Function<String, String>() {
                     @Override
@@ -94,26 +95,26 @@ public class ApiNet extends BaseNet{
 
 
     /**重置密码**/
-    public Observable<String> ApiChangeStateReset(String roomId){
+    public Observable<ChangeStateResetResponses> ApiChangeStateReset(int roomId){
         return observe(mNetInterface.ChangeStateReset(roomId))
-                .map(new Function<String, String>() {
+                .map(new Function<ChangeStateResetResponses, ChangeStateResetResponses>() {
                     @Override
-                    public String apply(String s) throws Exception {
-                        return s;
+                    public ChangeStateResetResponses apply(ChangeStateResetResponses changeStateResetResponses) throws Exception {
+                        return changeStateResetResponses;
                     }
                 });
     }
 
 
     /**绑定锁**/
-    public Observable<String> ApiBindForApp(int id, LockFormRequest lockData){
-        return observe(mNetInterface.BindForApp(id,lockData))
-                .map(new Function<String, String>() {
-                    @Override
-                    public String apply(String s) throws Exception {
-                        return s;
-                    }
-                });
+    public Observable<ChangeStateResetResponses> ApiBindForApp(int id, LockData lockFormRequest){
+            return observe(mNetInterface.BindForApp(HttpUrlConfig.BindForApp+id,lockFormRequest))
+                    .map(new Function<ChangeStateResetResponses, ChangeStateResetResponses>() {
+                        @Override
+                        public ChangeStateResetResponses apply(ChangeStateResetResponses changeStateResetResponses) throws Exception {
+                            return changeStateResetResponses;
+                        }
+                    });
     }
 
     /**用户信息**/

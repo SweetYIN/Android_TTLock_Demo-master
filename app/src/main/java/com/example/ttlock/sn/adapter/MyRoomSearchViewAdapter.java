@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.example.ttlock.R;
 import com.example.ttlock.sn.bean.Responds.RoomSearchResponses;
 import com.example.ttlock.sn.callback.ClickCallback;
+import com.example.ttlock.utils.GlideUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,9 +63,12 @@ public class MyRoomSearchViewAdapter extends RecyclerView.Adapter<RecyclerView.V
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
             RoomSearchResponses rommSearchResponses = mRoomList.get(position);
             final MyViewHolder myViewHolder = (MyViewHolder) holder;
-            myViewHolder.numberTV.setText(rommSearchResponses.getHouse().getSerialNumber());
-            myViewHolder.addressTV.setText(rommSearchResponses.getHouse().getHouseNo());
-            myViewHolder.typeTV.setText(rommSearchResponses.getHouse().getHouseType());
+            myViewHolder.numberTV.setText("房源编号："+rommSearchResponses.getHouse().getSerialNumber());
+            myViewHolder.addressTV.setText(rommSearchResponses.getHouse().getAddress()+rommSearchResponses.getHouse().getHouseNo());
+            myViewHolder.typeTV.setText(rommSearchResponses.getHouse().getLeaseType()+"/"+
+                    rommSearchResponses.getHouse().getHouseType()+"/"+
+                    rommSearchResponses.getHouse().getProvince());
+//        GlideUtils.setCircleImage(mContext,myViewHolder.imageView,rommSearchResponses);
         myViewHolder.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,6 +135,7 @@ public class MyRoomSearchViewAdapter extends RecyclerView.Adapter<RecyclerView.V
                     btnBind.setVisibility(View.VISIBLE);
                     btnCheck.setVisibility(View.GONE);
                     btnResetPW.setVisibility(View.GONE);
+                    imageView.setVisibility(View.GONE);
                     break;
                 default:
                     break;

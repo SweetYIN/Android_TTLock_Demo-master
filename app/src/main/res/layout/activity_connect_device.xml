@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".sn.uiActivity.ConnectDeviceActivity">
 
+
     <ImageButton
         android:id="@+id/ib_scanDevice"
         android:layout_width="50dp"

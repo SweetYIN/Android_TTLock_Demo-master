@@ -32,7 +32,7 @@ public class HttpUrlConfig {
     public static final String ChangeStateReset = "room/state/reset";
 
     /**绑定锁**/
-    public static final String BindForApp = "room/forapp/bind{id}";
+    public static final String BindForApp = "room/forapp/bind/";
 
     /**获取用户信息**/
     public static final String UserInfo = "http://59.110.159.182:9030/account/";

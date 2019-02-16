@@ -1,9 +1,11 @@
 package com.example.ttlock.sn.uiActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.ttlock.R;
@@ -17,11 +19,11 @@ import io.reactivex.disposables.Disposable;
 public class UserActivity extends BaseActivity implements View.OnClickListener{
 
     private TextView titleTV;
-    private Button btnBack,btnModify;
+    private Button btnBack;
+    private ImageButton modifyPasswordTB;
 
-    private TextView nickName_tv,userName_tv,mobile_tv,email_tv,type_tv
+    private TextView nickName_tv,userName_tv,password_tv,mobile_tv,email_tv,type_tv
             ,created_time_tv,updated_time_tv,group_tv,role_tv,salt_tv;
-    private EditText  password_tv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,8 +40,8 @@ public class UserActivity extends BaseActivity implements View.OnClickListener{
         titleTV.setText("我的资料");
         btnBack = (Button) findViewById(R.id.btn_back);
         btnBack.setOnClickListener(this);
-        btnModify = (Button) findViewById(R.id.btn_modify);
-        btnModify.setOnClickListener(this);
+        modifyPasswordTB = findViewById(R.id.tb_modifyPassword);
+        modifyPasswordTB.setOnClickListener(this);
 
         nickName_tv = findViewById(R.id.nickName_tv);
         userName_tv = findViewById(R.id.userName_tv);
@@ -60,7 +62,6 @@ public class UserActivity extends BaseActivity implements View.OnClickListener{
         nickName_tv.setText(userInfoResponses.getNickname());
         userName_tv.setText(userInfoResponses.getUsername());
         password_tv.setText(userInfoResponses.getPassword());
-        password_tv.setOnClickListener(this);
         mobile_tv.setText(userInfoResponses.getMobile());
         email_tv.setText(userInfoResponses.getEmail());
         type_tv.setText(userInfoResponses.getType());
@@ -74,7 +75,8 @@ public class UserActivity extends BaseActivity implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_modify:
-
+                Intent intent = new Intent(this,ModifyPasswordActivity.class);
+                startActivity(intent);
                 break;
             case R.id.btn_back:
                 finish();

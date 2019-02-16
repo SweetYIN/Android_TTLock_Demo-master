@@ -202,7 +202,7 @@ public class PasswordFragment extends Fragment implements BGARefreshLayout.BGARe
         pagingBean.setNumber(1);
         pagingBean.setSize(10);
         resourcesRequestBean.setPaging(pagingBean);
-//        resourcesRequestBean.setRoomState("CLEANING");
+        resourcesRequestBean.setRoomState("CLEANING");
         return resourcesRequestBean;
     }
 

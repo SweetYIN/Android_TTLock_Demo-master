@@ -96,8 +96,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             toast("");
                         } else {
                             HttpUrlConfig.Token = value.getAccess_token();
-//                       uploadToken(HttpUrlConfig.Token);
+//                             uploadToken(HttpUrlConfig.Token);
                             openActivity();
+
                         }
 
                     }

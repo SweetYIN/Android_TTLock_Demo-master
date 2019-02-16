@@ -66,7 +66,7 @@ public class MyDeviceRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         return mLeDevices.size() ;
     }
 
-    private class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    private class MyViewHolder extends RecyclerView.ViewHolder  {
 
         TextView nameTV,addressTV;
         Button btnResetPS;
@@ -75,24 +75,24 @@ public class MyDeviceRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             super(itemView);
             nameTV = (TextView) itemView.findViewById(R.id.device_name_rv);
             addressTV = (TextView) itemView.findViewById(R.id.device_adress_rv);
-            btnResetPS = (Button) itemView.findViewById(R.id.device_resetPS_rv);
-            btnResetPS.setOnClickListener(this);
-            if ("1".equals(mType)){
-                btnResetPS.setVisibility(View.GONE);
-            }else {
-                btnResetPS.setVisibility(View.VISIBLE);
-            }
+//            btnResetPS = (Button) itemView.findViewById(R.id.device_resetPS_rv);
+//            btnResetPS.setOnClickListener(this);
+//            if ("1".equals(mType)){
+//                btnResetPS.setVisibility(View.GONE);
+//            }else {
+//                btnResetPS.setVisibility(View.VISIBLE);
+//            }
         }
 
 
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()){
-                case R.id.device_resetPS_rv:
-                    mClickCallback.ItemOnClick(v,0);
-                    break;
-            }
-        }
+//        @Override
+//        public void onClick(View v) {
+//            switch (v.getId()){
+//                case R.id.device_resetPS_rv:
+//                    mClickCallback.ItemOnClick(v,0);
+//                    break;
+//            }
+//        }
     }
 
 }

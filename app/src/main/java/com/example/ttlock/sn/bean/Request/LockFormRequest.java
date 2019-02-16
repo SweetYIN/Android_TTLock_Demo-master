@@ -10,21 +10,20 @@ public class LockFormRequest {
      * alias : string
      * mac : string
      * state : IDLE
-     * batteryCapacity:电量
      */
 
-    private String code;
+    private int code;
     private String name;
     private String alias;
     private String mac;
     private String state;
-    private byte  batteryCapacity;
+    private String quantity;
 
-    public String getCode() {
+    public int getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(int code) {
         this.code = code;
     }
 
@@ -60,11 +59,11 @@ public class LockFormRequest {
         this.state = state;
     }
 
-    public byte getBatteryCapacity() {
-        return batteryCapacity;
+    public String getQuantity() {
+        return quantity;
     }
 
-    public void setBatteryCapacity(byte batteryCapacity) {
-        this.batteryCapacity = batteryCapacity;
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
     }
 }

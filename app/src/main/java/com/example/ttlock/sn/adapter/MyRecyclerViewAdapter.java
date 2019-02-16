@@ -15,6 +15,7 @@ import com.example.ttlock.R;
 import com.example.ttlock.sn.bean.Responds.HouseSearchResponsesBean;
 import com.example.ttlock.sn.bean.Responds.RoomSearchResponses;
 import com.example.ttlock.sn.callback.ClickCallback;
+import com.example.ttlock.utils.GlideUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,15 +71,30 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
             HouseSearchResponsesBean.DataBean houseInfo = mhouseList.get(position);
            MyViewHolder myViewHolder = (MyViewHolder) holder;
-            myViewHolder.numberTV.setText(houseInfo.getSerialNumber());
+            myViewHolder.numberTV.setText("房源编号："+houseInfo.getSerialNumber());
             myViewHolder.addressTV.setText(houseInfo.getAddress()+houseInfo.getHouseNo());
-            myViewHolder.typeTV.setText(houseInfo.getHouseType());
+            myViewHolder.typeTV.setText(houseInfo.getLeaseType()+"/"+houseInfo.getHouseType()+"/"+houseInfo.getProvince());
+
+        GlideUtils.setCircleImage(mContext,myViewHolder.imageView,houseInfo.getTopUrl(),R.mipmap.ic_launcher);
         myViewHolder.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mClickCallback.OnItemClick(v,position);
             }
         });
+        myViewHolder.btnCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mClickCallback.ItemOnClick(v,position);
+            }
+        });
+        myViewHolder.btnResetPW.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mClickCallback.ItemOnClick(v,position);
+            }
+        });
+
 
     }
 
@@ -90,7 +106,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
 
 
-    private class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    private class MyViewHolder extends RecyclerView.ViewHolder {
 
         ImageView imageView;
         TextView numberTV, addressTV, typeTV;
@@ -107,11 +123,8 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             addressTV = (TextView) itemView.findViewById(R.id.house_address);
             typeTV = (TextView) itemView.findViewById(R.id.house_info);
             btnCheck = (Button) itemView.findViewById(R.id.btn_check_house);
-            btnCheck.setOnClickListener(this);
             btnResetPW = (Button) itemView.findViewById(R.id.btn_password_reset);
-            btnResetPW.setOnClickListener(this);
             btnBind = (Button)itemView.findViewById(R.id.btn_binding);
-            btnBind.setOnClickListener(this);
             functionSelect();
         }
         private void functionSelect() {
@@ -144,10 +157,10 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             }
         }
 
-        @Override
-        public void onClick(View v) {
-            mClickCallback.ItemOnClick(v,0);
-        }
+//        @Override
+//        public void onClick(View v) {
+//            mClickCallback.ItemOnClick(v,0);
+//        }
     }
 
 }

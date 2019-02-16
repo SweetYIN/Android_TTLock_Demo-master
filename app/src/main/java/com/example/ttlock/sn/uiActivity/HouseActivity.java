@@ -85,7 +85,6 @@ public class HouseActivity extends BaseActivity implements BGARefreshLayout.BGAR
         //设置布局
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-        Log.e(TAG,"houseInfos = "+houseInfos.size());
         myRoomSearchViewAdapter = new MyRoomSearchViewAdapter(5,this,houseInfos);
         myRoomSearchViewAdapter.setClickCallback(mClickCallback);
         recyclerView.setAdapter(myRoomSearchViewAdapter);
@@ -145,17 +144,6 @@ public class HouseActivity extends BaseActivity implements BGARefreshLayout.BGAR
             }
         }
     };
-
-    private HouseSearchRequestBean getRequestDate(){
-        HouseSearchRequestBean resourcesRequestBean  = new HouseSearchRequestBean();
-        HouseSearchRequestBean.PagingBean pagingBean = new HouseSearchRequestBean.PagingBean();
-        pagingBean.setNumber(PAGE);
-        pagingBean.setSize(10);
-        resourcesRequestBean.setPaging(pagingBean);
-//        resourcesRequestBean.setRoomState("CONFIGURATION");//正式字段
-        resourcesRequestBean.setRoomState("READY");//测试字段
-        return resourcesRequestBean;
-    }
     /**
      * 请求房间列表
      */
@@ -174,7 +162,7 @@ public class HouseActivity extends BaseActivity implements BGARefreshLayout.BGAR
                        public void onNext(List<RoomSearchResponses> value) {
                            cancelProgressDialog();
                            if (value.size() == 0){
-                               toast("该房源下没有课绑锁房间");
+                               toast("该房源下没有可绑锁房间");
                            }else{
                                houseInfos.addAll(value) ;
                                myRoomSearchViewAdapter.notifyDataSetChanged();
@@ -207,8 +195,7 @@ public class HouseActivity extends BaseActivity implements BGARefreshLayout.BGAR
     private ClickCallback mClickCallback = new ClickCallback() {
         @Override
         public void ItemOnClick(View v, int position) {
-             int id = houseInfos.get(position).getId();
-            openActivity(id);
+            openActivity(houseInfos.get(position).getId());
         }
 
         @Override

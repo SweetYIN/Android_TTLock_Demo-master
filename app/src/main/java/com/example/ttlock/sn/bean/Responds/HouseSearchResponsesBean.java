@@ -65,6 +65,7 @@ public class HouseSearchResponsesBean implements Serializable {
          * serialNumber : string
          * state : INITIAL
          * street : string
+         * topUrl: "string"
          */
 
         private String address;
@@ -89,6 +90,7 @@ public class HouseSearchResponsesBean implements Serializable {
         private String state;
         private String street;
         private List<String> amenities;
+        private String topUrl;
 
         public String getAddress() {
             return address;
@@ -264,6 +266,14 @@ public class HouseSearchResponsesBean implements Serializable {
 
         public void setAmenities(List<String> amenities) {
             this.amenities = amenities;
+        }
+
+        public String getTopUrl() {
+            return topUrl;
+        }
+
+        public void setTopUrl(String topUrl) {
+            this.topUrl = topUrl;
         }
     }
 }

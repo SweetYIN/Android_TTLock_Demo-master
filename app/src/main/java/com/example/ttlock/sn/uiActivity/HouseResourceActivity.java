@@ -231,8 +231,8 @@ public class HouseResourceActivity extends BaseActivity implements View.OnClickL
         pagingBean.setNumber(PAGE);
         pagingBean.setSize(10);
         resourcesRequestBean.setPaging(pagingBean);
-//        resourcesRequestBean.setRoomState("CONFIGURATION");//正式字段
-        resourcesRequestBean.setRoomState("READY");//测试字段
+        resourcesRequestBean.setRoomState("CONFIGURATION");//正式字段
+//        resourcesRequestBean.setRoomState("READY");//测试字段
         return resourcesRequestBean;
     }
 

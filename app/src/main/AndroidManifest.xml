@@ -39,8 +39,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.FoundDeviceActivity"
-            />
+        <activity android:name=".activity.FoundDeviceActivity" />
         <activity android:name=".activity.BaseListActivity" />
         <activity android:name=".activity.MainActivity" />
         <activity
@@ -58,7 +57,8 @@
         <activity android:name=".sn.uiActivity.UserActivity" />
         <activity android:name=".sn.uiActivity.HouseActivity" />
         <activity android:name=".sn.uiActivity.CheckHouseResultActivity" />
-        <activity android:name=".sn.uiActivity.ConnectDeviceActivity"></activity>
+        <activity android:name=".sn.uiActivity.ConnectDeviceActivity" />
+        <activity android:name=".sn.uiActivity.ModifyPasswordActivity"></activity>
     </application>
 
 </manifest>

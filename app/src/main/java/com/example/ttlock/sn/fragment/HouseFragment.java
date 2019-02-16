@@ -103,7 +103,7 @@ public class HouseFragment extends Fragment implements BGARefreshLayout.BGARefre
     private ClickCallback mClickCallback = new ClickCallback() {
         @Override
         public void ItemOnClick(View v, int position) {
-            uploadData(houseInfos.get((int)v.getTag()).getHouseNo());
+            uploadData(houseInfos.get(position).getId());
         }
 
         @Override
@@ -146,7 +146,7 @@ public class HouseFragment extends Fragment implements BGARefreshLayout.BGARefre
         pagingBean.setNumber(PAGE);
         pagingBean.setSize(10);
         resourcesRequestBean.setPaging(pagingBean);
-//        resourcesRequestBean.setRoomState("LEASING");
+        resourcesRequestBean.setRoomState("LEASING"); //正式字段
         return resourcesRequestBean;
     }
     @Override
@@ -241,8 +241,14 @@ public class HouseFragment extends Fragment implements BGARefreshLayout.BGARefre
                     }
                 });
     }
-    private void uploadData(String roomId){
+
+    /**
+     * 查房
+     * @param roomId
+     */
+    private void uploadData(int roomId){
         apiNet = new ApiNet();
+        String roomId2 = roomId+"";
         apiNet.ApiChangeStateCheck(roomId)
                 .subscribe(new Observer<String>() {
                     @Override
@@ -262,6 +268,7 @@ public class HouseFragment extends Fragment implements BGARefreshLayout.BGARefre
                     @Override
                     public void onError(Throwable e) {
 
+                        toast("查房失败"+e.getMessage());
                     }
 
                     @Override
