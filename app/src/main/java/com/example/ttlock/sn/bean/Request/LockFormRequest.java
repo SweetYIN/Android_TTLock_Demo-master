@@ -1,69 +1,33 @@
 package com.example.ttlock.sn.bean.Request;
 
+import com.ttlock.bl.sdk.entity.LockData;
+
 public class LockFormRequest {
 
 
-
     /**
-     * code : string
-     * name : string
-     * alias : string
-     * mac : string
-     * state : IDLE
+     * data : {"lockDataJson":"string"}
+     * lockAlias : string
      */
 
-    private int code;
-    private String name;
-    private String alias;
-    private String mac;
-    private String state;
-    private String quantity;
+    private LockData data;
+    private String lockAlias;
 
-    public int getCode() {
-        return code;
+    public LockData getData() {
+        return data;
     }
 
-    public void setCode(int code) {
-        this.code = code;
+    public void setData(LockData data) {
+        this.data = data;
     }
 
-    public String getName() {
-        return name;
+    public String getLockAlias() {
+        return lockAlias;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setLockAlias(String lockAlias) {
+        this.lockAlias = lockAlias;
     }
 
-    public String getAlias() {
-        return alias;
-    }
 
-    public void setAlias(String alias) {
-        this.alias = alias;
-    }
-
-    public String getMac() {
-        return mac;
-    }
-
-    public void setMac(String mac) {
-        this.mac = mac;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public String getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(String quantity) {
-        this.quantity = quantity;
-    }
 }

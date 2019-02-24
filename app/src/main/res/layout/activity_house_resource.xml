@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:background="@mipmap/house"
+        android:visibility="gone"
         />
     <cn.bingoogolapple.refreshlayout.BGARefreshLayout
         android:id="@+id/br_houseResource_refresh"

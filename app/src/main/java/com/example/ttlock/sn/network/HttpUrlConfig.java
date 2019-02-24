@@ -29,16 +29,24 @@ public class HttpUrlConfig {
     public static final String ChangeStateCheck = "room/state/check";
 
     /**重置密码**/
-    public static final String ChangeStateReset = "room/state/reset";
+    public static final String ChangeStateReset = "electronic-lock/reset/";
 
     /**绑定锁**/
     public static final String BindForApp = "room/forapp/bind/";
+    /**
+     * 获取锁信息
+     */
+    public static final String LockBean = "electronic-lock/getone/";
 
     /**获取用户信息**/
     public static final String UserInfo = "http://59.110.159.182:9030/account/";
 
     /**修改密码**/
     public static final String modifyPassword = "http://59.110.159.182:9030/password?";
+
+
+
+
 
 
 }

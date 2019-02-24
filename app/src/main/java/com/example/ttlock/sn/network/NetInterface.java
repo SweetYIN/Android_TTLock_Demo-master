@@ -7,6 +7,7 @@ import com.example.ttlock.sn.bean.Request.LockFormRequest;
 import com.example.ttlock.sn.bean.Request.RoomSearchRequest;
 import com.example.ttlock.sn.bean.Responds.ChangeStateResetResponses;
 import com.example.ttlock.sn.bean.Responds.HouseSearchResponsesBean;
+import com.example.ttlock.sn.bean.Responds.LockResponsesBean;
 import com.example.ttlock.sn.bean.Responds.LoginResponsesBean;
 import com.example.ttlock.sn.bean.Responds.RoomSearchResponses;
 import com.example.ttlock.sn.bean.Responds.UserInfoResponses;
@@ -19,6 +20,7 @@ import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
@@ -63,14 +65,18 @@ public interface NetInterface {
 
 	/**重置密码**/
 	@Headers("Content-Type:application/json")
-	@FormUrlEncoded
-	@POST(HttpUrlConfig.ChangeStateReset)
-	Observable<ChangeStateResetResponses> ChangeStateReset(@Field("roomId") int roomId);
+	@POST
+	Observable<ChangeStateResetResponses> ChangeStateReset(@Url String url);
 
 	/**绑定锁**/
 	@Headers("Content-Type:application/json")
 	@POST
-	Observable<ChangeStateResetResponses> BindForApp(@Url String id, @Body LockData lockFormRequest);
+	Observable<ChangeStateResetResponses> BindForApp(@Url String id, @Body LockFormRequest lockFormRequest);
+
+/**绑定锁**/
+	@Headers("Content-Type:application/json")
+	@GET
+	Observable<LockResponsesBean> requesLockInfot(@Url String id);
 
 
 

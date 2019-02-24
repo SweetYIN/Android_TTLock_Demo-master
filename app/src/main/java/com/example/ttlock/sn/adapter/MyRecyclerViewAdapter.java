@@ -148,7 +148,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     break;
                 case 5:
                     functionLayout.setVisibility(View.VISIBLE);
-                    btnBind.setVisibility(View.VISIBLE);
+                    btnBind.setVisibility(View.GONE);
                     btnCheck.setVisibility(View.GONE);
                     btnResetPW.setVisibility(View.GONE);
                     break;

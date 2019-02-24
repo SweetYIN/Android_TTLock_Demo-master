@@ -8,6 +8,7 @@ import com.example.ttlock.sn.bean.Request.LockFormRequest;
 import com.example.ttlock.sn.bean.Request.RoomSearchRequest;
 import com.example.ttlock.sn.bean.Responds.ChangeStateResetResponses;
 import com.example.ttlock.sn.bean.Responds.HouseSearchResponsesBean;
+import com.example.ttlock.sn.bean.Responds.LockResponsesBean;
 import com.example.ttlock.sn.bean.Responds.LoginResponsesBean;
 import com.example.ttlock.sn.bean.Responds.RoomSearchResponses;
 import com.example.ttlock.sn.bean.Responds.UserInfoResponses;
@@ -96,7 +97,7 @@ public class ApiNet extends BaseNet{
 
     /**重置密码**/
     public Observable<ChangeStateResetResponses> ApiChangeStateReset(int roomId){
-        return observe(mNetInterface.ChangeStateReset(roomId))
+        return observe(mNetInterface.ChangeStateReset(HttpUrlConfig.ChangeStateReset+roomId))
                 .map(new Function<ChangeStateResetResponses, ChangeStateResetResponses>() {
                     @Override
                     public ChangeStateResetResponses apply(ChangeStateResetResponses changeStateResetResponses) throws Exception {
@@ -107,7 +108,7 @@ public class ApiNet extends BaseNet{
 
 
     /**绑定锁**/
-    public Observable<ChangeStateResetResponses> ApiBindForApp(int id, LockData lockFormRequest){
+    public Observable<ChangeStateResetResponses> ApiBindForApp(int id, LockFormRequest lockFormRequest){
             return observe(mNetInterface.BindForApp(HttpUrlConfig.BindForApp+id,lockFormRequest))
                     .map(new Function<ChangeStateResetResponses, ChangeStateResetResponses>() {
                         @Override
@@ -135,6 +136,16 @@ public class ApiNet extends BaseNet{
                     @Override
                     public String apply(String s) throws Exception {
                         return s;
+                    }
+                });
+    }
+
+    public Observable<LockResponsesBean> ApiRequestLockData(int id){
+        return observe(mNetInterface.requesLockInfot(HttpUrlConfig.LockBean+id))
+                .map(new Function<LockResponsesBean, LockResponsesBean>() {
+                    @Override
+                    public LockResponsesBean apply(LockResponsesBean lockResponsesBean) throws Exception {
+                        return lockResponsesBean;
                     }
                 });
     }
