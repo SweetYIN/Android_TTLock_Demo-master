@@ -120,7 +120,7 @@ public class ApiNet extends BaseNet{
     }
     /**用户信息**/
     public Observable<UserSessionResponses> ApiUserSessionInfo(){
-        return observe(mNetInterface.UserInfo(HttpUrlConfig.UserSessionInfo))
+        return observe(mNetInterface.UserSessionInfo(HttpUrlConfig.UserSessionInfo))
                 .map(new Function<UserSessionResponses, UserSessionResponses>() {
                     @Override
                     public UserSessionResponses apply(UserSessionResponses userSessionResponses) throws Exception {
