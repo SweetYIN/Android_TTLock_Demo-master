@@ -28,8 +28,9 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
     }
 
     private void initViewO() {
-        passwordET = findViewById(R.id.et_modify_password);
-        btnModify = findViewById(R.id.btn_modify);
+        passwordET = (EditText) findViewById(R.id.et_modify_password);
+        btnModify = (Button) findViewById(R.id.btn_modify);
+
         btnModify.setOnClickListener(this);
 
     }

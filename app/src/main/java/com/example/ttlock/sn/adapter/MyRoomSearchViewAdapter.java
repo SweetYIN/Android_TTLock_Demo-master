@@ -68,7 +68,8 @@ public class MyRoomSearchViewAdapter extends RecyclerView.Adapter<RecyclerView.V
             myViewHolder.typeTV.setText(rommSearchResponses.getHouse().getLeaseType()+"/"+
                     rommSearchResponses.getHouse().getHouseType()+"/"+
                     rommSearchResponses.getHouse().getProvince());
-//        GlideUtils.setCircleImage(mContext,myViewHolder.imageView,rommSearchResponses);
+        //roomSearchResponses.getHouse().getTopUrl()
+        GlideUtils.setCircleImage(mContext,myViewHolder.imageView,"",R.mipmap.ic_launcher);
         myViewHolder.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,6 +82,19 @@ public class MyRoomSearchViewAdapter extends RecyclerView.Adapter<RecyclerView.V
                 mClickCallback.ItemOnClick(v,position);
             }
         });
+        myViewHolder.btnResetPW.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mClickCallback.ItemOnClick(v,position);
+            }
+        });
+        myViewHolder.btnCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mClickCallback.ItemOnClick(v,position);
+            }
+        });
+
     }
 
 
@@ -100,7 +114,7 @@ public class MyRoomSearchViewAdapter extends RecyclerView.Adapter<RecyclerView.V
         ConstraintLayout constraintLayout;
         public MyViewHolder(View itemView) {
             super(itemView);
-            constraintLayout = itemView.findViewById(R.id.ascc_house_layout);
+            constraintLayout = (ConstraintLayout) itemView.findViewById(R.id.ascc_house_layout);
             functionLayout = (RelativeLayout) itemView.findViewById(R.id.house_function_Layout);
             imageView = (ImageView) itemView.findViewById(R.id.house_imageView);
             numberTV = (TextView) itemView.findViewById(R.id.house_number);

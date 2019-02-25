@@ -65,7 +65,7 @@
             android:layout_height="@dimen/item_height"
             android:layout_alignParentRight="true"
             android:background="@drawable/searchview_line"
-            android:text="密码重置"
+            android:text="删除密码"
             android:textSize="10sp"
             android:layout_marginRight="15dp"
            />

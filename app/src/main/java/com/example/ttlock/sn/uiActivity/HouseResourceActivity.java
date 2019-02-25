@@ -15,8 +15,11 @@ import android.widget.TextView;
 import com.example.ttlock.R;
 import com.example.ttlock.activity.BaseActivity;
 import com.example.ttlock.sn.adapter.MyRecyclerViewAdapter;
+import com.example.ttlock.sn.adapter.MyRoomSearchViewAdapter;
 import com.example.ttlock.sn.bean.Request.HouseSearchRequestBean;
+import com.example.ttlock.sn.bean.Request.RoomSearchRequest;
 import com.example.ttlock.sn.bean.Responds.HouseSearchResponsesBean;
+import com.example.ttlock.sn.bean.Responds.RoomSearchResponses;
 import com.example.ttlock.sn.callback.ClickCallback;
 import com.example.ttlock.sn.network.ApiNet;
 import com.example.ttlock.sn.view.DefineOtherStylesBAGRefreshWithLoadView;
@@ -38,8 +41,11 @@ public class HouseResourceActivity extends BaseActivity implements View.OnClickL
     private BGARefreshLayout mBgaRefreshLayout;
 
     private DefineOtherStylesBAGRefreshWithLoadView mDefineBAGRefreshWithLoadView;
-    private MyRecyclerViewAdapter myRecyclerViewAdapter;
-    private List<HouseSearchResponsesBean.DataBean> houseInfos = new ArrayList<>();
+//    private MyRecyclerViewAdapter myRecyclerViewAdapter;
+    private MyRoomSearchViewAdapter myRecyclerViewAdapter;
+//    private List<HouseSearchResponsesBean.DataBean> houseInfos = new ArrayList<>();
+
+    private List<RoomSearchResponses> houseInfos = new ArrayList<>();
 
     private Button btnBack;
 
@@ -77,7 +83,7 @@ public class HouseResourceActivity extends BaseActivity implements View.OnClickL
         //设置布局
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-         myRecyclerViewAdapter = new MyRecyclerViewAdapter(4,this,houseInfos);
+         myRecyclerViewAdapter = new MyRoomSearchViewAdapter(4,this,houseInfos);
         myRecyclerViewAdapter.setClickCallback(mClickCallback);
         recyclerView.setAdapter(myRecyclerViewAdapter);
     }
@@ -185,37 +191,28 @@ public class HouseResourceActivity extends BaseActivity implements View.OnClickL
      */
     private void requestData(){
         showProgressDialog();
-        HouseSearchRequestBean houseSearchRequestBean = getRequestDate();
+        RoomSearchRequest roomSearchRequest = new RoomSearchRequest();
+        roomSearchRequest.setRoomState("CONFIGURATION");
         ApiNet apiNet = new ApiNet();
-        apiNet.ApiHouseSearch(houseSearchRequestBean)
-                .subscribe(new Observer<HouseSearchResponsesBean>() {
+        apiNet.ApiRoomSearch(roomSearchRequest)
+                .subscribe(new Observer<List<RoomSearchResponses>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-//                            d.dispose();
+
                     }
 
                     @Override
-                    public void onNext(HouseSearchResponsesBean value) {
+                    public void onNext(List<RoomSearchResponses> value) {
                         cancelProgressDialog();
-                        if (value.getTotal() == 0){
-                            toast("没有未绑定的房源");
-                        }else{
-                            houseInfos.addAll(value.getData()) ;
-                            myRecyclerViewAdapter.notifyDataSetChanged();
-                            if(value.getTotal() % 10 == 0){
-                                ALLSUM = value.getTotal() / 10;
-                            }else{
-                                ALLSUM = (value.getTotal() / 10)+1;
-                            }
-                        }
-
+                        houseInfos.addAll(value) ;
+                        myRecyclerViewAdapter.notifyDataSetChanged();
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         cancelProgressDialog();
-                        toast("未绑定房源 "+e.getMessage());
-                        Log.e(TAG,"e " +e);
+                        toast("查房列表异常"+e.getMessage());
+                        Log.e(TAG,"houseInfos = "+e.getMessage());
                     }
 
                     @Override

@@ -9,20 +9,23 @@ import java.util.List;
 
 public class RoomSearchResponses {
 
+
     /**
      * id : 0
-     * house : {"id":0,"adcode":0,"address":"string","amenities":["string"],"bedroomCount":"ONE","city":"string","contract":{"id":0,"address":"string","endDate":"string","houseNo":"string","ownerCertificateNumber":"string","ownerCertificateType":"IDCARD","ownerId":0,"ownerIncomeRatio":0,"ownerMobile":"string","ownerName":"string","serialNo":"string","startDate":"string","created":"2019-01-29T06:20:35.070Z","updated":"2019-01-29T06:20:35.070Z"},"description":"string","floor":"LOW_RISE","houseNo":"string","houseType":"VILLA","latitude":"string","leaseType":"SHARE_HOUSE","longitude":"string","name":"string","orientation":"NORTH","owner":{"id":0,"certificateNumber":"string","certificateType":"IDCARD","mobile":"string","name":"string","created":"2019-01-29T06:20:35.070Z","updated":"2019-01-29T06:20:35.070Z"},"province":"string","region":"string","serialNumber":"string","state":"INITIAL","street":"string","created":"2019-01-29T06:20:35.070Z","updated":"2019-01-29T06:20:35.070Z"}
+     * depositAmount : 0
+     * house : {"id":0,"adcode":0,"address":"string","amenities":["string"],"bedroomCount":"ONE","city":"string","contract":{"id":0,"address":"string","endDate":"string","houseNo":"string","ownerCertificateNumber":"string","ownerCertificateType":"IDCARD","ownerId":0,"ownerIncomeRatio":0,"ownerMobile":"string","ownerName":"string","serialNo":"string","startDate":"string","created":"2019-02-25T03:48:04.024Z","updated":"2019-02-25T03:48:04.025Z"},"description":"string","floor":"LOW_RISE","houseNo":"string","houseType":"VILLA","latitude":"string","leaseType":"SHARE_HOUSE","longitude":"string","name":"string","orientation":"NORTH","owner":{"id":0,"certificateNumber":"string","certificateType":"IDCARD","mobile":"string","name":"string","created":"2019-02-25T03:48:04.025Z","updated":"2019-02-25T03:48:04.025Z"},"province":"string","region":"string","serialNumber":"string","state":"INITIAL","street":"string","created":"2019-02-25T03:48:04.025Z","updated":"2019-02-25T03:48:04.025Z"}
      * leaseType : SHARE_HOUSE
-     * lock : {"id":0,"alias":"string","code":"string","mac":"string","name":"string","quantity":"string","state":"IDLE","created":"2019-01-29T06:20:35.070Z","updated":"2019-01-29T06:20:35.070Z"}
+     * lock : {"id":0,"code":"string","data":{"additionalProp1":"string","additionalProp2":"string","additionalProp3":"string"},"keyId":"string","name":"string","state":"IDLE","created":"2019-02-25T03:48:04.025Z","updated":"2019-02-25T03:48:04.025Z"}
      * name : string
      * price : 0
      * priceHigh : 0
-     * state : READY
-     * created : 2019-01-29T06:20:35.070Z
-     * updated : 2019-01-29T06:20:35.070Z
+     * state : READYf
+     * created : 2019-02-25T03:48:04.025Z
+     * updated : 2019-02-25T03:48:04.025Z
      */
 
     private int id;
+    private int depositAmount;
     private HouseBean house;
     private String leaseType;
     private LockBean lock;
@@ -39,6 +42,14 @@ public class RoomSearchResponses {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getDepositAmount() {
+        return depositAmount;
+    }
+
+    public void setDepositAmount(int depositAmount) {
+        this.depositAmount = depositAmount;
     }
 
     public HouseBean getHouse() {
@@ -121,7 +132,7 @@ public class RoomSearchResponses {
          * amenities : ["string"]
          * bedroomCount : ONE
          * city : string
-         * contract : {"id":0,"address":"string","endDate":"string","houseNo":"string","ownerCertificateNumber":"string","ownerCertificateType":"IDCARD","ownerId":0,"ownerIncomeRatio":0,"ownerMobile":"string","ownerName":"string","serialNo":"string","startDate":"string","created":"2019-01-29T06:20:35.070Z","updated":"2019-01-29T06:20:35.070Z"}
+         * contract : {"id":0,"address":"string","endDate":"string","houseNo":"string","ownerCertificateNumber":"string","ownerCertificateType":"IDCARD","ownerId":0,"ownerIncomeRatio":0,"ownerMobile":"string","ownerName":"string","serialNo":"string","startDate":"string","created":"2019-02-25T03:48:04.024Z","updated":"2019-02-25T03:48:04.025Z"}
          * description : string
          * floor : LOW_RISE
          * houseNo : string
@@ -131,14 +142,14 @@ public class RoomSearchResponses {
          * longitude : string
          * name : string
          * orientation : NORTH
-         * owner : {"id":0,"certificateNumber":"string","certificateType":"IDCARD","mobile":"string","name":"string","created":"2019-01-29T06:20:35.070Z","updated":"2019-01-29T06:20:35.070Z"}
+         * owner : {"id":0,"certificateNumber":"string","certificateType":"IDCARD","mobile":"string","name":"string","created":"2019-02-25T03:48:04.025Z","updated":"2019-02-25T03:48:04.025Z"}
          * province : string
          * region : string
          * serialNumber : string
          * state : INITIAL
          * street : string
-         * created : 2019-01-29T06:20:35.070Z
-         * updated : 2019-01-29T06:20:35.070Z
+         * created : 2019-02-25T03:48:04.025Z
+         * updated : 2019-02-25T03:48:04.025Z
          */
 
         private int id;
@@ -372,8 +383,8 @@ public class RoomSearchResponses {
              * ownerName : string
              * serialNo : string
              * startDate : string
-             * created : 2019-01-29T06:20:35.070Z
-             * updated : 2019-01-29T06:20:35.070Z
+             * created : 2019-02-25T03:48:04.024Z
+             * updated : 2019-02-25T03:48:04.025Z
              */
 
             private int id;
@@ -511,8 +522,8 @@ public class RoomSearchResponses {
              * certificateType : IDCARD
              * mobile : string
              * name : string
-             * created : 2019-01-29T06:20:35.070Z
-             * updated : 2019-01-29T06:20:35.070Z
+             * created : 2019-02-25T03:48:04.025Z
+             * updated : 2019-02-25T03:48:04.025Z
              */
 
             private int id;
@@ -584,22 +595,20 @@ public class RoomSearchResponses {
     public static class LockBean {
         /**
          * id : 0
-         * alias : string
          * code : string
-         * mac : string
+         * data : {"additionalProp1":"string","additionalProp2":"string","additionalProp3":"string"}
+         * keyId : string
          * name : string
-         * quantity : string
          * state : IDLE
-         * created : 2019-01-29T06:20:35.070Z
-         * updated : 2019-01-29T06:20:35.070Z
+         * created : 2019-02-25T03:48:04.025Z
+         * updated : 2019-02-25T03:48:04.025Z
          */
 
         private int id;
-        private String alias;
         private String code;
-        private String mac;
+        private DataBean data;
+        private String keyId;
         private String name;
-        private String quantity;
         private String state;
         private String created;
         private String updated;
@@ -612,14 +621,6 @@ public class RoomSearchResponses {
             this.id = id;
         }
 
-        public String getAlias() {
-            return alias;
-        }
-
-        public void setAlias(String alias) {
-            this.alias = alias;
-        }
-
         public String getCode() {
             return code;
         }
@@ -628,12 +629,20 @@ public class RoomSearchResponses {
             this.code = code;
         }
 
-        public String getMac() {
-            return mac;
+        public DataBean getData() {
+            return data;
         }
 
-        public void setMac(String mac) {
-            this.mac = mac;
+        public void setData(DataBean data) {
+            this.data = data;
+        }
+
+        public String getKeyId() {
+            return keyId;
+        }
+
+        public void setKeyId(String keyId) {
+            this.keyId = keyId;
         }
 
         public String getName() {
@@ -642,14 +651,6 @@ public class RoomSearchResponses {
 
         public void setName(String name) {
             this.name = name;
-        }
-
-        public String getQuantity() {
-            return quantity;
-        }
-
-        public void setQuantity(String quantity) {
-            this.quantity = quantity;
         }
 
         public String getState() {
@@ -674,6 +675,42 @@ public class RoomSearchResponses {
 
         public void setUpdated(String updated) {
             this.updated = updated;
+        }
+
+        public static class DataBean {
+            /**
+             * additionalProp1 : string
+             * additionalProp2 : string
+             * additionalProp3 : string
+             */
+
+            private String additionalProp1;
+            private String additionalProp2;
+            private String additionalProp3;
+
+            public String getAdditionalProp1() {
+                return additionalProp1;
+            }
+
+            public void setAdditionalProp1(String additionalProp1) {
+                this.additionalProp1 = additionalProp1;
+            }
+
+            public String getAdditionalProp2() {
+                return additionalProp2;
+            }
+
+            public void setAdditionalProp2(String additionalProp2) {
+                this.additionalProp2 = additionalProp2;
+            }
+
+            public String getAdditionalProp3() {
+                return additionalProp3;
+            }
+
+            public void setAdditionalProp3(String additionalProp3) {
+                this.additionalProp3 = additionalProp3;
+            }
         }
     }
 }

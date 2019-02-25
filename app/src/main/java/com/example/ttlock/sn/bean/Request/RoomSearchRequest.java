@@ -12,15 +12,16 @@ public class RoomSearchRequest {
      * roomState : READY
      */
 
-    private int houseId;
+    private String houseId;
     private String leaseType;
     private String roomState;
 
-    public int getHouseId() {
+
+    public String getHouseId() {
         return houseId;
     }
 
-    public void setHouseId(int houseId) {
+    public void setHouseId(String houseId) {
         this.houseId = houseId;
     }
 

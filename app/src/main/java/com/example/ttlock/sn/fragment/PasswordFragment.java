@@ -14,12 +14,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.ttlock.R;
 import com.example.ttlock.sn.adapter.MyRecyclerViewAdapter;
+import com.example.ttlock.sn.adapter.MyRoomSearchViewAdapter;
 import com.example.ttlock.sn.bean.Request.HouseSearchRequestBean;
+import com.example.ttlock.sn.bean.Request.RoomSearchRequest;
 import com.example.ttlock.sn.bean.Responds.HouseSearchResponsesBean;
+import com.example.ttlock.sn.bean.Responds.RoomSearchResponses;
 import com.example.ttlock.sn.callback.ClickCallback;
+import com.example.ttlock.sn.callback.TabBadgeClickCallback;
 import com.example.ttlock.sn.network.ApiNet;
 import com.example.ttlock.sn.uiActivity.ConnectDeviceActivity;
 import com.example.ttlock.sn.view.DefineOtherStylesBAGRefreshWithLoadView;
@@ -39,19 +44,28 @@ public class PasswordFragment extends Fragment implements BGARefreshLayout.BGARe
     private static final String TAG = "HouseFragment";
     private Context mContext;
 
+    private TabBadgeClickCallback tabBadgeClickCallback;
     private RecyclerView recyclerView;
 
     private BGARefreshLayout mBgaRefreshLayout;
 
     private DefineOtherStylesBAGRefreshWithLoadView mDefineBAGRefreshWithLoadView;
 
-    private  MyRecyclerViewAdapter  myRecyclerViewAdapter;
+//    private  MyRecyclerViewAdapter  myRecyclerViewAdapter;
+    private MyRoomSearchViewAdapter myRecyclerViewAdapter;
 
-    private List<HouseSearchResponsesBean.DataBean> houseInfos = new ArrayList<>() ;
+//    private List<HouseSearchResponsesBean.DataBean> houseInfos = new ArrayList<>() ;
+    private List<RoomSearchResponses> houseInfos = new ArrayList<>();
 
     private int ALLSUM ;
     //分页请求
     private int PAGE =  1;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        tabBadgeClickCallback = (TabBadgeClickCallback)getActivity();
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -110,7 +124,7 @@ public class PasswordFragment extends Fragment implements BGARefreshLayout.BGARe
         //设置布局
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(linearLayoutManager);
-        myRecyclerViewAdapter = new MyRecyclerViewAdapter(2,mContext,houseInfos);
+        myRecyclerViewAdapter = new MyRoomSearchViewAdapter(2,mContext,houseInfos);
         myRecyclerViewAdapter.setClickCallback(mClickCallback);
         recyclerView.setAdapter(myRecyclerViewAdapter);
     }
@@ -208,29 +222,27 @@ public class PasswordFragment extends Fragment implements BGARefreshLayout.BGARe
     }
 
     private void requestData(){
-        HouseSearchRequestBean houseSearchRequestBean = getRequestDate();
+        RoomSearchRequest roomSearchRequest = new RoomSearchRequest();
+        roomSearchRequest.setRoomState("CLEANING");
         ApiNet apiNet = new ApiNet();
-        apiNet.ApiHouseSearch(houseSearchRequestBean)
-                .subscribe(new Observer<HouseSearchResponsesBean>() {
+        apiNet.ApiRoomSearch(roomSearchRequest)
+                .subscribe(new Observer<List<RoomSearchResponses>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(HouseSearchResponsesBean value) {
-                        houseInfos.addAll(value.getData()) ;
+                    public void onNext(List<RoomSearchResponses> value) {
+                        houseInfos.addAll(value) ;
                         myRecyclerViewAdapter.notifyDataSetChanged();
-                        if(value.getTotal() % 10 == 0){
-                            ALLSUM = value.getTotal() / 10;
-                        }else{
-                            ALLSUM = (value.getTotal() / 10)+1;
-                        }
+                        tabBadgeClickCallback.onData(1,value.size());
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
+                        toast("查房列表异常"+e.getMessage());
+                        Log.e(TAG,"houseInfos = "+e.getMessage());
                     }
 
                     @Override
@@ -238,5 +250,8 @@ public class PasswordFragment extends Fragment implements BGARefreshLayout.BGARe
 
                     }
                 });
+    }
+    private void toast(String text){
+        Toast.makeText(mContext,text,Toast.LENGTH_LONG).show();
     }
 }

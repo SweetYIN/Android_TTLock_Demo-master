@@ -19,6 +19,7 @@ import com.example.ttlock.R;
 import com.example.ttlock.sn.adapter.MyFragmentAdapter;
 import com.example.ttlock.sn.bean.Request.HouseSearchRequestBean;
 import com.example.ttlock.sn.bean.Responds.HouseSearchResponsesBean;
+import com.example.ttlock.sn.callback.TabBadgeClickCallback;
 import com.example.ttlock.sn.customView.BadgeView;
 import com.example.ttlock.sn.fragment.HouseFragment;
 import com.example.ttlock.sn.fragment.PasswordFragment;
@@ -30,8 +31,10 @@ import java.util.List;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
+import static com.example.ttlock.sn.adapter.MyFragmentAdapter.formatBadgeNumber;
 
-public class StartActivity extends AppCompatActivity implements View.OnClickListener{
+
+public class StartActivity extends AppCompatActivity implements View.OnClickListener,TabBadgeClickCallback{
 
     private static final String TAG = "StartActivity";
     //fragment 的列表
@@ -70,7 +73,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
     }
     private void initTabList(){
         tabList.add("查房");
-        tabList.add("重置密码");
+        tabList.add("删除密码");
     }
     private void badgeList(){
         mBadgeCountList.add(1);
@@ -88,15 +91,17 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         searchView.setOnQueryTextListener(onQueryTextListener);
         myFragmentAdapter = new MyFragmentAdapter(this,getSupportFragmentManager(),
                 fragments,
-                tabList,
-                mBadgeCountList);
+                tabList);
+        myFragmentAdapter.setmBadgeCountList(mBadgeCountList);
         viewPager.setAdapter(myFragmentAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
-        initBadgeViews();
+//        initBadgeViews();
         setUpTabBadge();
 
     }
+
+
 
     private void initBadgeViews() {
         if (mBadgeViews == null) {
@@ -115,8 +120,8 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
      */
     private void setUpTabBadge() {
         // 1. 最简单
-//        for (int i = 0; i < mFragmentList.size(); i++) {
-//            mBadgeViews.get(i).setTargetView(((ViewGroup) mTabLayout.getChildAt(0)).getChildAt(i));
+//        for (int i = 0; i < fragments.size(); i++) {
+//            mBadgeViews.get(i).setTargetView(((ViewGroup) tabLayout.getChildAt(0)).getChildAt(i));
 //            mBadgeViews.get(i).setText(formatBadgeNumber(mBadgeCountList.get(i)));
 //        }
 
@@ -137,6 +142,8 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         // 需加上以下代码,不然会出现更新Tab角标后,选中的Tab字体颜色不是选中状态的颜色
         tabLayout.getTabAt(tabLayout.getSelectedTabPosition()).getCustomView().setSelected(true);
     }
+
+
 
     @Override
     public void onClick(View v) {
@@ -177,4 +184,18 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         intent.putExtra("query",query);
         startActivity(intent);
     }
+
+    @Override
+    public void onData(int type, int count) {
+        Log.e(TAG, "type = " + type + "count = " + count);
+        if (count == 0){
+            mBadgeCountList.set(type,0);
+            setUpTabBadge();
+        }else{
+            mBadgeCountList.set(type,count);
+            setUpTabBadge();
+        }
+
+    }
+
 }

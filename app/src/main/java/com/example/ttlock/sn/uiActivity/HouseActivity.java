@@ -150,7 +150,7 @@ public class HouseActivity extends BaseActivity implements BGARefreshLayout.BGAR
     private void requestData(int houseId){
             showProgressDialog();
             RoomSearchRequest roomSearchRequest = new RoomSearchRequest();
-            roomSearchRequest.setHouseId(houseId);
+            roomSearchRequest.setHouseId(houseId+"");
             ApiNet apiNet = new ApiNet();
             apiNet.ApiRoomSearch(roomSearchRequest)
                    .subscribe(new Observer<List<RoomSearchResponses>>() {

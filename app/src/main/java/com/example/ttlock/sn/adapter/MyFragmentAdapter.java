@@ -26,22 +26,22 @@ public class MyFragmentAdapter extends FragmentPagerAdapter {
 
 	private List<Integer> mBadgeCountList;
 
-	private int[] images = {R.mipmap.one,R.mipmap.two,R.mipmap.three};
-
 
 
 	//写构造方法，方便赋值调用
 	public MyFragmentAdapter(Context context,
 							 FragmentManager fm,
 							 List<Fragment> fragments,
-							 List<String> tabList,
-							 List<Integer> badgeCountList) {
+							 List<String> tabList) {
 		super(fm);
 		this.mContext = context;
 		this.fragments = fragments;
 		this.tabList = tabList;
-		this.mBadgeCountList = badgeCountList;
 
+	}
+
+	public void setmBadgeCountList(List<Integer> mBadgeCountList) {
+		this.mBadgeCountList = mBadgeCountList;
 	}
 
 	////根据Item的位置返回对应位置的Fragment，绑定item和Fragment
@@ -68,8 +68,8 @@ public class MyFragmentAdapter extends FragmentPagerAdapter {
 		View view = LayoutInflater.from(mContext).inflate(R.layout.activity_tab_item, null);
 		TextView textView = (TextView) view.findViewById(R.id.textview);
 		textView.setText(tabList.get(position));
-		ImageView imageView = (ImageView) view.findViewById(R.id.tab_image);
-		imageView.setBackgroundResource(images[position]);
+//		ImageView imageView = (ImageView) view.findViewById(R.id.tab_image);
+//		imageView.setBackgroundResource(images[position]);
 		View target = view.findViewById(R.id.badgeview_target);
 
 		BadgeView badgeView = new BadgeView(mContext);

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.example.ttlock.R;
 import com.example.ttlock.activity.BaseActivity;
 import com.example.ttlock.sn.bean.Responds.UserInfoResponses;
+import com.example.ttlock.sn.bean.Responds.UserSessionResponses;
 import com.example.ttlock.sn.network.ApiNet;
 
 import io.reactivex.Observer;
@@ -29,6 +30,7 @@ public class UserActivity extends BaseActivity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 //        requestUserInfo();
+        requestUserSessionInfo();
         initView();
 
     }
@@ -40,20 +42,20 @@ public class UserActivity extends BaseActivity implements View.OnClickListener{
         titleTV.setText("我的资料");
         btnBack = (Button) findViewById(R.id.btn_back);
         btnBack.setOnClickListener(this);
-        modifyPasswordTB = findViewById(R.id.tb_modifyPassword);
+        modifyPasswordTB = (ImageButton) findViewById(R.id.tb_modifyPassword);
         modifyPasswordTB.setOnClickListener(this);
 
-        nickName_tv = findViewById(R.id.nickName_tv);
-        userName_tv = findViewById(R.id.userName_tv);
-        password_tv = findViewById(R.id.password_tv);
-        mobile_tv = findViewById(R.id.mobile_tv);
-        email_tv = findViewById(R.id.email_tv);
-        type_tv = findViewById(R.id.type_tv);
-        created_time_tv = findViewById(R.id.created_time_tv);
-        updated_time_tv = findViewById(R.id.updated_time_tv);
-        group_tv = findViewById(R.id.group_tv);
-        role_tv = findViewById(R.id.role_tv);
-        salt_tv = findViewById(R.id.salt_tv);
+        nickName_tv = (TextView) findViewById(R.id.nickName_tv);
+        userName_tv = (TextView) findViewById(R.id.userName_tv);
+        password_tv = (TextView) findViewById(R.id.password_tv);
+        mobile_tv = (TextView) findViewById(R.id.mobile_tv);
+        email_tv = (TextView) findViewById(R.id.email_tv);
+        type_tv = (TextView) findViewById(R.id.type_tv);
+        created_time_tv = (TextView) findViewById(R.id.created_time_tv);
+        updated_time_tv = (TextView) findViewById(R.id.updated_time_tv);
+        group_tv = (TextView) findViewById(R.id.group_tv);
+        role_tv = (TextView) findViewById(R.id.role_tv);
+        salt_tv = (TextView) findViewById(R.id.salt_tv);
 
     }
 
@@ -89,8 +91,39 @@ public class UserActivity extends BaseActivity implements View.OnClickListener{
         super.onDestroy();
         finish();
     }
+
+    /**
+     * 获取用户的session信息
+     */
+    private void requestUserSessionInfo(){
+        showProgressDialog();
+        ApiNet apiNet = new ApiNet();
+        apiNet.ApiUserSessionInfo()
+                .subscribe(new Observer<UserSessionResponses>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(UserSessionResponses value) {
+                        cancelProgressDialog();
+                        requestUserInfo(value.getUid());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
     /**请求用户信息**/
-    private void requestUserInfo() {
+    private void requestUserInfo(int userID) {
         showProgressDialog();
         ApiNet apiNet = new ApiNet();
         apiNet.ApiUserInfo("12")

@@ -103,11 +103,6 @@ public class CheckHouseResultActivity extends BaseActivity implements View.OnCli
                             myRecyclerViewAdapter.notifyDataSetChanged();
                         }
 
-//                        if(value.getTotal() % 10 == 0){
-//                            ALLSUM = value.getTotal() / 10;
-//                        }else{
-//                            ALLSUM = (value.getTotal() / 10)+1;
-//                        }
                     }
 
                     @Override

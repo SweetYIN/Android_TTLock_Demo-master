@@ -11,6 +11,7 @@ import com.example.ttlock.sn.bean.Responds.LockResponsesBean;
 import com.example.ttlock.sn.bean.Responds.LoginResponsesBean;
 import com.example.ttlock.sn.bean.Responds.RoomSearchResponses;
 import com.example.ttlock.sn.bean.Responds.UserInfoResponses;
+import com.example.ttlock.sn.bean.Responds.UserSessionResponses;
 import com.ttlock.bl.sdk.entity.LockData;
 
 import java.util.List;
@@ -54,14 +55,8 @@ public interface NetInterface {
 
 	/**查房**/
 	@Headers("Content-Type:application/json")
-	@FormUrlEncoded
-	@POST(HttpUrlConfig.ChangeStateCheck)
-	Observable<String> ChangeStateCheck(@Field("roomId") int roomId);
-
-
-	/**查房**/
 	@POST
-	Observable<String> ChangeStateCheck2(@Url String url);
+	Observable<ChangeStateResetResponses> ChangeStateCheck(@Url String url);
 
 	/**重置密码**/
 	@Headers("Content-Type:application/json")
@@ -73,11 +68,15 @@ public interface NetInterface {
 	@POST
 	Observable<ChangeStateResetResponses> BindForApp(@Url String id, @Body LockFormRequest lockFormRequest);
 
-/**绑定锁**/
+	/**获取锁信息**/
 	@Headers("Content-Type:application/json")
 	@GET
 	Observable<LockResponsesBean> requesLockInfot(@Url String id);
 
+	/**获取用户Session信息**/
+	@Headers("Content-Type:application/json")
+	@GET
+	Observable<UserSessionResponses> UserSessionInfo(@Url String url) ;
 
 
 	/**获取用户信息**/

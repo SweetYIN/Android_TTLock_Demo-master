@@ -26,7 +26,7 @@ public class HttpUrlConfig {
      public static final String RoomSearch = "room/search";
 
     /**查房**/
-    public static final String ChangeStateCheck = "room/state/check";
+    public static final String ChangeStateCheck = "room/state/check?roomId=";
 
     /**重置密码**/
     public static final String ChangeStateReset = "electronic-lock/reset/";
@@ -37,9 +37,11 @@ public class HttpUrlConfig {
      * 获取锁信息
      */
     public static final String LockBean = "electronic-lock/getone/";
+    /**获取用户的session信息**/
+    public static final String UserSessionInfo = "http://59.110.159.182:9050/session-user";
 
     /**获取用户信息**/
-    public static final String UserInfo = "http://59.110.159.182:9030/account/";
+    public static final String UserInfo = "http://59.110.159.182:9030/principal";
 
     /**修改密码**/
     public static final String modifyPassword = "http://59.110.159.182:9030/password?";

@@ -17,9 +17,14 @@ import android.widget.Toast;
 
 import com.example.ttlock.R;
 import com.example.ttlock.sn.adapter.MyRecyclerViewAdapter;
+import com.example.ttlock.sn.adapter.MyRoomSearchViewAdapter;
 import com.example.ttlock.sn.bean.Request.HouseSearchRequestBean;
+import com.example.ttlock.sn.bean.Request.RoomSearchRequest;
+import com.example.ttlock.sn.bean.Responds.ChangeStateResetResponses;
 import com.example.ttlock.sn.bean.Responds.HouseSearchResponsesBean;
+import com.example.ttlock.sn.bean.Responds.RoomSearchResponses;
 import com.example.ttlock.sn.callback.ClickCallback;
+import com.example.ttlock.sn.callback.TabBadgeClickCallback;
 import com.example.ttlock.sn.network.ApiNet;
 import com.example.ttlock.sn.view.DefineOtherStylesBAGRefreshWithLoadView;
 
@@ -36,20 +41,29 @@ import io.reactivex.disposables.Disposable;
 public class HouseFragment extends Fragment implements BGARefreshLayout.BGARefreshLayoutDelegate{
 
     private static final String TAG = "HouseFragment";
+    private TabBadgeClickCallback tabBadgeClickCallback;
     private Context mContext;
     private BGARefreshLayout mBgaRefreshLayout;
     private RecyclerView recyclerView;
 
-    private  MyRecyclerViewAdapter  myRecyclerViewAdapter;
+//    private  MyRecyclerViewAdapter  myRecyclerViewAdapter;
+    private MyRoomSearchViewAdapter myRecyclerViewAdapter;
 
     private DefineOtherStylesBAGRefreshWithLoadView mDefineBAGRefreshWithLoadView;
 
-   private List<HouseSearchResponsesBean.DataBean> houseInfos = new ArrayList<>() ;
+//   private List<HouseSearchResponsesBean.DataBean> houseInfos = new ArrayList<>() ;
+
+    private List<RoomSearchResponses> houseInfos = new ArrayList<>();
     private  ApiNet apiNet ;
 
     private int ALLSUM ;
     private int PAGE =  1;
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        tabBadgeClickCallback = (TabBadgeClickCallback)getActivity();
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,7 +108,7 @@ public class HouseFragment extends Fragment implements BGARefreshLayout.BGARefre
         //设置布局
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(linearLayoutManager);
-        myRecyclerViewAdapter = new MyRecyclerViewAdapter(1,mContext,houseInfos);
+        myRecyclerViewAdapter = new MyRoomSearchViewAdapter(1,mContext,houseInfos);
         myRecyclerViewAdapter.setClickCallback(mClickCallback);
         recyclerView.setAdapter(myRecyclerViewAdapter);
 
@@ -140,15 +154,7 @@ public class HouseFragment extends Fragment implements BGARefreshLayout.BGARefre
 
     }
 
-    private HouseSearchRequestBean getRequestDate(){
-        HouseSearchRequestBean resourcesRequestBean  = new HouseSearchRequestBean();
-        HouseSearchRequestBean.PagingBean pagingBean = new HouseSearchRequestBean.PagingBean();
-        pagingBean.setNumber(PAGE);
-        pagingBean.setSize(10);
-        resourcesRequestBean.setPaging(pagingBean);
-        resourcesRequestBean.setRoomState("LEASING"); //正式字段
-        return resourcesRequestBean;
-    }
+
     @Override
     public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
         Log.e(TAG,"下拉刷新"+PAGE+"ALLSUM = "+ALLSUM);
@@ -209,30 +215,27 @@ public class HouseFragment extends Fragment implements BGARefreshLayout.BGARefre
      * 请求房源
      */
     private void requestData(){
-     HouseSearchRequestBean houseSearchRequestBean = getRequestDate();
+        RoomSearchRequest roomSearchRequest = new RoomSearchRequest();
+        roomSearchRequest.setRoomState("LEASING");
         apiNet = new ApiNet();
-        apiNet.ApiHouseSearch(houseSearchRequestBean)
-                .subscribe(new Observer<HouseSearchResponsesBean>() {
+        apiNet.ApiRoomSearch(roomSearchRequest)
+                .subscribe(new Observer<List<RoomSearchResponses>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-//                            d.dispose();
+
                     }
 
                     @Override
-                    public void onNext(HouseSearchResponsesBean value) {
-                        houseInfos.addAll(value.getData()) ;
+                    public void onNext(List<RoomSearchResponses> value) {
+                        houseInfos.addAll(value) ;
                         myRecyclerViewAdapter.notifyDataSetChanged();
-                        if(value.getTotal() % 10 == 0){
-                            ALLSUM = value.getTotal() / 10;
-                        }else{
-                            ALLSUM = (value.getTotal() / 10)+1;
-                        }
+                        tabBadgeClickCallback.onData(0,value.size());
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
-                        Log.e(TAG,"e " +e.getMessage());
+                        toast("查房列表异常"+e.getMessage());
+                        Log.e(TAG,"houseInfos = "+e.getMessage());
                     }
 
                     @Override
@@ -248,26 +251,25 @@ public class HouseFragment extends Fragment implements BGARefreshLayout.BGARefre
      */
     private void uploadData(int roomId){
         apiNet = new ApiNet();
-        String roomId2 = roomId+"";
         apiNet.ApiChangeStateCheck(roomId)
-                .subscribe(new Observer<String>() {
+                .subscribe(new Observer<ChangeStateResetResponses>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(String value) {
-                        if ("success".equals(value)){
+                    public void onNext(ChangeStateResetResponses value) {
+                        if ("SUCCESS".equals(value.getStatus())){
+                            toast("查房成功");
                             requestData();
                         }else{
-                        toast("查房失败");
+                            toast("查房失败");
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
                         toast("查房失败"+e.getMessage());
                     }
 
@@ -276,9 +278,17 @@ public class HouseFragment extends Fragment implements BGARefreshLayout.BGARefre
 
                     }
                 });
+
     }
-
-
+    private HouseSearchRequestBean getRequestDate(){
+        HouseSearchRequestBean resourcesRequestBean  = new HouseSearchRequestBean();
+        HouseSearchRequestBean.PagingBean pagingBean = new HouseSearchRequestBean.PagingBean();
+        pagingBean.setNumber(PAGE);
+        pagingBean.setSize(10);
+        resourcesRequestBean.setPaging(pagingBean);
+        resourcesRequestBean.setRoomState("LEASING"); //正式字段
+        return resourcesRequestBean;
+    }
     private void toast(String text){
         Toast.makeText(mContext,text,Toast.LENGTH_LONG).show();
     }

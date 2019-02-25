@@ -115,7 +115,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         ConstraintLayout constraintLayout;
         public MyViewHolder(View itemView) {
             super(itemView);
-            constraintLayout = itemView.findViewById(R.id.ascc_house_layout);
+            constraintLayout = (ConstraintLayout) itemView.findViewById(R.id.ascc_house_layout);
 
             functionLayout = (RelativeLayout) itemView.findViewById(R.id.house_function_Layout);
             imageView = (ImageView) itemView.findViewById(R.id.house_imageView);
