@@ -135,8 +135,8 @@ public class PasswordFragment extends Fragment implements BGARefreshLayout.BGARe
         public void ItemOnClick(View v, int position) {
             Intent intent = new Intent(mContext, ConnectDeviceActivity.class);
             intent.putExtra("type","2");
-//            intent.putExtra("roomId",houseInfos.get(position).getId());
-            intent.putExtra("roomId",23);
+            intent.putExtra("roomId",houseInfos.get(position).getLock().getId());
+//            intent.putExtra("roomId",23);
             startActivity(intent);
         }
 
@@ -186,18 +186,16 @@ public class PasswordFragment extends Fragment implements BGARefreshLayout.BGARe
             switch (msg.what){
                 case 0:
                     if (PAGE != ALLSUM){
-                        houseInfos.clear();
+//                        houseInfos.clear();
                     }
                     PAGE++;
-                    requestData();
-                    mBgaRefreshLayout.endRefreshing();
-                    houseInfos.clear();
-                    requestData();
+//                    houseInfos.clear();
+//                    requestData();
                     mBgaRefreshLayout.endRefreshing();
                     break;
                 case 1:
                     PAGE++;
-                    requestData();
+//                    requestData();
                     mBgaRefreshLayout.endLoadingMore();
                     break;
                 case 2:

@@ -28,8 +28,8 @@ public class HttpUrlConfig {
     /**查房**/
     public static final String ChangeStateCheck = "room/state/check?roomId=";
 
-    /**重置密码**/
-    public static final String ChangeStateReset = "electronic-lock/reset/";
+    /**删除密码**/
+    public static final String DeletePassword = "/room/state/reset?roomId=";
 
     /**绑定锁**/
     public static final String BindForApp = "room/forapp/bind/";
@@ -37,8 +37,6 @@ public class HttpUrlConfig {
      * 获取锁信息
      */
     public static final String LockBean = "electronic-lock/getone/";
-    /**获取用户的session信息**/
-    public static final String UserSessionInfo = "http://59.110.159.182:9050/session-user";
 
     /**获取用户信息**/
     public static final String UserInfo = "http://59.110.159.182:9030/principal";

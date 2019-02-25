@@ -29,8 +29,7 @@ public class UserActivity extends BaseActivity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
-//        requestUserInfo();
-        requestUserSessionInfo();
+        requestUserInfo();
         initView();
 
     }
@@ -61,17 +60,17 @@ public class UserActivity extends BaseActivity implements View.OnClickListener{
 
     private void setShowData(UserInfoResponses userInfoResponses){
 
-        nickName_tv.setText(userInfoResponses.getNickname());
-        userName_tv.setText(userInfoResponses.getUsername());
-        password_tv.setText(userInfoResponses.getPassword());
-        mobile_tv.setText(userInfoResponses.getMobile());
-        email_tv.setText(userInfoResponses.getEmail());
-        type_tv.setText(userInfoResponses.getType());
-        created_time_tv.setText(userInfoResponses.getCreated());
-        updated_time_tv.setText(userInfoResponses.getUpdated());
-        group_tv.setText(userInfoResponses.getGroup().getName());
-        role_tv.setText(userInfoResponses.getRole().getName());
-        salt_tv.setText(userInfoResponses.getSalt());
+        nickName_tv.setText("昵称 ："+userInfoResponses.getNickname());
+        userName_tv.setText("用户名 ："+userInfoResponses.getUsername());
+//        password_tv.setText("密码 ："+userInfoResponses.getPassword());
+        mobile_tv.setText("手机号码 ："+userInfoResponses.getMobile());
+        email_tv.setText("邮箱 ："+userInfoResponses.getEmail());
+//        type_tv.setText(userInfoResponses.getType());
+//        created_time_tv.setText(userInfoResponses.getCreated());
+//        updated_time_tv.setText(userInfoResponses.getUpdated());
+        group_tv.setText("组名 ："+userInfoResponses.getGroup().getName());
+//        role_tv.setText(userInfoResponses.getRole().getName());
+//        salt_tv.setText(userInfoResponses.getSalt());
     }
     @Override
     public void onClick(View v) {
@@ -92,41 +91,11 @@ public class UserActivity extends BaseActivity implements View.OnClickListener{
         finish();
     }
 
-    /**
-     * 获取用户的session信息
-     */
-    private void requestUserSessionInfo(){
-        showProgressDialog();
-        ApiNet apiNet = new ApiNet();
-        apiNet.ApiUserSessionInfo()
-                .subscribe(new Observer<UserSessionResponses>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(UserSessionResponses value) {
-                        cancelProgressDialog();
-                        requestUserInfo(value.getUid());
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-    }
     /**请求用户信息**/
-    private void requestUserInfo(int userID) {
+    private void requestUserInfo() {
         showProgressDialog();
         ApiNet apiNet = new ApiNet();
-        apiNet.ApiUserInfo("12")
+        apiNet.ApiUserInfo()
                 .subscribe(new Observer<UserInfoResponses>() {
                     @Override
                     public void onSubscribe(Disposable d) {

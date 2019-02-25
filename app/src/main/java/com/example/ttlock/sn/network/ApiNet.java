@@ -96,9 +96,9 @@ public class ApiNet extends BaseNet{
     }
 
 
-    /**重置密码**/
-    public Observable<ChangeStateResetResponses> ApiChangeStateReset(int roomId){
-        return observe(mNetInterface.ChangeStateReset(HttpUrlConfig.ChangeStateReset+roomId))
+    /**删除密码**/
+    public Observable<ChangeStateResetResponses> ApiDeletePs(int roomId){
+        return observe(mNetInterface.DeletePassword(HttpUrlConfig.DeletePassword+roomId))
                 .map(new Function<ChangeStateResetResponses, ChangeStateResetResponses>() {
                     @Override
                     public ChangeStateResetResponses apply(ChangeStateResetResponses changeStateResetResponses) throws Exception {
@@ -119,18 +119,8 @@ public class ApiNet extends BaseNet{
                     });
     }
     /**用户信息**/
-    public Observable<UserSessionResponses> ApiUserSessionInfo(){
-        return observe(mNetInterface.UserSessionInfo(HttpUrlConfig.UserSessionInfo))
-                .map(new Function<UserSessionResponses, UserSessionResponses>() {
-                    @Override
-                    public UserSessionResponses apply(UserSessionResponses userSessionResponses) throws Exception {
-                        return userSessionResponses;
-                    }
-                });
-    }
-    /**用户信息**/
-    public Observable<UserInfoResponses> ApiUserInfo(String id){
-        return observe(mNetInterface.UserInfo(HttpUrlConfig.UserInfo,id))
+    public Observable<UserInfoResponses> ApiUserInfo(){
+        return observe(mNetInterface.UserInfo(HttpUrlConfig.UserInfo))
                 .map(new Function<UserInfoResponses, UserInfoResponses>() {
                     @Override
                     public UserInfoResponses apply(UserInfoResponses userInfoResponses) throws Exception {

@@ -35,6 +35,8 @@ import io.reactivex.disposables.Disposable;
 public class HouseResourceActivity extends BaseActivity implements View.OnClickListener,
         BGARefreshLayout.BGARefreshLayoutDelegate{
     private static  final String TAG = "HouseResourceActivity";
+    // 返回的结果码
+    private static final int REQUESTCODE = 1;
 
     private RecyclerView recyclerView;
 
@@ -62,6 +64,36 @@ public class HouseResourceActivity extends BaseActivity implements View.OnClickL
         requestData();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.e(TAG,"onStart");
+    }
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        requestData();
+        Log.e(TAG,"onRestart");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.e(TAG,"onStop");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.e(TAG,"onResume");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.e(TAG,"onPause");
+    }
+
     private void initView() {
         mBgaRefreshLayout = (BGARefreshLayout)findViewById(R.id.br_houseResource_refresh);
         titleTV = (TextView) findViewById(R.id.title_tv);
@@ -83,7 +115,8 @@ public class HouseResourceActivity extends BaseActivity implements View.OnClickL
         //设置布局
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-         myRecyclerViewAdapter = new MyRoomSearchViewAdapter(4,this,houseInfos);
+//        myRecyclerViewAdapter = new MyRoomSearchViewAdapter(4,this,houseInfos);
+        myRecyclerViewAdapter = new MyRoomSearchViewAdapter(5,this,houseInfos);
         myRecyclerViewAdapter.setClickCallback(mClickCallback);
         recyclerView.setAdapter(myRecyclerViewAdapter);
     }
@@ -96,14 +129,11 @@ public class HouseResourceActivity extends BaseActivity implements View.OnClickL
     private ClickCallback mClickCallback = new ClickCallback() {
         @Override
         public void ItemOnClick(View v, int position) {
-
+            openActivity2(houseInfos.get(position).getId());
         }
 
         @Override
         public void OnItemClick(View view, int position) {
-            int houseId = houseInfos.get(position).getId();
-
-            openActivity(houseId);
         }
 
         @Override
@@ -128,6 +158,8 @@ public class HouseResourceActivity extends BaseActivity implements View.OnClickL
         mDefineBAGRefreshWithLoadView.showLoadingMoreImg();
         handler.sendEmptyMessageDelayed(0 , 2000);
     }
+
+
 
     @Override
     public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
@@ -179,11 +211,21 @@ public class HouseResourceActivity extends BaseActivity implements View.OnClickL
         intent.putExtra("houseId",houseId);
         startActivity(intent);
     }
+
+    private void openActivity2(int id){
+//        Intent  intent = new Intent(this, MainActivity.class);
+        Intent  intent = new Intent(this, ConnectDeviceActivity.class);
+        intent.putExtra("type","1");
+        intent.putExtra("ID",id);
+        startActivityForResult(intent,REQUESTCODE);
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();
         finish();
     }
+
+
 
 
     /**

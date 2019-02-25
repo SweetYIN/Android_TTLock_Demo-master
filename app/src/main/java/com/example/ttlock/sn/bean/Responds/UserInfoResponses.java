@@ -6,21 +6,22 @@ package com.example.ttlock.sn.bean.Responds;
 
 public class UserInfoResponses {
 
+
     /**
      * id : 0
      * certificateNumber : string
      * certificateType : IDCARD
      * email : string
-     * group : {"id":0,"name":"string","shortName":"string","created":"2019-01-30T08:47:12.035Z","updated":"2019-01-30T08:47:12.035Z"}
+     * group : {"id":0,"name":"string","shortName":"string","created":"2019-02-25T11:47:36.894Z","updated":"2019-02-25T11:47:36.894Z"}
      * mobile : string
      * nickname : string
      * password : string
-     * role : {"id":0,"name":"string","created":"2019-01-30T08:47:12.035Z","updated":"2019-01-30T08:47:12.035Z"}
+     * role : {"id":0,"name":"string","created":"2019-02-25T11:47:36.895Z","updated":"2019-02-25T11:47:36.895Z"}
      * salt : string
      * type : GOD
      * username : string
-     * created : 2019-01-30T08:47:12.035Z
-     * updated : 2019-01-30T08:47:12.035Z
+     * created : 2019-02-25T11:47:36.895Z
+     * updated : 2019-02-25T11:47:36.895Z
      */
 
     private int id;
@@ -155,8 +156,8 @@ public class UserInfoResponses {
          * id : 0
          * name : string
          * shortName : string
-         * created : 2019-01-30T08:47:12.035Z
-         * updated : 2019-01-30T08:47:12.035Z
+         * created : 2019-02-25T11:47:36.894Z
+         * updated : 2019-02-25T11:47:36.894Z
          */
 
         private int id;
@@ -210,8 +211,8 @@ public class UserInfoResponses {
         /**
          * id : 0
          * name : string
-         * created : 2019-01-30T08:47:12.035Z
-         * updated : 2019-01-30T08:47:12.035Z
+         * created : 2019-02-25T11:47:36.895Z
+         * updated : 2019-02-25T11:47:36.895Z
          */
 
         private int id;

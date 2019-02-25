@@ -262,7 +262,13 @@ public class HouseFragment extends Fragment implements BGARefreshLayout.BGARefre
                     public void onNext(ChangeStateResetResponses value) {
                         if ("SUCCESS".equals(value.getStatus())){
                             toast("查房成功");
-                            requestData();
+                            try {
+                                Thread.sleep(1000);
+                                requestData();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+
                         }else{
                             toast("查房失败");
                         }

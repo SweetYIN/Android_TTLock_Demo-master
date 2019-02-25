@@ -68,7 +68,7 @@ public class HouseActivity extends BaseActivity implements BGARefreshLayout.BGAR
 
     private void initView() {
         titleTV = (TextView) findViewById(R.id.title_tv);
-        titleTV.setText("未绑定的房源");
+        titleTV.setText("未绑定的房间");
         btnBack = (Button) findViewById(R.id.btn_back);
         btnBack.setOnClickListener(this);
         mBgaRefreshLayout =(BGARefreshLayout) findViewById(R.id.rl_House_refresh);
@@ -178,7 +178,7 @@ public class HouseActivity extends BaseActivity implements BGARefreshLayout.BGAR
                        @Override
                        public void onError(Throwable e) {
                            cancelProgressDialog();
-                           toast("房间列表异常"+e.getMessage());
+                           toast("异常"+e.getMessage());
                            Log.e(TAG,"houseInfos = "+e.getMessage());
                        }
 

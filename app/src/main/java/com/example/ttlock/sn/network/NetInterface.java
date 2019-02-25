@@ -61,7 +61,7 @@ public interface NetInterface {
 	/**重置密码**/
 	@Headers("Content-Type:application/json")
 	@POST
-	Observable<ChangeStateResetResponses> ChangeStateReset(@Url String url);
+	Observable<ChangeStateResetResponses> DeletePassword(@Url String url);
 
 	/**绑定锁**/
 	@Headers("Content-Type:application/json")
@@ -73,16 +73,12 @@ public interface NetInterface {
 	@GET
 	Observable<LockResponsesBean> requesLockInfot(@Url String id);
 
-	/**获取用户Session信息**/
-	@Headers("Content-Type:application/json")
-	@GET
-	Observable<UserSessionResponses> UserSessionInfo(@Url String url) ;
 
 
 	/**获取用户信息**/
-	@FormUrlEncoded
-	@POST
-	Observable<UserInfoResponses> UserInfo(@Url String url, String id) ;
+	@Headers("Content-Type:application/json")
+	@GET
+	Observable<UserInfoResponses> UserInfo(@Url String url) ;
 
 
 	/**修改密码**/
