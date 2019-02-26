@@ -58,8 +58,8 @@ public class ApiNet extends BaseNet{
     }
 
     /**房源**/
-    public Observable<HouseSearchResponsesBean> ApiHouseSearch(HouseSearchRequestBean houseSearchRequestBean){
-        return  observe(mNetInterface.HouseSearch(houseSearchRequestBean))
+    public Observable<HouseSearchResponsesBean> ApiHouseSearch(RoomSearchRequest roomSearchRequest){
+        return  observe(mNetInterface.HouseSearch(roomSearchRequest))
                .map(new Function<HouseSearchResponsesBean, HouseSearchResponsesBean>() {
                    @Override
                    public HouseSearchResponsesBean apply(HouseSearchResponsesBean houseSearchResponsesBean) throws Exception {

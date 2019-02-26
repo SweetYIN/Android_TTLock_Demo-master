@@ -76,8 +76,8 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         tabList.add("删除密码");
     }
     private void badgeList(){
-        mBadgeCountList.add(1);
-        mBadgeCountList.add(16);
+        mBadgeCountList.add(0);
+        mBadgeCountList.add(0);
     }
 
     private void initView() {

@@ -195,7 +195,7 @@ public class HouseActivity extends BaseActivity implements BGARefreshLayout.BGAR
     private ClickCallback mClickCallback = new ClickCallback() {
         @Override
         public void ItemOnClick(View v, int position) {
-            openActivity(houseInfos.get(position).getId());
+            openActivity(houseInfos.get(position).getHouse().getId());
         }
 
         @Override

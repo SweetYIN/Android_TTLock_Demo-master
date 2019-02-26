@@ -27,6 +27,7 @@ import com.example.ttlock.sn.adapter.MyDeviceRecyclerViewAdapter;
 import com.example.ttlock.sn.bean.Request.LockFormRequest;
 import com.example.ttlock.sn.bean.Responds.ChangeStateResetResponses;
 import com.example.ttlock.sn.bean.Responds.LockResponsesBean;
+import com.example.ttlock.sn.bean.Responds.RoomSearchResponses;
 import com.example.ttlock.sn.callback.ClickCallback;
 import com.example.ttlock.sn.network.ApiNet;
 import com.example.ttlock.sp.MyPreference;
@@ -74,12 +75,12 @@ public class ConnectDeviceActivity extends BaseActivity implements View.OnClickL
     private String Type ;
 
     private int bindid;
-    private int modifyId;
+    private RoomSearchResponses roomSearchResponses;
     private List<Key> keys  = new ArrayList<>();
 
-    private LockResponsesBean lockResponsesBean = new LockResponsesBean();
 
     private String lockName;
+    private String password;
 
 
 
@@ -92,8 +93,9 @@ public class ConnectDeviceActivity extends BaseActivity implements View.OnClickL
 
         bindid = getIntent().getIntExtra("ID",0);
         }else if ("2".equals(Type)){
-            modifyId = getIntent().getIntExtra("roomId",0);
-            requestLockData(modifyId);
+            roomSearchResponses = (RoomSearchResponses)getIntent().getSerializableExtra("roomSearchResponses");
+            getpassword();
+
         }
         Log.e(TAG,"Type ="+Type);
         initView();
@@ -102,6 +104,14 @@ public class ConnectDeviceActivity extends BaseActivity implements View.OnClickL
         initBle();
         uid = MyPreference.getOpenid(this, MyPreference.OPEN_ID);
 
+    }
+
+    private void getpassword() {
+       for (int j = 0 ;j < roomSearchResponses.getLockViewList().size() ;j++){
+           if (roomSearchResponses.getLock().getId() == roomSearchResponses.getLockViewList().get(j).getLockId()){
+               password = roomSearchResponses.getLockViewList().get(j).getKeyboardPwd();
+           }
+       }
     }
 
     private void initToken() {
@@ -182,10 +192,7 @@ public class ConnectDeviceActivity extends BaseActivity implements View.OnClickL
         Log.e(TAG,"size"+devices.size()+"\nisSettingMode ="+extendedBluetoothDevice.isSettingMode()+"Type = "+Type);
 
         if ("2".equals(Type)){
-            Log.e(TAG,"\nisSettingMode ="+extendedBluetoothDevice.getAddress()+"lockResponsesBean.getData().getLockMac()) = "
-            +lockResponsesBean.getData().getLockMac());
-
-            if (extendedBluetoothDevice.getAddress().equals(lockResponsesBean.getData().getLockMac())){
+            if (extendedBluetoothDevice.getAddress().equals(roomSearchResponses.getLock().getData().getLockMac())){
                 devices.add(extendedBluetoothDevice);
             }
 
@@ -233,7 +240,7 @@ public class ConnectDeviceActivity extends BaseActivity implements View.OnClickL
 //            ttLockAPI.connect(devices.get(position));
             }else{
 //                Key ckey = keys.get(0);
-                ttLockAPI.connect(lockResponsesBean.getData().getLockMac());
+                ttLockAPI.connect(roomSearchResponses.getLock().getData().getLockMac());
             }
         }
 
@@ -263,14 +270,12 @@ public class ConnectDeviceActivity extends BaseActivity implements View.OnClickL
             }else if("2".equals(Type)){
                 //TODO 重置密码
 //                Key curKey = keys.get(0);
-//                ttLockAPI.lockInitialize(extendedBluetoothDevice);
 
 //                ttLockAPI.resetKeyboardPassword(null, uid, lockResponsesBean.getData().getLockVersion(), lockResponsesBean.getData().getAdminPwd(), lockResponsesBean.getData().getLockKey(), lockResponsesBean.getData().getLockFlagPos(), lockResponsesBean.getData().getAesKeyStr());
-                Log.e(TAG,"deleteOneKeyboardPassword = ");
 
-                mTTLockAPI.deleteOneKeyboardPassword(extendedBluetoothDevice,uid,lockResponsesBean.getData().getLockVersion(),
-                        lockResponsesBean.getData().getAdminPwd(),lockResponsesBean.getData().getLockKey(),
-                        lockResponsesBean.getData().getLockFlagPos(),3,"1200783",lockResponsesBean.getData().getAesKeyStr());
+                mTTLockAPI.deleteOneKeyboardPassword(extendedBluetoothDevice,uid,roomSearchResponses.getLock().getData().getLockVersion(),
+                        roomSearchResponses.getLock().getData().getAdminPwd(),roomSearchResponses.getLock().getData().getLockKey(),
+                        roomSearchResponses.getLock().getData().getLockFlagPos(),3,password,roomSearchResponses.getLock().getData().getAesKeyStr());
 
             }
 
@@ -301,40 +306,8 @@ public class ConnectDeviceActivity extends BaseActivity implements View.OnClickL
                LockFormRequest lockFormRequest = new LockFormRequest();
                lockFormRequest.setData(lockData);
                lockFormRequest.setLockAlias(lockName);
-
-//               Log.e(TAG,"lockData.toJson() = "+lockData.toJson());
                bindLock(bindid, lockFormRequest);
 
-//               toast(getString(R.string.words_lock_add_successed_and_init));
-
-//               new AsyncTask<Void, String, Boolean>() {
-//
-//                   @Override
-//                   protected Boolean  doInBackground(Void... params) {
-//                       Boolean flag = false;
-//                       String json = ResponseService.lockInit(lockDataJson, lockData.getLockName());
-//                       try {
-//                           JSONObject jsonObject = new JSONObject(json);
-//                           if(jsonObject.has("errcode")) {
-//                               String errmsg = jsonObject.getString("description");
-//                               toast(errmsg);
-//                           } else {
-//
-//                               flag = true;
-//                               toast(getString(R.string.words_lock_init_successed));
-//                           }
-//                       } catch (JSONException e) {
-//                           e.printStackTrace();
-//                           toast(getString(R.string.words_lock_init_failed) + e.getMessage());
-//                       }
-//                       return flag;
-//                   }
-//
-//                   @Override
-//                   protected void onPostExecute(Boolean flag) {
-//
-//                   }
-//               }.execute();
            } else {
                //失败
                toast(error.getErrorMsg());
@@ -703,38 +676,38 @@ public class ConnectDeviceActivity extends BaseActivity implements View.OnClickL
 
     }
 
-    /**
-     * 获取锁的信息
-     */
-    private  void  requestLockData(int roomID){
-        ApiNet apiNet = new ApiNet();
-        apiNet.ApiRequestLockData(roomID)
-                .subscribe(new Observer<LockResponsesBean>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(LockResponsesBean value) {
-                        toast("获取信息 = "+value.toString());
-                        lockResponsesBean = value;
-                        scanBle();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        toast("获取信息异常 = "+e.getMessage());
-                        finish();
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-
-    }
+//    /**
+//     * 获取锁的信息
+//     */
+//    private  void  requestLockData(int roomID){
+//        ApiNet apiNet = new ApiNet();
+//        apiNet.ApiRequestLockData(roomID)
+//                .subscribe(new Observer<LockResponsesBean>() {
+//                    @Override
+//                    public void onSubscribe(Disposable d) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onNext(LockResponsesBean value) {
+//                        toast("获取信息 = "+value.toString());
+//                        lockResponsesBean = value;
+//                        scanBle();
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        toast("获取信息异常 = "+e.getMessage());
+//                        finish();
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//
+//                    }
+//                });
+//
+//    }
 
     /**
      * 上传修改密码
@@ -743,7 +716,7 @@ public class ConnectDeviceActivity extends BaseActivity implements View.OnClickL
 
     private void DeletePassword(){
         ApiNet apiNet = new ApiNet();
-        apiNet.ApiDeletePs(modifyId)
+        apiNet.ApiDeletePs(roomSearchResponses.getHouse().getId())
                 .subscribe(new Observer<ChangeStateResetResponses>() {
                     @Override
                     public void onSubscribe(Disposable d) {

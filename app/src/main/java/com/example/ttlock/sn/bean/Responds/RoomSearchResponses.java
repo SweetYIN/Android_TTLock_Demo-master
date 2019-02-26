@@ -1,48 +1,38 @@
 package com.example.ttlock.sn.bean.Responds;
 
-import java.math.BigDecimal;
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by jl on 2019/1/29.
  */
 
-public class RoomSearchResponses {
+public class RoomSearchResponses implements Serializable {
 
 
     /**
-     * id : 0
      * depositAmount : 0
-     * house : {"id":0,"adcode":0,"address":"string","amenities":["string"],"bedroomCount":"ONE","city":"string","contract":{"id":0,"address":"string","endDate":"string","houseNo":"string","ownerCertificateNumber":"string","ownerCertificateType":"IDCARD","ownerId":0,"ownerIncomeRatio":0,"ownerMobile":"string","ownerName":"string","serialNo":"string","startDate":"string","created":"2019-02-25T03:48:04.024Z","updated":"2019-02-25T03:48:04.025Z"},"description":"string","floor":"LOW_RISE","houseNo":"string","houseType":"VILLA","latitude":"string","leaseType":"SHARE_HOUSE","longitude":"string","name":"string","orientation":"NORTH","owner":{"id":0,"certificateNumber":"string","certificateType":"IDCARD","mobile":"string","name":"string","created":"2019-02-25T03:48:04.025Z","updated":"2019-02-25T03:48:04.025Z"},"province":"string","region":"string","serialNumber":"string","state":"INITIAL","street":"string","created":"2019-02-25T03:48:04.025Z","updated":"2019-02-25T03:48:04.025Z"}
+     * house : {"adcode":0,"address":"string","amenities":["WIFI"],"bedroomCount":"ONE","city":"string","contractId":0,"contractNo":"string","depositAmount":0,"description":"string","floor":"LOW_RISE","houseNo":"string","houseType":"VILLA","id":0,"latitude":"string","leaseType":"SHARE_HOUSE","longitude":"string","name":"string","numberPerson":0,"orientation":"NORTH","price":0,"priceHigh":0,"province":"string","region":"string","serialNumber":"string","state":"INITIAL","street":"string","topUrl":"string"}
      * leaseType : SHARE_HOUSE
-     * lock : {"id":0,"code":"string","data":{"additionalProp1":"string","additionalProp2":"string","additionalProp3":"string"},"keyId":"string","name":"string","state":"IDLE","created":"2019-02-25T03:48:04.025Z","updated":"2019-02-25T03:48:04.025Z"}
+     * lock : {"id":0,"code":"string","data":{"additionalProp1":"string","additionalProp2":"string","additionalProp3":"string"},"keyId":"string","name":"string","state":"IDLE","created":"2019-02-26T02:34:39.548Z","updated":"2019-02-26T02:34:39.548Z"}
+     * lockViewList : [{"keyboardPwd":"string","keyboardPwdId":0,"lockId":0}]
      * name : string
+     * numberPerson : 0
      * price : 0
      * priceHigh : 0
-     * state : READYf
-     * created : 2019-02-25T03:48:04.025Z
-     * updated : 2019-02-25T03:48:04.025Z
+     * state : READY
      */
 
-    private int id;
     private int depositAmount;
     private HouseBean house;
     private String leaseType;
     private LockBean lock;
     private String name;
+    private int numberPerson;
     private int price;
     private int priceHigh;
     private String state;
-    private String created;
-    private String updated;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+    private List<LockViewListBean> lockViewList;
 
     public int getDepositAmount() {
         return depositAmount;
@@ -84,6 +74,14 @@ public class RoomSearchResponses {
         this.name = name;
     }
 
+    public int getNumberPerson() {
+        return numberPerson;
+    }
+
+    public void setNumberPerson(int numberPerson) {
+        this.numberPerson = numberPerson;
+    }
+
     public int getPrice() {
         return price;
     }
@@ -108,82 +106,72 @@ public class RoomSearchResponses {
         this.state = state;
     }
 
-    public String getCreated() {
-        return created;
+    public List<LockViewListBean> getLockViewList() {
+        return lockViewList;
     }
 
-    public void setCreated(String created) {
-        this.created = created;
-    }
-
-    public String getUpdated() {
-        return updated;
-    }
-
-    public void setUpdated(String updated) {
-        this.updated = updated;
+    public void setLockViewList(List<LockViewListBean> lockViewList) {
+        this.lockViewList = lockViewList;
     }
 
     public static class HouseBean {
         /**
-         * id : 0
          * adcode : 0
          * address : string
-         * amenities : ["string"]
+         * amenities : ["WIFI"]
          * bedroomCount : ONE
          * city : string
-         * contract : {"id":0,"address":"string","endDate":"string","houseNo":"string","ownerCertificateNumber":"string","ownerCertificateType":"IDCARD","ownerId":0,"ownerIncomeRatio":0,"ownerMobile":"string","ownerName":"string","serialNo":"string","startDate":"string","created":"2019-02-25T03:48:04.024Z","updated":"2019-02-25T03:48:04.025Z"}
+         * contractId : 0
+         * contractNo : string
+         * depositAmount : 0
          * description : string
          * floor : LOW_RISE
          * houseNo : string
          * houseType : VILLA
+         * id : 0
          * latitude : string
          * leaseType : SHARE_HOUSE
          * longitude : string
          * name : string
+         * numberPerson : 0
          * orientation : NORTH
-         * owner : {"id":0,"certificateNumber":"string","certificateType":"IDCARD","mobile":"string","name":"string","created":"2019-02-25T03:48:04.025Z","updated":"2019-02-25T03:48:04.025Z"}
+         * price : 0
+         * priceHigh : 0
          * province : string
          * region : string
          * serialNumber : string
          * state : INITIAL
          * street : string
-         * created : 2019-02-25T03:48:04.025Z
-         * updated : 2019-02-25T03:48:04.025Z
+         * topUrl : string
          */
 
-        private int id;
         private int adcode;
         private String address;
         private String bedroomCount;
         private String city;
-        private ContractBean contract;
+        private int contractId;
+        private String contractNo;
+        private int depositAmount;
         private String description;
         private String floor;
         private String houseNo;
         private String houseType;
+        private int id;
         private String latitude;
         private String leaseType;
         private String longitude;
         private String name;
+        private int numberPerson;
         private String orientation;
-        private OwnerBean owner;
+        private int price;
+        private int priceHigh;
         private String province;
         private String region;
         private String serialNumber;
         private String state;
         private String street;
-        private String created;
-        private String updated;
+        private String topUrl;
         private List<String> amenities;
-
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
 
         public int getAdcode() {
             return adcode;
@@ -217,12 +205,28 @@ public class RoomSearchResponses {
             this.city = city;
         }
 
-        public ContractBean getContract() {
-            return contract;
+        public int getContractId() {
+            return contractId;
         }
 
-        public void setContract(ContractBean contract) {
-            this.contract = contract;
+        public void setContractId(int contractId) {
+            this.contractId = contractId;
+        }
+
+        public String getContractNo() {
+            return contractNo;
+        }
+
+        public void setContractNo(String contractNo) {
+            this.contractNo = contractNo;
+        }
+
+        public int getDepositAmount() {
+            return depositAmount;
+        }
+
+        public void setDepositAmount(int depositAmount) {
+            this.depositAmount = depositAmount;
         }
 
         public String getDescription() {
@@ -257,6 +261,14 @@ public class RoomSearchResponses {
             this.houseType = houseType;
         }
 
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
         public String getLatitude() {
             return latitude;
         }
@@ -289,6 +301,14 @@ public class RoomSearchResponses {
             this.name = name;
         }
 
+        public int getNumberPerson() {
+            return numberPerson;
+        }
+
+        public void setNumberPerson(int numberPerson) {
+            this.numberPerson = numberPerson;
+        }
+
         public String getOrientation() {
             return orientation;
         }
@@ -297,12 +317,20 @@ public class RoomSearchResponses {
             this.orientation = orientation;
         }
 
-        public OwnerBean getOwner() {
-            return owner;
+        public int getPrice() {
+            return price;
         }
 
-        public void setOwner(OwnerBean owner) {
-            this.owner = owner;
+        public void setPrice(int price) {
+            this.price = price;
+        }
+
+        public int getPriceHigh() {
+            return priceHigh;
+        }
+
+        public void setPriceHigh(int priceHigh) {
+            this.priceHigh = priceHigh;
         }
 
         public String getProvince() {
@@ -345,20 +373,12 @@ public class RoomSearchResponses {
             this.street = street;
         }
 
-        public String getCreated() {
-            return created;
+        public String getTopUrl() {
+            return topUrl;
         }
 
-        public void setCreated(String created) {
-            this.created = created;
-        }
-
-        public String getUpdated() {
-            return updated;
-        }
-
-        public void setUpdated(String updated) {
-            this.updated = updated;
+        public void setTopUrl(String topUrl) {
+            this.topUrl = topUrl;
         }
 
         public List<String> getAmenities() {
@@ -367,228 +387,6 @@ public class RoomSearchResponses {
 
         public void setAmenities(List<String> amenities) {
             this.amenities = amenities;
-        }
-
-        public static class ContractBean {
-            /**
-             * id : 0
-             * address : string
-             * endDate : string
-             * houseNo : string
-             * ownerCertificateNumber : string
-             * ownerCertificateType : IDCARD
-             * ownerId : 0
-             * ownerIncomeRatio : 0
-             * ownerMobile : string
-             * ownerName : string
-             * serialNo : string
-             * startDate : string
-             * created : 2019-02-25T03:48:04.024Z
-             * updated : 2019-02-25T03:48:04.025Z
-             */
-
-            private int id;
-            private String address;
-            private String endDate;
-            private String houseNo;
-            private String ownerCertificateNumber;
-            private String ownerCertificateType;
-            private int ownerId;
-            private BigDecimal ownerIncomeRatio;
-            private String ownerMobile;
-            private String ownerName;
-            private String serialNo;
-            private String startDate;
-            private String created;
-            private String updated;
-
-            public int getId() {
-                return id;
-            }
-
-            public void setId(int id) {
-                this.id = id;
-            }
-
-            public String getAddress() {
-                return address;
-            }
-
-            public void setAddress(String address) {
-                this.address = address;
-            }
-
-            public String getEndDate() {
-                return endDate;
-            }
-
-            public void setEndDate(String endDate) {
-                this.endDate = endDate;
-            }
-
-            public String getHouseNo() {
-                return houseNo;
-            }
-
-            public void setHouseNo(String houseNo) {
-                this.houseNo = houseNo;
-            }
-
-            public String getOwnerCertificateNumber() {
-                return ownerCertificateNumber;
-            }
-
-            public void setOwnerCertificateNumber(String ownerCertificateNumber) {
-                this.ownerCertificateNumber = ownerCertificateNumber;
-            }
-
-            public String getOwnerCertificateType() {
-                return ownerCertificateType;
-            }
-
-            public void setOwnerCertificateType(String ownerCertificateType) {
-                this.ownerCertificateType = ownerCertificateType;
-            }
-
-            public int getOwnerId() {
-                return ownerId;
-            }
-
-            public void setOwnerId(int ownerId) {
-                this.ownerId = ownerId;
-            }
-
-            public BigDecimal getOwnerIncomeRatio() {
-                return ownerIncomeRatio;
-            }
-
-            public void setOwnerIncomeRatio(BigDecimal ownerIncomeRatio) {
-                this.ownerIncomeRatio = ownerIncomeRatio;
-            }
-
-            public String getOwnerMobile() {
-                return ownerMobile;
-            }
-
-            public void setOwnerMobile(String ownerMobile) {
-                this.ownerMobile = ownerMobile;
-            }
-
-            public String getOwnerName() {
-                return ownerName;
-            }
-
-            public void setOwnerName(String ownerName) {
-                this.ownerName = ownerName;
-            }
-
-            public String getSerialNo() {
-                return serialNo;
-            }
-
-            public void setSerialNo(String serialNo) {
-                this.serialNo = serialNo;
-            }
-
-            public String getStartDate() {
-                return startDate;
-            }
-
-            public void setStartDate(String startDate) {
-                this.startDate = startDate;
-            }
-
-            public String getCreated() {
-                return created;
-            }
-
-            public void setCreated(String created) {
-                this.created = created;
-            }
-
-            public String getUpdated() {
-                return updated;
-            }
-
-            public void setUpdated(String updated) {
-                this.updated = updated;
-            }
-        }
-
-        public static class OwnerBean {
-            /**
-             * id : 0
-             * certificateNumber : string
-             * certificateType : IDCARD
-             * mobile : string
-             * name : string
-             * created : 2019-02-25T03:48:04.025Z
-             * updated : 2019-02-25T03:48:04.025Z
-             */
-
-            private int id;
-            private String certificateNumber;
-            private String certificateType;
-            private String mobile;
-            private String name;
-            private String created;
-            private String updated;
-
-            public int getId() {
-                return id;
-            }
-
-            public void setId(int id) {
-                this.id = id;
-            }
-
-            public String getCertificateNumber() {
-                return certificateNumber;
-            }
-
-            public void setCertificateNumber(String certificateNumber) {
-                this.certificateNumber = certificateNumber;
-            }
-
-            public String getCertificateType() {
-                return certificateType;
-            }
-
-            public void setCertificateType(String certificateType) {
-                this.certificateType = certificateType;
-            }
-
-            public String getMobile() {
-                return mobile;
-            }
-
-            public void setMobile(String mobile) {
-                this.mobile = mobile;
-            }
-
-            public String getName() {
-                return name;
-            }
-
-            public void setName(String name) {
-                this.name = name;
-            }
-
-            public String getCreated() {
-                return created;
-            }
-
-            public void setCreated(String created) {
-                this.created = created;
-            }
-
-            public String getUpdated() {
-                return updated;
-            }
-
-            public void setUpdated(String updated) {
-                this.updated = updated;
-            }
         }
     }
 
@@ -600,8 +398,8 @@ public class RoomSearchResponses {
          * keyId : string
          * name : string
          * state : IDLE
-         * created : 2019-02-25T03:48:04.025Z
-         * updated : 2019-02-25T03:48:04.025Z
+         * created : 2019-02-26T02:34:39.548Z
+         * updated : 2019-02-26T02:34:39.548Z
          */
 
         private int id;
@@ -679,38 +477,214 @@ public class RoomSearchResponses {
 
         public static class DataBean {
             /**
-             * additionalProp1 : string
-             * additionalProp2 : string
-             * additionalProp3 : string
+             * nbRssi : 0
+             * lockKey : OCwxMywwLDEyLDE0LDExLDE1LDEsOCwxLDcw
+             * lockMac : DC:D0:CF:B1:8B:CD
+             * pwdInfo : W9dcNs6o3TXrXzA5pUHdHPFXYglxUInhm25G17r0OcG1qdyq+huGUU04lrPq92vdaFJ1iMisniQD7VPlFQX1bD4DTCePqpYlGvSCPWYJIvrVrS4nqgnR4ohm844NYymBrW7vJZuepphHOZBvd/IIzpgCZmrpQIqokn8eU7Zj/U7JSKYB+KSAJfIuNkC66gnJWLHUissLEHTlp4X/36oId0gM8/LMJSCcQ6nZzc+z0cbvt4XIes8KIHx3gIwhVPrQ2qXi8QzEMrOwJ+MDjILUDYKw2b0KrJ2lAFrQTWZKBugGyu8Ef0THaGKMpW+kQKJBNHGC7aBQCD+Pb/SyWh0mwfhYt6Z07S7t9S6UHIX2p5xn+RqmZoFFb5FJXzvr0xHyt/Nxdhj5O8SfPtXEKEPtaJ3IgG4RGv4IKEW6/CnLLEUcryRbFDoBoO45bjgMTEIWDjB3HG9HEOPXb0fRjAGaLM7IpCOVyw3jbqaQ36WMOMQrWrjCtbzmZnz9Utax6S0xZgVMjoCqW9owH+N9F3C43GSxMclH0uu0CdMF+b3vYcl08OhZczTx8QlsddVw00b4FxPKzsPurjCv6d1+xt08st+M2NjL5ltK2A3C5CU5QrE3runTpcElN3n0SXH9W583UmCSImLrpkntfGAulgg/bYEMijjWBe59L+3I5lifUAdn1ZCd093oytqqeThbEuPrCEhSCJCQlOuCis5N99eATvEfwCazdjQyOB4qaBTf04oRjPf8c0mXCrJYaXCjfEJXIrz22Q1hF8LvFIrrS9gS2D1C4JhaKJzpjhgvEPG+hVSSEKdZYpR6XMJRe0lfBsAuPJSxxw1ys+veCqitRE0WXXQof78tOme+Z2JsFF1X9A8=
+             * adminPwd : NDEsMzMsNDQsNDIsNDAsMzMsNDQsNDMsNDMsNDYsMTAz
+             * lockName : S202T_cd8bb1
+             * modelNum : SN139-S202_PV53
+             * noKeyPwd : 3526299
+             * aesKeyStr : 2a,84,98,9a,ec,54,70,48,3d,54,81,7d,2a,f8,3c,4c
+             * timestamp : 1550991990367
+             * lockFlagPos : 0
+             * lockVersion : {"groupId":1,"orgId":1,"protocolType":5,"protocolVersion":3,"scene":2}
+             * specialValue : 20705
+             * electricQuantity : 35
+             * firmwareRevision : 4.1.18.0131
+             * hardwareRevision : 1.1.1
+             * timezoneRawOffset : 28800000
              */
 
-            private String additionalProp1;
-            private String additionalProp2;
-            private String additionalProp3;
+            private String nbRssi;
+            private String lockKey;
+            private String lockMac;
+            private String pwdInfo;
+            private String adminPwd;
+            private String lockName;
+            private String modelNum;
+            private String noKeyPwd;
+            private String aesKeyStr;
+            private String timestamp;
+            private int lockFlagPos;
+            private String lockVersion;
+            private String specialValue;
+            private String electricQuantity;
+            private String firmwareRevision;
+            private String hardwareRevision;
+            private long timezoneRawOffset;
 
-            public String getAdditionalProp1() {
-                return additionalProp1;
+            public String getNbRssi() {
+                return nbRssi;
             }
 
-            public void setAdditionalProp1(String additionalProp1) {
-                this.additionalProp1 = additionalProp1;
+            public void setNbRssi(String nbRssi) {
+                this.nbRssi = nbRssi;
             }
 
-            public String getAdditionalProp2() {
-                return additionalProp2;
+            public String getLockKey() {
+                return lockKey;
             }
 
-            public void setAdditionalProp2(String additionalProp2) {
-                this.additionalProp2 = additionalProp2;
+            public void setLockKey(String lockKey) {
+                this.lockKey = lockKey;
             }
 
-            public String getAdditionalProp3() {
-                return additionalProp3;
+            public String getLockMac() {
+                return lockMac;
             }
 
-            public void setAdditionalProp3(String additionalProp3) {
-                this.additionalProp3 = additionalProp3;
+            public void setLockMac(String lockMac) {
+                this.lockMac = lockMac;
             }
+
+            public String getPwdInfo() {
+                return pwdInfo;
+            }
+
+            public void setPwdInfo(String pwdInfo) {
+                this.pwdInfo = pwdInfo;
+            }
+
+            public String getAdminPwd() {
+                return adminPwd;
+            }
+
+            public void setAdminPwd(String adminPwd) {
+                this.adminPwd = adminPwd;
+            }
+
+            public String getLockName() {
+                return lockName;
+            }
+
+            public void setLockName(String lockName) {
+                this.lockName = lockName;
+            }
+
+            public String getModelNum() {
+                return modelNum;
+            }
+
+            public void setModelNum(String modelNum) {
+                this.modelNum = modelNum;
+            }
+
+            public String getNoKeyPwd() {
+                return noKeyPwd;
+            }
+
+            public void setNoKeyPwd(String noKeyPwd) {
+                this.noKeyPwd = noKeyPwd;
+            }
+
+            public String getAesKeyStr() {
+                return aesKeyStr;
+            }
+
+            public void setAesKeyStr(String aesKeyStr) {
+                this.aesKeyStr = aesKeyStr;
+            }
+
+            public String getTimestamp() {
+                return timestamp;
+            }
+
+            public void setTimestamp(String timestamp) {
+                this.timestamp = timestamp;
+            }
+
+            public int getLockFlagPos() {
+                return lockFlagPos;
+            }
+
+            public void setLockFlagPos(int lockFlagPos) {
+                this.lockFlagPos = lockFlagPos;
+            }
+
+            public String getLockVersion() {
+                return lockVersion;
+            }
+
+            public void setLockVersion(String lockVersion) {
+                this.lockVersion = lockVersion;
+            }
+
+            public String getSpecialValue() {
+                return specialValue;
+            }
+
+            public void setSpecialValue(String specialValue) {
+                this.specialValue = specialValue;
+            }
+
+            public String getElectricQuantity() {
+                return electricQuantity;
+            }
+
+            public void setElectricQuantity(String electricQuantity) {
+                this.electricQuantity = electricQuantity;
+            }
+
+            public String getFirmwareRevision() {
+                return firmwareRevision;
+            }
+
+            public void setFirmwareRevision(String firmwareRevision) {
+                this.firmwareRevision = firmwareRevision;
+            }
+
+            public String getHardwareRevision() {
+                return hardwareRevision;
+            }
+
+            public void setHardwareRevision(String hardwareRevision) {
+                this.hardwareRevision = hardwareRevision;
+            }
+
+            public long getTimezoneRawOffset() {
+                return timezoneRawOffset;
+            }
+
+            public void setTimezoneRawOffset(long timezoneRawOffset) {
+                this.timezoneRawOffset = timezoneRawOffset;
+            }
+        }
+    }
+
+    public static class LockViewListBean {
+        /**
+         * keyboardPwd : string
+         * keyboardPwdId : 0
+         * lockId : 0
+         */
+
+        private String keyboardPwd;
+        private int keyboardPwdId;
+        private int lockId;
+
+        public String getKeyboardPwd() {
+            return keyboardPwd;
+        }
+
+        public void setKeyboardPwd(String keyboardPwd) {
+            this.keyboardPwd = keyboardPwd;
+        }
+
+        public int getKeyboardPwdId() {
+            return keyboardPwdId;
+        }
+
+        public void setKeyboardPwdId(int keyboardPwdId) {
+            this.keyboardPwdId = keyboardPwdId;
+        }
+
+        public int getLockId() {
+            return lockId;
+        }
+
+        public void setLockId(int lockId) {
+            this.lockId = lockId;
         }
     }
 }

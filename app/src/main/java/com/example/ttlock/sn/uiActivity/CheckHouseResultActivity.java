@@ -13,7 +13,9 @@ import com.example.ttlock.R;
 import com.example.ttlock.activity.BaseActivity;
 import com.example.ttlock.sn.adapter.MyRecyclerViewAdapter;
 import com.example.ttlock.sn.bean.Request.HouseSearchRequestBean;
+import com.example.ttlock.sn.bean.Request.RoomSearchRequest;
 import com.example.ttlock.sn.bean.Responds.HouseSearchResponsesBean;
+import com.example.ttlock.sn.bean.Responds.RoomSearchResponses;
 import com.example.ttlock.sn.network.ApiNet;
 
 import java.util.ArrayList;
@@ -82,10 +84,10 @@ public class CheckHouseResultActivity extends BaseActivity implements View.OnCli
      */
     private void requestData(String query){
         showProgressDialog();
-        HouseSearchRequestBean resourcesRequestBean  = new HouseSearchRequestBean();
-        resourcesRequestBean.setSerialNumber(query);
+        RoomSearchRequest roomSearchRequest = new RoomSearchRequest();
+        roomSearchRequest.setSerialNumber(query);
         ApiNet apiNet = new ApiNet();
-        apiNet.ApiHouseSearch(resourcesRequestBean)
+        apiNet.ApiHouseSearch(roomSearchRequest)
                 .subscribe(new Observer<HouseSearchResponsesBean>() {
                     @Override
                     public void onSubscribe(Disposable d) {

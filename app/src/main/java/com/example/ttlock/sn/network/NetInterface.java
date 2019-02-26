@@ -46,7 +46,7 @@ public interface NetInterface {
 	/**房源**/
 	@Headers("Content-Type:application/json")
 	@POST(HttpUrlConfig.HouseSearchResources)
-	Observable<HouseSearchResponsesBean> HouseSearch(@Body HouseSearchRequestBean houseSearchRequestBean);
+	Observable<HouseSearchResponsesBean> HouseSearch(@Body RoomSearchRequest roomSearchRequest);
 
 	/**房间**/
 	@Headers("Content-Type:application/json")

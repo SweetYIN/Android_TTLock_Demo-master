@@ -69,7 +69,7 @@ public class MyRoomSearchViewAdapter extends RecyclerView.Adapter<RecyclerView.V
                     rommSearchResponses.getHouse().getHouseType()+"/"+
                     rommSearchResponses.getHouse().getProvince());
         //roomSearchResponses.getHouse().getTopUrl()
-        GlideUtils.setCircleImage(mContext,myViewHolder.imageView,"",R.mipmap.ic_launcher);
+        GlideUtils.setCircleImage(mContext,myViewHolder.imageView,rommSearchResponses.getHouse().getTopUrl(),R.mipmap.ic_launcher);
         myViewHolder.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

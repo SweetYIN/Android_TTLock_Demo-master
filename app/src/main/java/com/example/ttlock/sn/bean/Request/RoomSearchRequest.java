@@ -15,6 +15,7 @@ public class RoomSearchRequest {
     private String houseId;
     private String leaseType;
     private String roomState;
+    private String serialNumber;
 
 
     public String getHouseId() {
@@ -39,5 +40,13 @@ public class RoomSearchRequest {
 
     public void setRoomState(String roomState) {
         this.roomState = roomState;
+    }
+
+    public String getSerialNumber() {
+        return serialNumber;
+    }
+
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
     }
 }
