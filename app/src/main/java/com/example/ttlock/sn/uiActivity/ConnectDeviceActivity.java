@@ -57,7 +57,6 @@ public class ConnectDeviceActivity extends BaseActivity implements View.OnClickL
 
     private String TAG = "ConnectDeviceActivity";
 
-//    private AlertDialog.Builder builder;
 
     private ImageButton scanIB;
     private RecyclerView recyclerView;
@@ -65,6 +64,7 @@ public class ConnectDeviceActivity extends BaseActivity implements View.OnClickL
     private MyDeviceRecyclerViewAdapter myDeviceRecyclerViewAdapter;
     private TTLockAPI ttLockAPI;
 
+    private RoomSearchResponses.LockViewListBean.LockBean lockData;
     private int uid;
 
 
@@ -76,7 +76,6 @@ public class ConnectDeviceActivity extends BaseActivity implements View.OnClickL
 
     private int bindid;
     private RoomSearchResponses roomSearchResponses;
-    private List<Key> keys  = new ArrayList<>();
 
 
     private String lockName;
@@ -94,7 +93,7 @@ public class ConnectDeviceActivity extends BaseActivity implements View.OnClickL
         bindid = getIntent().getIntExtra("ID",0);
         }else if ("2".equals(Type)){
             roomSearchResponses = (RoomSearchResponses)getIntent().getSerializableExtra("roomSearchResponses");
-            getpassword();
+//            getpassword();
 
         }
         Log.e(TAG,"Type ="+Type);
@@ -106,13 +105,13 @@ public class ConnectDeviceActivity extends BaseActivity implements View.OnClickL
 
     }
 
-    private void getpassword() {
-       for (int j = 0 ;j < roomSearchResponses.getLockViewList().size() ;j++){
-           if (roomSearchResponses.getLock().getId() == roomSearchResponses.getLockViewList().get(j).getLockId()){
-               password = roomSearchResponses.getLockViewList().get(j).getKeyboardPwd();
-           }
-       }
-    }
+//    private void getpassword() {
+//       for (int j = 0 ;j < roomSearchResponses.getLockViewList().size() ;j++){
+//           if (roomSearchResponses.getLock().getId() == roomSearchResponses.getLockViewList().get(j).getLockId()){
+//               password = roomSearchResponses.getLockViewList().get(j).getKeyboardPwd();
+//           }
+//       }
+//    }
 
     private void initToken() {
         if ("access_token".equals(MyPreference.ACCESS_TOKEN)){
@@ -142,11 +141,11 @@ public class ConnectDeviceActivity extends BaseActivity implements View.OnClickL
         scanIB = (ImageButton) findViewById(R.id.ib_scanDevice);
         scanIB.setOnClickListener(this);
         recyclerView = (RecyclerView) findViewById(R.id.device_rl);
-        if ("1".equals(Type)){
-            scanIB.setVisibility(View.VISIBLE);
-        }else if ("2".equals(Type)){
-            scanIB.setVisibility(View.GONE);
-        }
+//        if ("1".equals(Type)){
+//            scanIB.setVisibility(View.VISIBLE);
+//        }else if ("2".equals(Type)){
+//            scanIB.setVisibility(View.GONE);
+//        }
 
     }
 
@@ -190,20 +189,29 @@ public class ConnectDeviceActivity extends BaseActivity implements View.OnClickL
      */
     public void updateDevice(ExtendedBluetoothDevice extendedBluetoothDevice) {
         Log.e(TAG,"size"+devices.size()+"\nisSettingMode ="+extendedBluetoothDevice.isSettingMode()+"Type = "+Type);
+        for(int i = 0; i < devices.size() ;i++) {
+            if(devices.contains(extendedBluetoothDevice)) {
 
-        if ("2".equals(Type)){
-            if (extendedBluetoothDevice.getAddress().equals(roomSearchResponses.getLock().getData().getLockMac())){
-                devices.add(extendedBluetoothDevice);
+                return;
             }
+        }
+        if ("2".equals(Type)){
+
+            for (int i = 0;i <roomSearchResponses.getLockViewList().size();i++){
+                if (extendedBluetoothDevice.getAddress().equals(roomSearchResponses.getLockViewList().get(i).getLock().getData().getLockMac())){
+                    devices.add(extendedBluetoothDevice);
+                }
+            }
+
 
         }else{
 
-            for(int i = 0; i < devices.size() ;i++) {
-                if(devices.contains(extendedBluetoothDevice)) {
-
-                   return;
-                }
-            }
+//            for(int i = 0; i < devices.size() ;i++) {
+//                if(devices.contains(extendedBluetoothDevice)) {
+//
+//                   return;
+//                }
+//            }
             if (extendedBluetoothDevice.isSettingMode()){
                 devices.add(extendedBluetoothDevice);
             }
@@ -238,9 +246,11 @@ public class ConnectDeviceActivity extends BaseActivity implements View.OnClickL
             if ("1".equals(Type)){
             startAlertDialog("请输入锁的别名","取消","确定",position);
 //            ttLockAPI.connect(devices.get(position));
-            }else{
-//                Key ckey = keys.get(0);
-                ttLockAPI.connect(roomSearchResponses.getLock().getData().getLockMac());
+            }else if("2".equals(Type)){
+                password = roomSearchResponses.getLockViewList().get(position).getKeyboardPwd();
+                lockData = roomSearchResponses.getLockViewList().get(position).getLock();
+                Log.e(TAG,"position = "+roomSearchResponses.getLockViewList().get(position).getLock().getData().getLockMac());
+                ttLockAPI.connect(roomSearchResponses.getLockViewList().get(position).getLock().getData().getLockMac());
             }
         }
 
@@ -272,10 +282,10 @@ public class ConnectDeviceActivity extends BaseActivity implements View.OnClickL
 //                Key curKey = keys.get(0);
 
 //                ttLockAPI.resetKeyboardPassword(null, uid, lockResponsesBean.getData().getLockVersion(), lockResponsesBean.getData().getAdminPwd(), lockResponsesBean.getData().getLockKey(), lockResponsesBean.getData().getLockFlagPos(), lockResponsesBean.getData().getAesKeyStr());
-
-                mTTLockAPI.deleteOneKeyboardPassword(extendedBluetoothDevice,uid,roomSearchResponses.getLock().getData().getLockVersion(),
-                        roomSearchResponses.getLock().getData().getAdminPwd(),roomSearchResponses.getLock().getData().getLockKey(),
-                        roomSearchResponses.getLock().getData().getLockFlagPos(),3,password,roomSearchResponses.getLock().getData().getAesKeyStr());
+                Log.e(TAG,"deleteOneKeyboardPassword = ");
+                ttLockAPI.deleteOneKeyboardPassword(extendedBluetoothDevice,uid,lockData.getData().getLockVersion(),
+                        lockData.getData().getAdminPwd(),lockData.getData().getLockKey(),
+                        lockData.getData().getLockFlagPos(),3,password,lockData.getData().getAesKeyStr());
 
             }
 
@@ -359,6 +369,7 @@ public class ConnectDeviceActivity extends BaseActivity implements View.OnClickL
 
        @Override
        public void onResetKeyboardPassword(ExtendedBluetoothDevice extendedBluetoothDevice, String s, long l, Error error) {
+           Log.e(TAG,"onResetKeyboardPassword"+error);
            if (error == Error.SUCCESS){
 //               //TODO 向后台传传重置密码和时间
 //               (extendedBluetoothDevice);
@@ -399,11 +410,16 @@ public class ConnectDeviceActivity extends BaseActivity implements View.OnClickL
 
        @Override
        public void onDeleteOneKeyboardPassword(ExtendedBluetoothDevice extendedBluetoothDevice, int i, String s, Error error) {
+           Log.e(TAG,"onDeleteOneKeyboardPassword"+error);
            if (error == Error.SUCCESS){
 //               //TODO 向后台传传重置密码和时间
-               DeletePassword();
-//               Key curKey = keys.get(0);
-               Log.e(TAG,"onDeleteOneKeyboardPassword");
+
+               devices.remove(extendedBluetoothDevice);
+               myDeviceRecyclerViewAdapter.notifyDataSetChanged();
+               if (devices.size() == 0){
+                   DeletePassword();
+               }
+
 //               ttLockAPI.setLockTime(null, uid, lockResponsesBean.getData().getLockVersion(), lockResponsesBean.getData().getLockKey(), System.currentTimeMillis(), lockResponsesBean.getData().getLockFlagPos(), lockResponsesBean.getData().getAesKeyStr(), lockResponsesBean.getData().getTimezoneRawOffset());
 
 
@@ -676,39 +692,6 @@ public class ConnectDeviceActivity extends BaseActivity implements View.OnClickL
 
     }
 
-//    /**
-//     * 获取锁的信息
-//     */
-//    private  void  requestLockData(int roomID){
-//        ApiNet apiNet = new ApiNet();
-//        apiNet.ApiRequestLockData(roomID)
-//                .subscribe(new Observer<LockResponsesBean>() {
-//                    @Override
-//                    public void onSubscribe(Disposable d) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onNext(LockResponsesBean value) {
-//                        toast("获取信息 = "+value.toString());
-//                        lockResponsesBean = value;
-//                        scanBle();
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        toast("获取信息异常 = "+e.getMessage());
-//                        finish();
-//                    }
-//
-//                    @Override
-//                    public void onComplete() {
-//
-//                    }
-//                });
-//
-//    }
-
     /**
      * 上传修改密码
      * @param
@@ -744,93 +727,8 @@ public class ConnectDeviceActivity extends BaseActivity implements View.OnClickL
 
     }
 
-    ///////////////////////////////////////////////////测试//////////////////////////////////////////////
 
-    /**
-     * synchronizes the data of key
-     */
-    private void syncData() {
-        showProgressDialog();
-        new AsyncTask<Void,String,String>() {
 
-            @Override
-            protected String doInBackground(Void... params) {
-                //you can synchronizes all key datas when lastUpdateDate is 0
-                String json = ResponseService.syncData(0);
-                LogUtil.d("json:" + json, DBG);
-                try {
-                    JSONObject jsonObject = new JSONObject(json);
-                    if(jsonObject.has("errcode")) {
-                        toast(jsonObject.getString("description"));
-//                        Intent intent = new Intent(MainActivity.this, AuthActivity.class);
-//                        startActivity(intent);
-                        requestToken();
-                        return json;
-                    }
-                    //use lastUpdateDate you can get the newly added key and data after the time
-                    long lastUpdateDate = jsonObject.getLong("lastUpdateDate");
-                    String keyList = jsonObject.getString("keyList");
-//                    JSONArray jsonArray = jsonObject.getJSONArray("keyList");
-                    keys.clear();
-                    ArrayList<KeyObj> list = GsonUtil.toObject(keyList, new TypeToken<ArrayList<KeyObj>>(){});
-                    keys.addAll(convert2DbModel(list));
-//
-
-                    //clear local keys and save new keys
-                    DbService.deleteAllKey();
-                    DbService.saveKeyList(keys);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                return json;
-            }
-
-            @Override
-            protected void onPostExecute(String s) {
-                super.onPostExecute(s);
-                progressDialog.cancel();
-                Log.e("key","keys = "+keys.size());
-            }
-        }.execute();
-    }
-
-    private static ArrayList<Key> convert2DbModel(ArrayList<KeyObj> list){
-        ArrayList<Key> keyList = new ArrayList<>();
-        if(list != null && list.size() > 0){
-            for(KeyObj key : list){
-                Key DbKey = new Key();
-                DbKey.setUserType(key.userType);
-                DbKey.setKeyStatus(key.keyStatus);
-                DbKey.setLockId(key.lockId);
-                DbKey.setKeyId(key.keyId);
-                DbKey.setLockVersion(GsonUtil.toJson(key.lockVersion));
-                DbKey.setLockName(key.lockName);
-                DbKey.setLockAlias(key.lockAlias);
-                DbKey.setLockMac(key.lockMac);
-                DbKey.setElectricQuantity(key.electricQuantity);
-                DbKey.setLockFlagPos(key.lockFlagPos);
-                DbKey.setAdminPwd(key.adminPwd);
-                DbKey.setLockKey(key.lockKey);
-                DbKey.setNoKeyPwd(key.noKeyPwd);
-                DbKey.setDeletePwd(key.deletePwd);
-                DbKey.setPwdInfo(key.pwdInfo);
-                DbKey.setTimestamp(key.timestamp);
-                DbKey.setAesKeyStr(key.aesKeyStr);
-                DbKey.setStartDate(key.startDate);
-                DbKey.setEndDate(key.endDate);
-                DbKey.setSpecialValue(key.specialValue);
-                DbKey.setTimezoneRawOffset(key.timezoneRawOffset);
-                DbKey.setKeyRight(key.keyRight);
-                DbKey.setKeyboardPwdVersion(key.keyboardPwdVersion);
-                DbKey.setRemoteEnable(key.remoteEnable);
-                DbKey.setRemarks(key.remarks);
-
-                keyList.add(DbKey);
-            }
-        }
-        return keyList;
-    }
 
     private  void startAlertDialog(String title, String negative, String positive, final int position){
 

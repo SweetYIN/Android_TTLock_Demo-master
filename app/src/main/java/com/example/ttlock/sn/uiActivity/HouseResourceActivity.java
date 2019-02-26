@@ -65,34 +65,13 @@ public class HouseResourceActivity extends BaseActivity implements View.OnClickL
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        Log.e(TAG,"onStart");
-    }
-    @Override
     protected void onRestart() {
         super.onRestart();
+        houseInfos.clear();
         requestData();
         Log.e(TAG,"onRestart");
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.e(TAG,"onStop");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.e(TAG,"onResume");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.e(TAG,"onPause");
-    }
 
     private void initView() {
         mBgaRefreshLayout = (BGARefreshLayout)findViewById(R.id.br_houseResource_refresh);
